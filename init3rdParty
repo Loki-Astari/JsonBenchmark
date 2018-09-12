@@ -1,0 +1,157 @@
+set -e
+
+cd thirdparty/ThorsSerializer
+>&2 echo "ThorsSerializer"
+./configure ${LOCAL_BOOST} --disable-binary --disable-yaml --disable-vera --enable-static
+make && sudo make install
+>&2 echo "ThorsSerializer DONE"
+
+cd ../fastjson
+>&2 echo "fastjson"
+echo "env.Append( CXXFLAGS='-fPIC')" >> SConstruct
+make
+sudo ln -s $(pwd)/include/fastjson /usr/local/include/fastjson
+sudo cp libfastjson.a /usr/local/lib/
+>&2 echo "fastjson DONE"
+
+cd ../jeayeson
+>&2 echo "jeayeson"
+./configure ${LOCAL_BOOST}
+sudo make install
+>&2 echo "jeayeson DONE"
+
+cd ../JsonBox
+>&2 echo "JsonBox"
+cmake -Wno-dev -DCMAKE_CXX_FLAGS=-fPIC .
+make && sudo make install
+>&2 echo "JsonBox DONE"
+
+cd ../jsoncons
+>&2 echo "jsoncons"
+sudo ln -s $(pwd)/include/jsoncons /usr/local/include/jsoncons
+sudo ln -s $(pwd)/include/jsoncons_ext /usr/local/include/jsoncons_ext
+>&2 echo "jsoncons DONE"
+
+cd ../jsoncpp
+>&2 echo "jsoncpp"
+sed -i CMakeLists.txt -e 's/CMAKE_MINIMUM_REQUIRED(VERSION 3.[0-9])/CMAKE_MINIMUM_REQUIRED(VERSION 2.8)/'
+cmake -DCMAKE_BUILD_TYPE=release -DBUILD_STATIC_LIBS=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_INCLUDEDIR=include/jsoncpp -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_FLAGS=-fPIC -G "Unix Makefiles" .
+make && sudo make install
+>&2 echo "jsoncpp DONE"
+
+cd ../json-voorhees
+>&2 echo "json-voorhees"
+sed -i CMakeLists.txt -e 's/cmake_minimum_required(VERSION 3.[0-9])/cmake_minimum_required(VERSION 2.8)/'
+cmake ${CMAKE_BOOST} -DLIBRARY_INSTALL_DIR=/usr/local/lib -DLIBRARY_TYPE=STATIC -DCMAKE_CXX_FLAGS=-fPIC .
+make && sudo make install
+>&2 echo "json-voorhees DONE"
+
+cd ../jvar
+>&2 echo "jvar"
+cmake -DCMAKE_CXX_FLAGS=-fPIC .
+make && sudo make install
+>&2 echo "jvar DONE"
+
+cd ../nlohmann
+>&2 echo "nlohmann"
+sudo ln -s $(pwd)/include/nlohmann /usr/local/include/nlohmann
+>&2 echo "nlohmann DONE"
+
+cd ../rapidjson
+>&2 echo "rapidjson"
+cmake -DRAPIDJSON_BUILD_DOC=OFF -DRAPIDJSON_BUILD_EXAMPLES=OFF -DRAPIDJSON_BUILD_TESTS=OFF .
+make && sudo make install
+>&2 echo "rapidjson DONE"
+
+cd ../ujson4c
+>&2 echo "ujson4c"
+gcc -c -o ujdecode.o src/ujdecode.c -I3rdparty/ -fPIC -O3
+gcc -c -o ultrajson.o 3rdparty/ultrajsondec.c -I3rdparty/ -fPIC -O3
+ar rv libujson4c.a ultrajson.o ujdecode.o
+ranlib libujson4c.a
+sudo cp libujson4c.a /usr/local/lib/
+sudo mkdir /usr/local/include/ujson4c/
+sudo cp src/ujdecode.h /usr/local/include/ujson4c/
+>&2 echo "ujson4c DONE"
+
+cd ../pjson
+>&2 echo "pjson"
+gcc -c -o pjson.o src/pjson.c -fPIC -O3 -Iinc
+ar rv libpjson.a pjson.o
+ranlib libpjson.a
+sudo cp libpjson.a /usr/local/lib/
+sudo mkdir /usr/local/include/pjson
+sudo cp inc/pjson.h /usr/local/include/pjson
+>&2 echo "pjson DONE"
+
+cd ../udb-jsason-parser
+>&2 echo "udb"
+./configure
+make && sudo make install
+sudo rm /usr/local/lib/libjsonparser.so || sudo rm /usr/local/lib/libjsonparser.dylib
+cd ../udb-json-builder
+cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I/usr/local/include/json-parser' .
+make && sudo make install && sudo mv /usr/local/include/json-builder.h /usr/local/include/json-parser/json-builder.h
+>&2 echo "udb DONE"
+
+cd ../juson
+>&2 echo "juson"
+sed -i -e 's/ isxdigit\([^(]\)/ xdigit\1/' juson.c
+gcc -c -o juson.o juson.c -fPIC -O3
+ar rv libjuson.a juson.o
+ranlib libjuson.a
+sudo cp libjuson.a /usr/local/lib
+sudo mkdir /usr/local/include/juson
+sudo cp juson.h /usr/local/include/juson/
+>&2 echo "juson DONE"
+
+cd ../ccan
+>&2 echo "ccan"
+gcc -c -o json.o ccan/json/json.c -fPIC -O3
+ar rv libccan.a json.o
+ranlib libccan.a
+sudo cp libccan.a /usr/local/lib
+sudo mkdir /usr/local/include/ccan
+sudo cp ccan/json/json.h /usr/local/include/ccan/
+>&2 echo "ccan DONE"
+
+cd ../cJSON
+>&2 echo "cJSON"
+cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_FLAGS=-fPIC .
+make && sudo make install
+>&2 echo "cJSON DONE"
+
+cd ../vincenthz-libjson
+>&2 echo "vincenthz-libjson"
+gcc -c -o json.o json.c -fPIC -O3
+gcc -c -o jsonlint.o jsonlint.c -fPIC -O3
+ar rv libvincenthz-libjson.a *.o
+ranlib libvincenthz-libjson.a
+sudo cp libvincenthz-libjson.a /usr/local/lib/
+sudo mkdir /usr/local/include/vincenthz-libjson
+sudo cp json.h /usr/local/include/vincenthz-libjson
+>&2 echo "vincenthz-libjson DONE"
+
+cd ../yajl
+>&2 echo "yajl"
+cmake -DCMAKE_C_FLAGS=-fPIC .
+make && sudo make install
+sudo rm /usr/local/lib/libyajl.so.2.1.1 /usr/local/lib/libyajl.so.2 /usr/local/lib/libyajl.so || sudo rm /usr/local/lib/libyajl.2.1.1.dylib /usr/local/lib/libyajl.2.dylib /usr/local/lib/libyajl.dylib
+>&2 echo "yajl DONE"
+
+cd ../json-c
+>&2 echo "json-c"
+cmake -DCMAKE_C_FLAGS=-fPIC .
+make && sudo make install
+>&2 echo "json-c DONE"
+
+cd ../jsmn
+>&2 echo "jsmn"
+gcc -c -o jsmn.o jsmn.c -fPIC -O3
+ar rv libjsmn.a jsmn.o
+ranlib libjsmn.a
+sudo cp libjsmn.a /usr/local/lib/
+sudo mkdir /usr/local/include/jsmn
+sudo cp jsmn.h /usr/local/include/jsmn
+>&2 echo "jsmn DONE"
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [[ "$1" == "linux" ]]; then
+    sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+    sudo apt-get update
+    sudo apt-get install -qq g++-7 -y
+    sudo apt-get install python-dev -y
+    sudo apt-get install scons -y
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+    wget -O boost_1_56.tar.gz http://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.tar.gz/download
+    tar xzf boost_1_56.tar.gz
+    cd boost_1_56_0/
+        mkdir -p /tmp/extra
+        bootstrap.sh --prefix=/tmp/extra
+        ./b2 cxxflags="-Wno-strict-aliasing -Wno-unused-local-typedefs -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-placement-new" --with-system --with-context --with-coroutine
+        sudo ./b2 --with-system --with-context --with-coroutine install | awk 'NR == 1 || NR % 25 == 0'
+    cd ..
+fi
+if [[ "$1" == "osx" ]]; then
+    brew install gnu-sed --with-default-names
+    export PATH=${PATH}
+    brew install scons
+    brew install boost --with-python
+    brew install boost-python
+    brew install cmake
+    brew install tcl-tk
+    for a in /usr/local/lib/libboost_python[0-9][0-9]* ; do
+        sudo ln -s ${a} ${a/[0-9][0-9]/}
+    done
+fi

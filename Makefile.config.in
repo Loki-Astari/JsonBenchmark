@@ -1,0 +1,5 @@
+
+# In this file add the variables defined with AC_SUBST
+# They can then be included by surrounding with @
+# AC_SUBST([ExampleMakeFileVariable], [ValueOfVariable])
+ExampleMakeFileVariable=@ExampleMakeFileVariable@
