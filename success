@@ -2,22 +2,23 @@
 
 if [[ "$1" == "linux" ]]; then
     sudo apt-get install node.js
-    npm install argparse simple-git rimraf glob mkdirp stylus gray-matter ejs showdown dateformat fs-copy-file-sync -g
-    export NODE_PATH=/home/travis/.nvm/versions/node/v8.9.1/lib/node_modules/
-
-    git clone git@github.com:Loki-Astari/andvari.git
-    export PATH=${PATH}:$(pwd)/andvari/bin
-
-    git clone git@github.com:Loki-Astari/loki-astari.github.io.git
-    cd loki-astari.github.io
-    git checkout source
-    git submodule update --init --recursive
-
-    cd ../
-    php ./script/conformance.php Conformance.csv > loki-astari.github.io/source/Json/Conformance.html
-    php ./script/performance.php Performance.csv > loki-astari.github.io/source/Json/Performance.html
-    cd loki-astari.github.io
-
-    andvari deploy
 fi
+
+git clone git@github.com:Loki-Astari/andvari.git
+cd andvari
+npm install
+export PATH=${PATH}:$(pwd)/bin
+cd ..
+
+git clone git@github.com:Loki-Astari/loki-astari.github.io.git
+cd loki-astari.github.io
+git checkout source
+git submodule update --init --recursive
+cd ..
+
+php ./script/conformance.php Conformance.csv > loki-astari.github.io/source/Json/Conformance.html
+php ./script/performance.php Performance.csv > loki-astari.github.io/source/Json/Performance.html
+cd loki-astari.github.io
+
+andvari deploy
 
