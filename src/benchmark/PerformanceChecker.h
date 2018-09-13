@@ -202,6 +202,8 @@ class PerformanceChecker: public CommonReader
                         std::cerr << "Processes wait error\n";
                         exit(1);
                     }
+                    close(stdoutPipe[0]);
+                    close(stderrPipe[0]);
                 }
                 void readoutput(int fd, std::ostream& output)
                 {

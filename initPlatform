@@ -6,6 +6,7 @@ if [[ "$1" == "linux" ]]; then
     sudo apt-get install -qq g++-7 -y
     sudo apt-get install python-dev -y
     sudo apt-get install scons -y
+    sudo apt-get install -qq libboost-all-dev
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7
     wget -O boost_1_56.tar.gz http://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.tar.gz/download
     tar xzf boost_1_56.tar.gz
