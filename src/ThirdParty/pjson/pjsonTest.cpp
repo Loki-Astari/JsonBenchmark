@@ -6,6 +6,7 @@
 #include <memory>
 #include <clocale>
 #include <string>
+#include <stdlib.h>
 
 namespace {
 	struct PJsonParser {

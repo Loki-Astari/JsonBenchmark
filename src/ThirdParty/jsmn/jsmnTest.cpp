@@ -2,6 +2,7 @@
 #include "jsmn/jsmn.h"
 #include <memory>
 #include <string>
+#include <stdlib.h>
 
 static void GenStat(Stat* s, const char* json, const jsmntok_t* tokens, int count) {
     for (int i = 0; i < count; i++)

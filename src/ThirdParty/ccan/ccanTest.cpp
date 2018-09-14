@@ -6,6 +6,7 @@ extern "C" {
 
 #include <memory>
 #include <string>
+#include <stdlib.h>
 
 static void GenStat(Stat* s, const JsonNode* v) {
     switch (v->tag) {
