@@ -14,6 +14,7 @@
 
 #include "MemoryConfig.h"
 #include "Memory.h"
+#include <stdlib.h>
 
 
 bool MemoryInfo::active = false;

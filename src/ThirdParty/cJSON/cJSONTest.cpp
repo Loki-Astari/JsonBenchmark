@@ -2,6 +2,7 @@
 #include "cjson/cJSON.h"
 #include <memory>
 #include <string>
+#include <stdlib.h>
 
 static void GenStat(Stat* s, const cJSON* v) {
     if (cJSON_IsObject(v)) {

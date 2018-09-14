@@ -4,6 +4,7 @@
 
 #include "ujson4c/ujdecode.h"
 #include <clocale>
+#include <stdlib.h>
 
 extern "C" {
 
