@@ -33,6 +33,30 @@ LT_INIT
 # Note there are some predefined macros in build/autotools/m4/
 AC_DEFUN([AC_STRUCT_DIRENT_NAME_LEN], [_AC_STRUCT_DIRENT([d_namlen])])
 
+AC_CHECK_PROGS([TestSCons], [scons], [:])
+AS_IF(
+    [test "$TestSCons" == ":"],
+    [
+        AC_MSG_ERROR([
+
+The thirdparty library "fastjson" requires scons.
+Please install via
+
+    sudo apt-get install scons   # linux
+    brew install scons           # mac
+
+        ])
+    ], []
+)
+
+Add a test for sed -i
+Already works on Linux.
+But on Mac you need:
+
+brew install gnu-sed --with-default-names
+
+
+
 AC_HEADER_DIRENT
 AC_STRUCT_DIRENT_NAME_LEN
 

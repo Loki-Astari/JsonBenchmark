@@ -13,7 +13,7 @@ namespace ThorsAnvil
 class ValidateString: public Benchmark
 {
     public:
-        using Benchmark::Benchmark;
+        using TestSuite::TestSuite;
         virtual std::string setupName(Test const&) override
         {
             return "vector-string";

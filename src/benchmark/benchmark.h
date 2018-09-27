@@ -65,14 +65,20 @@ class TestSetUp
             }
         }
 };
-class Benchmark
+class TestSuite
 {
     using Cont = std::vector<Test>;
     std::string bName;
     protected:
         Options&    options;
         Cont        tests;
-    public:
+    private:
+        virtual std::string setupName(Test const&)                              = 0;
+        virtual void preloadData(Test&)                                         = 0;
+        virtual State executeTest(TestBase const&, Test const&)                 = 0;
+        virtual void generateConPerData(TestBase const&, Test const&, State)    = 0;
+        virtual std::string benchmarkName()                                     const   {return bName;}
+        virtual bool useSetUp()                                                 const   {return true;}
         void preload()
         {
             for (auto& test: tests)
@@ -87,13 +93,6 @@ class Benchmark
                 test.clear();
             }
         }
-        virtual std::string benchmarkName() const   { return bName;}
-        virtual std::string setupName(Test const&)
-        {
-            return "";
-        }
-        virtual void preloadData(Test& /*test*/)
-        {}
         virtual void printResults(TestBase const& parser, int (&count)[3], std::vector<Test const*>& failed)
         {
             std::cerr << "\tParser: " << parser.GetName();
@@ -116,9 +115,6 @@ class Benchmark
                 }
             }
         }
-        virtual bool useSetUp() const {return true;}
-        virtual State executeTest(TestBase const& /*parser*/, Test const& /*test*/) = 0;
-        virtual void generateConPerData(TestBase const& /*parser*/, Test const& /*test*/, State /*state*/) = 0;
         virtual void executeTest(TestBase const& parser)
         {
             int count[3] = {0, 0, 0};
@@ -141,10 +137,11 @@ class Benchmark
 
         struct DataLoader
         {
-            Benchmark& benchmark;
-            DataLoader(Benchmark& benchmark) : benchmark(benchmark) {benchmark.preload();}
+            TestSuite& benchmark;
+            DataLoader(TestSuite& benchmark) : benchmark(benchmark) {benchmark.preload();}
            ~DataLoader()                                            {benchmark.clear();}
         };
+    public:
         void executeTestOnAllParsers(ParsrList const& parsrList)
         {
             std::cerr << "BenchMark: " << benchmarkName() << "\n";
@@ -158,7 +155,7 @@ class Benchmark
                 }
             }
         }
-        Benchmark(Options& options, std::string const& name)
+        TestSuite(Options& options, std::string const& name)
             : bName(name)
             , options(options)
         {}

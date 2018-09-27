@@ -1,0 +1,215 @@
+The MIT License (MIT)
+
+Copyright (c) 2018 Martin York
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---------
+
+Note:  
+The original code written by Milo is his copyright but also provided under the MIT License:  
+See: [LICENSE](https://github.com/miloyip/nativejson-benchmark/blob/master/LICENSE)  
+
+This code includes:
+
+    The original test harness
+        src/ThirdParty/TestBase.h
+    The html generation php scripts
+        script/conformance.php
+        script/performance.php
+    All the original test harness implementations
+        srd/ThirdParty/ArduinoJson/ArduinoJsonTest.cpp
+        src/ThirdParty/Configuru/ConfiguruTest.cpp
+        src/ThirdParty/JsonBox/JsonBoxTest.cpp
+        src/ThirdParty/Jzon/JzonTest.cpp
+        src/ThirdParty/cJSON/cJSONTest.cpp
+        src/ThirdParty/cajun-jsonapi/cajun-jsonapiTest.cpp
+        src/ThirdParty/ccan/ccanTest.cpp
+        src/ThirdParty/fastjson/fastjsonTest.cpp
+        src/ThirdParty/gason/gasonTest.cpp
+        src/ThirdParty/jeayeson/jeayesonTest.cpp
+        src/ThirdParty/jsmn/jsmnTest.cpp
+        src/ThirdParty/json-c/json-cTest.cpp
+        src/ThirdParty/json-voorhees/json-voorheesTest.cpp
+        src/ThirdParty/jsoncons/jsonconsTest.cpp
+        src/ThirdParty/jsoncpp/jsoncppTest.cpp
+        src/ThirdParty/jsonxx/jsonxxTest.cpp
+        src/ThirdParty/juson/jusonTest.cpp
+        src/ThirdParty/jvar/jvarTest.cpp
+        src/ThirdParty/nlohmann/nlohmannTest.cpp
+        src/ThirdParty/picojson/picojsonTest.cpp
+        src/ThirdParty/pjson/pjsonTest.cpp
+        src/ThirdParty/rapidjson/rapidjsonTest.cpp
+        src/ThirdParty/rapidjsonAutoUTF/rapidjson-AutoUTFTest.cpp
+        src/ThirdParty/rapidjsonFullPrec/rapidjson-FullPrecTest.cpp
+        src/ThirdParty/rapidjsonInsitu/rapidjson-InsituTest.cpp
+        src/ThirdParty/rapidjsonIterative/rapidjson-IterativeTest.cpp
+        src/ThirdParty/sajson/sajsonTest.cpp
+        src/ThirdParty/udb/udbTest.cpp
+        src/ThirdParty/ujson/ujsonTest.cpp
+        src/ThirdParty/ujson4c/ujson4cTest.cpp
+        src/ThirdParty/vincenthz-libjson/vincenthz-libjsonTest.cpp
+        src/ThirdParty/yajl/yajlTest.cpp
+    The original test data:
+        data/jsonchecker_fail/fail01_EXCLUDE.json
+        data/jsonchecker_fail/fail02.json
+        data/jsonchecker_fail/fail03.json
+        data/jsonchecker_fail/fail04.json
+        data/jsonchecker_fail/fail05.json
+        data/jsonchecker_fail/fail06.json
+        data/jsonchecker_fail/fail07.json
+        data/jsonchecker_fail/fail08.json
+        data/jsonchecker_fail/fail09.json
+        data/jsonchecker_fail/fail10.json
+        data/jsonchecker_fail/fail11.json
+        data/jsonchecker_fail/fail12.json
+        data/jsonchecker_fail/fail13.json
+        data/jsonchecker_fail/fail14.json
+        data/jsonchecker_fail/fail15.json
+        data/jsonchecker_fail/fail16.json
+        data/jsonchecker_fail/fail17.json
+        data/jsonchecker_fail/fail18_EXCLUDE.json
+        data/jsonchecker_fail/fail19.json
+        data/jsonchecker_fail/fail20.json
+        data/jsonchecker_fail/fail21.json
+        data/jsonchecker_fail/fail22.json
+        data/jsonchecker_fail/fail23.json
+        data/jsonchecker_fail/fail24.json
+        data/jsonchecker_fail/fail25.json
+        data/jsonchecker_fail/fail26.json
+        data/jsonchecker_fail/fail27.json
+        data/jsonchecker_fail/fail28.json
+        data/jsonchecker_fail/fail29.json
+        data/jsonchecker_fail/fail30.json
+        data/jsonchecker_fail/fail31.json
+        data/jsonchecker_fail/fail32.json
+        data/jsonchecker_fail/fail33.json
+        data/jsonchecker_fail/readme.txt
+        data/jsonchecker_pass/pass01.json
+        data/jsonchecker_pass/pass02.json
+        data/jsonchecker_pass/pass03.json
+        data/jsonchecker_pass/readme.txt
+        data/performance/canada.json
+        data/performance/citm_catalog.json
+        data/performance/twitter.json
+        data/roundtrip/roundtrip01.json
+        data/roundtrip/roundtrip02.json
+        data/roundtrip/roundtrip03.json
+        data/roundtrip/roundtrip04.json
+        data/roundtrip/roundtrip05.json
+        data/roundtrip/roundtrip06.json
+        data/roundtrip/roundtrip07.json
+        data/roundtrip/roundtrip08.json
+        data/roundtrip/roundtrip09.json
+        data/roundtrip/roundtrip10.json
+        data/roundtrip/roundtrip11.json
+        data/roundtrip/roundtrip12.json
+        data/roundtrip/roundtrip13.json
+        data/roundtrip/roundtrip14.json
+        data/roundtrip/roundtrip15.json
+        data/roundtrip/roundtrip16.json
+        data/roundtrip/roundtrip17.json
+        data/roundtrip/roundtrip18.json
+        data/roundtrip/roundtrip19.json
+        data/roundtrip/roundtrip20.json
+        data/roundtrip/roundtrip21.json
+        data/roundtrip/roundtrip22.json
+        data/roundtrip/roundtrip23.json
+        data/roundtrip/roundtrip24.json
+        data/roundtrip/roundtrip25.json
+        data/roundtrip/roundtrip26.json
+        data/roundtrip/roundtrip27.json
+        data/validate_float/test1.json
+        data/validate_float/test10.json
+        data/validate_float/test11.json
+        data/validate_float/test12.json
+        data/validate_float/test13.json
+        data/validate_float/test14.json
+        data/validate_float/test15.json
+        data/validate_float/test16.json
+        data/validate_float/test17.json
+        data/validate_float/test18.json
+        data/validate_float/test19.json
+        data/validate_float/test2.json
+        data/validate_float/test20.json
+        data/validate_float/test21.json
+        data/validate_float/test22.json
+        data/validate_float/test23.json
+        data/validate_float/test24.json
+        data/validate_float/test25.json
+        data/validate_float/test26.json
+        data/validate_float/test27.json
+        data/validate_float/test28.json
+        data/validate_float/test29.json
+        data/validate_float/test3.json
+        data/validate_float/test30.json
+        data/validate_float/test31.json
+        data/validate_float/test32.json
+        data/validate_float/test33.json
+        data/validate_float/test34.json
+        data/validate_float/test35.json
+        data/validate_float/test36.json
+        data/validate_float/test37.json
+        data/validate_float/test38.json
+        data/validate_float/test39.json
+        data/validate_float/test4.json
+        data/validate_float/test40.json
+        data/validate_float/test41.json
+        data/validate_float/test42.json
+        data/validate_float/test43.json
+        data/validate_float/test44.json
+        data/validate_float/test45.json
+        data/validate_float/test46.json
+        data/validate_float/test47.json
+        data/validate_float/test48.json
+        data/validate_float/test49.json
+        data/validate_float/test5.json
+        data/validate_float/test50.json
+        data/validate_float/test51.json
+        data/validate_float/test52.json
+        data/validate_float/test53.json
+        data/validate_float/test54.json
+        data/validate_float/test55.json
+        data/validate_float/test56.json
+        data/validate_float/test57.json
+        data/validate_float/test58.json
+        data/validate_float/test59.json
+        data/validate_float/test6.json
+        data/validate_float/test60.json
+        data/validate_float/test61.json
+        data/validate_float/test62.json
+        data/validate_float/test63.json
+        data/validate_float/test64.json
+        data/validate_float/test65.json
+        data/validate_float/test66.json
+        data/validate_float/test67.json
+        data/validate_float/test68.json
+        data/validate_float/test69.json
+        data/validate_float/test7.json
+        data/validate_float/test8.json
+        data/validate_float/test9.json
+        data/validate_string/test1.json
+        data/validate_string/test10.json
+        data/validate_string/test11.json
+        data/validate_string/test2.json
+        data/validate_string/test3.json
+        data/validate_string/test5.json
+        data/validate_string/test6.json
+        data/validate_string/test8.json
+        data/validate_string/test9.json

@@ -1,0 +1,217 @@
+#!/bin/bash
+
+echo "Please input the URL path used to clone the JsonLibrary"
+read json
+
+host="github.com"
+method=${json%%${host}*}
+
+if [[ "${method}" == "git@" ]]; then
+
+    dropGitHub=${json##git@${host}:}
+    author=${dropGitHub%%/*}
+    project=${dropGitHub##*/}
+    project=${project%%.git}
+    json="https://${host}/${author}/${project}.git"
+
+elif [[ "${method}" == "https://" ]]; then
+
+    dropHttps=${json##https://${host}/}
+    author=${dropHttps%%/*}
+    project=${dropHttps##*/}
+    project=${project%%.git}
+else
+    echo "Could not work out author and project of the URL"
+    exit 1
+fi
+
+if ( test -e thirdparty/${project} ); then
+    echo "The project \"${project}\" already exists."
+    echo "Using \"${author}-${project}\" as the project name."
+    echo "Hit <Ctrl-C> to abort or hit <return> to Continue"
+    read wait
+
+    project="${author}-${project}"
+fi
+
+echo "What is the primary language of ${project}"
+read lang
+
+cat > buildJsonLib << METAINIT
+#!/bin/bash
+
+git submodule add ${json} thirdparty/${project}
+
+METAINIT
+
+linkTarget=""
+headerTargets=""
+
+echo "Is this project normally installed (eg in /usr/local) (Y/N)"
+echo "If this is a non installed header only library use N"
+read isLib
+if [[ "${isLib}" == "Y" || "${isLib}" == "y" ]]; then
+
+    echo "Does this project need boost (Y/N)?"
+    read boost
+    if [[ "${boost}" == "Y" || "${boost}" == "y" ]]; then
+        configBoost=" \\\${LOCAL_BOOST}"
+        cmakeBoost=" \\\${CMAKE_BOOST}"
+    elif [[ "${boost}" == "N" || "${boost}" == "n" ]]; then
+        configBoost=""
+        cmakeBoost=""
+    else
+        echo "Did not get a good reply. Please use Y or N"
+        exit 1
+    fi
+
+    echo "Does this project use \"configure\"/\"cmake\"/\"custom code\"  config/cmake/custom"
+    read type
+
+    if [[ "${type}" != "config" && "${type}" != "cmake" && "${type}" != "custom" ]]; then
+        echo "Did not get a good reply. Please use one of config cmake custom"
+        exit 1
+    fi
+
+    script="# Add Your custom Code Here: BOOST is available via the environment LOCAL_BOOST or CMAKE_BOOST"
+    if [[ "${type}" == "config" ]]; then
+        script="./configure${configBoost}"
+    fi
+    if [[ "${type}" == "cmake" ]]; then
+        script="cmake${cmakeBoost}"
+    fi
+
+    cat >> buildJsonLib <<METABUILDCONFIG
+
+cat >> init3rdParty <<BUILDCONFIG
+
+cd ../${project}
+>&2 echo "${project}"
+${script}
+make && sudo make install
+>&2 echo "${project} DONE"
+BUILDCONFIG
+METABUILDCONFIG
+
+    echo "Does the code require linking against a library?"
+    echo "If it does please enter the short name"
+    echo "eg for libBob.so use Bob"
+    read linkAgainst
+
+    if [[ "${linkAgainst}" != "" ]]; then
+        linkTarget="LDLIBS                      = -l${linkAgainst}"
+    fi
+
+elif [[ "${isLib}" == "N" || "${isLib}" == "n" ]]; then
+    echo "What sub-directory are the header libs you want to include?"
+    read headerTargets
+
+else
+    echo "Did not get a good reply. Please use Y or N"
+    exit 1
+fi
+
+
+
+cat >> buildJsonLib <<METABUILDDIR
+
+mkdir -p src/ThirdParty/${project}
+cd src/ThirdParty/${project}
+
+METABUILDDIR
+
+cat >> buildJsonLib <<METABUILDMAKE
+
+cat > Makefile <<BUILDMAKE
+THORSANVIL_ROOT             = \\\$(realpath ../../..)
+
+${linkTarget}
+TARGET                      = ${project}Test.slib
+
+NO_HEADER                   = true
+VERA                        = true
+
+
+include \\\$(THORSANVIL_ROOT)/build/tools/Makefile
+BUILDMAKE
+METABUILDMAKE
+
+cat >> buildJsonLib <<METABUILDTEST
+
+cat > ${project}Test.cpp <<BUILDTEST
+#include "../test.h"
+
+class ${project}Test : public TestBase {
+public:
+    virtual const char* GetName() const override {return "${project}  (${lang})";}
+    virtual const char* GetFilename() const override { return __FILE__; }
+
+    /* Optional
+     * Implement the next two functions if you need to perform
+     * initialization  (SetUp) or de-initialiation (TearDown)
+     * between each test.
+    virtual void SetUp(char const* fullPath) const override
+    {
+    }
+
+    virtual void TearDown(char const*) const override
+    {
+    }
+    */
+
+    /* Please implment the next three functions */
+    virtual ParseResultBase* Parse(const char* json, size_t ) const override
+    {
+    }
+
+    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const override
+    {
+    }
+
+    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const override
+    {
+    }
+
+    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const override
+    {
+    }
+
+    virtual bool ParseDouble(const char* json, double* d) const override
+    {
+    }
+
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
+    }
+
+    /* Optional
+    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const override
+    {
+    }
+
+    virtual bool SaxStatistics(const char* json, size_t length, Stat* stat) const override
+    {
+    }
+
+    virtual bool SaxStatisticsUTF16(const char*, size_t, Stat*) const override
+    {
+    }
+    */
+};
+
+REGISTER_TEST(${project}Test);
+BUILDTEST
+METABUILDTEST
+
+cat >> buildJsonLib <<METALINKTEST
+
+cd ..
+echo "REGISTER_TEST_OBJECT(${project}Test);" >> test.cpp
+METALINKTEST
+chmod +x buildJsonLib
+
+
+
+
+
+
