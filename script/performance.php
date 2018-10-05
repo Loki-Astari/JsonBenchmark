@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="combine.css">
 <script src="combine.js"></script>
 <!--
-<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-<script src="http://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['controls', 'charteditor']}]}"></script>
-<script src="http://jquery-csv.googlecode.com/git/src/jquery.csv.js"></script>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['controls', 'charteditor']}]}"></script>
+<script src="https://jquery-csv.googlecode.com/git/src/jquery.csv.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 -->
 <script>
 $(function() {
@@ -329,7 +329,7 @@ function drawPivotBarChart(type, data, title) {
   chart.draw(data, options);
 }
 
-// http://jsfiddle.net/P6XXM/
+// https://jsfiddle.net/P6XXM/
 function sanitize(svg) {
     svg = svg
         .replace(/\<svg/,'<svg xmlns="http://www.w3.org/2000/svg" version="1.1"')
@@ -447,7 +447,7 @@ body { padding-top: 70px; }
     </ul>
 </div>
 </div>
-<form method="post" action="http://export.highcharts.com/" id="imageGetForm">
+<form method="post" action="https://export.highcharts.com/" id="imageGetForm">
     <input type="hidden" name="filename" id="imageFilename" value="" />
     <input type="hidden" name="type" id="imageGetFormTYPE" value="" />
     <input type="hidden" name="width" value="1600" />
