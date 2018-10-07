@@ -10,10 +10,10 @@ namespace ThorsAnvil
     namespace Benchmark
     {
 
-class CommonReader: public TestSuite
+class CommonReader: public Benchmark
 {
     public:
-        using TestSuite::TestSuite;
+        using Benchmark::Benchmark;
         virtual std::string setupName(Test const& test) override
         {
             std::string const& path = test.path.str();

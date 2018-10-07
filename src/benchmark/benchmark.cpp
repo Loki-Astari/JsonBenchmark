@@ -13,7 +13,7 @@
 namespace BM = ThorsAnvil::Benchmark;
 
 using DirIter   = ThorsAnvil::FileSystem::DirectoryIterator;
-using BenchList = std::map<std::string, BM::TestSuite*>;
+using BenchList = std::map<std::string, BM::Benchmark*>;
 
 BM::Options getOptions(int argc, char* argv[]);
 void        displayOptions();
