@@ -45,9 +45,9 @@ TestSuite::TestSuite(Options& options)
     : options(options)
 {}
 
-void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList, std::string const& dirName)
+void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList)
 {
-    std::cerr << "BenchMark: " << dirName << "\n";
+    std::cerr << "BenchMark: " << getDir() << "\n";
     if (!tests.empty())
     {
         DataLoader  loadData(*this);

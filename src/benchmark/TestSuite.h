@@ -50,7 +50,7 @@ class TestSuite
         Cont        tests;
     public:
         TestSuite(Options& options);
-        void executeTestOnAllParsers(ParsrList const& parsrList, std::string const& dirName);
+        void executeTestOnAllParsers(ParsrList const& parsrList);
         virtual void executeTest(TestBase const& parser);
         virtual State executeTest(TestBase const& parser, Test const& test) = 0;
 
@@ -59,6 +59,8 @@ class TestSuite
         iterator begin()                                            {return tests.begin();}
         iterator end()                                              {return tests.end();}
         void     emplace_back(FileSystem::Path const& path)         {tests.emplace_back(path);}
+
+        virtual std::string getDir() const = 0;
     private:
         struct DataLoader
         {

@@ -18,6 +18,10 @@ class ValidateString: public TestSuite
         {
             return "vector-string";
         }
+        virtual std::string getDir() const override
+        {
+            return "validate_string";
+        }
         virtual void preloadData(Test& test) override
         {
             std::ifstream   input(test.path.str());

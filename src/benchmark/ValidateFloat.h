@@ -20,6 +20,10 @@ class ValidateFloat: public TestSuite
         {
             return "vector-double";
         }
+        virtual std::string getDir() const override
+        {
+            return "validate_float";
+        }
         virtual void preloadData(Test& test) override
         {
             std::ifstream   input(test.path.str());

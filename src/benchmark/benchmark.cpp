@@ -7,13 +7,13 @@
 #include "RoundTripChecker.h"
 #include "PerformanceChecker.h"
 
-#include <map>
+#include <list>
 #include <regex>
 
 namespace BM = ThorsAnvil::Benchmark;
 
 using DirIter   = ThorsAnvil::FileSystem::DirectoryIterator;
-using TestSuiteList = std::map<std::string, BM::TestSuite*>;
+using TestSuiteList = std::list<BM::TestSuite*>;
 
 BM::Options getOptions(int argc, char* argv[]);
 void        displayOptions();
@@ -23,6 +23,9 @@ ParsrList   getParsrList(std::string const& parserFilter);
 int main(int argc, char* argv[])
 {
     BM::Options  options = getOptions(argc, argv);
+    options.conformance << "Type,Library,Test,Result\n";
+    options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte)\n";
+
     ParsrList    parsrList = getParsrList(options.parserFilter);
 
     BM::PassChecker         jsoncheckerPass(options);
@@ -32,20 +35,18 @@ int main(int argc, char* argv[])
     BM::ValidateFloat       validate_float(options);
     BM::ValidateString      validate_string(options);
 
-    TestSuiteList tSuiteList = {{"jsonchecker_pass",&jsoncheckerPass},
-                                {"jsonchecker_fail",&jsoncheckerFail},
-                                {"performance",     &performance},
-                                {"roundtrip",       &roundtrip},
-                                {"validate_float",  &validate_float},
-                                {"validate_string", &validate_string}
+    TestSuiteList tSuiteList = {&jsoncheckerPass,
+                                &jsoncheckerFail,
+                                &performance,
+                                &roundtrip,
+                                &validate_float,
+                                &validate_string
                                };
-    getTestSuiteList(options.testFilter, tSuiteList);
-    options.conformance << "Type,Library,Test,Result\n";
-    options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte)\n";
 
+    getTestSuiteList(options.testFilter, tSuiteList);
     for(auto const& test: tSuiteList)
     {
-        test.second->executeTestOnAllParsers(parsrList, test.first);
+        test->executeTestOnAllParsers(parsrList);
     }
 }
 
@@ -151,10 +152,12 @@ void getTestSuiteList(std::string const& testFilter, TestSuiteList& suiteList)
             {   continue;
             }
 
-            auto find = suiteList.find(dir.name());
-            if (find != suiteList.end())
+            auto find = std::find_if(std::begin(suiteList), std::end(suiteList),
+                                     [&dir](BM::TestSuite const* test){return test->getDir() == dir.name();}
+                                    );
+            if (find != std::end(suiteList))
             {
-                find->second->emplace_back(file.path());
+                (*find)->emplace_back(file.path());
             }
         }
     }

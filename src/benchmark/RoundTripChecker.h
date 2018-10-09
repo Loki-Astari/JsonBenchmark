@@ -35,6 +35,10 @@ class RoundTripChecker: public CommonReader
             }
             return test.output == stripSpace(output) ? Pass : Fail;
         }
+        virtual std::string getDir() const override
+        {
+            return "roundtrip";
+        }
     private:
         std::string stripSpace(std::string const from)
         {

@@ -13,6 +13,10 @@ class PassChecker: public CommonReader
 {
     public:
         using CommonReader::CommonReader;
+        virtual std::string getDir() const override
+        {
+            return "jsonchecker_pass";
+        }
         virtual State executeTest(TestBase const& parser, Test const& test) override
         {
             std::unique_ptr<ParseResultBase> result(parser.Parse(test.input.c_str(), test.input.size()));
