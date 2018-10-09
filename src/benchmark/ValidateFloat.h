@@ -1,7 +1,7 @@
 #ifndef THORS_ANVIL_BENCHMARK_VALIDATE_FLOAT_H
 #define THORS_ANVIL_BENCHMARK_VALIDATE_FLOAT_H
 
-#include "benchmark.h"
+#include "TestSuite.h"
 #include <fstream>
 #include <string>
 #include <limits>

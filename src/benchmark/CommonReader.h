@@ -1,7 +1,7 @@
 #ifndef THORS_ANVIL_BENCHMARK_COMMON_READER_H
 #define THORS_ANVIL_BENCHMARK_COMMON_READER_H
 
-#include "benchmark.h"
+#include "TestSuite.h"
 #include <fstream>
 #include <string>
 

@@ -1,5 +1,5 @@
 #include "ThirdParty/test.h"
-#include "benchmark.h"
+#include "TestSuite.h"
 #include "filesystem.h"
 #include "Memory/Memory.h"
 #include <fstream>

@@ -1,5 +1,5 @@
 #include "benchmarkConfig.h"
-#include "benchmark.h"
+#include "TestSuite.h"
 #include "ValidateString.h"
 #include "ValidateFloat.h"
 #include "PassChecker.h"
