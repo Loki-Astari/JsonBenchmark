@@ -1,20 +1,15 @@
 #include "test.h"
+#include "TestManager.h"
 #include <memory>
 
-TestManager& TestManager::instance()
+bool Stat::operator!=(Stat const& rhs) const
 {
-    static TestManager singleton;
-    return singleton;
+    return !operator==(rhs);
 }
 
-void TestManager::addTest(const TestBase* test)
+bool TestBase::operator<(const TestBase& rhs) const
 {
-    mTests.push_back(test);
-}
-
-const ParsrList& TestManager::getTests() const
-{
-    return mTests;
+    return strcmp(GetName(), rhs.GetName()) < 0;
 }
 
 bool Stat::operator==(Stat const& rhs) const
@@ -28,15 +23,6 @@ bool Stat::operator==(Stat const& rhs) const
                                  rhs.stringCount, rhs.trueCount, rhs.falseCount,
                                  rhs.nullCount, rhs.memberCount, rhs.elementCount,
                                  rhs.stringLength);
-}
-bool Stat::operator!=(Stat const& rhs) const
-{
-    return !operator==(rhs);
-}
-
-bool TestBase::operator<(const TestBase& rhs) const
-{
-    return strcmp(GetName(), rhs.GetName()) < 0;
 }
 
 class TestRunner: public TestBase
@@ -68,35 +54,36 @@ class TestRunner: public TestBase
 #define REGISTER_TEST_OBJECT(cls)       std::unique_ptr<TestBase> get ## cls();TestRunner gRegister ## cls(get ## cls())
 
 REGISTER_TEST_OBJECT(ThorsSerializerTest);
-REGISTER_TEST_OBJECT(ArduinojsonTest);
-REGISTER_TEST_OBJECT(CajunTest);
-REGISTER_TEST_OBJECT(ConfiguruTest);
-REGISTER_TEST_OBJECT(FastjsonTest);
-REGISTER_TEST_OBJECT(JeayesonTest);
-REGISTER_TEST_OBJECT(JsonboxTest);
-REGISTER_TEST_OBJECT(JsonconsTest);
-REGISTER_TEST_OBJECT(JsoncppTest);
-REGISTER_TEST_OBJECT(VoorheesTest);
-REGISTER_TEST_OBJECT(JsonxxTest);
-REGISTER_TEST_OBJECT(JvarTest);
-REGISTER_TEST_OBJECT(JzonTest);
-REGISTER_TEST_OBJECT(NlohmannTest);
-REGISTER_TEST_OBJECT(PicojsonTest);
-REGISTER_TEST_OBJECT(RapidjsonTest);
-REGISTER_TEST_OBJECT(RapidjsonFullPrecTest);
-REGISTER_TEST_OBJECT(RapidjsonInsituTest);
-REGISTER_TEST_OBJECT(RapidjsonIterativeTest);
-REGISTER_TEST_OBJECT(RapidjsonAutoUTFTest);
-REGISTER_TEST_OBJECT(GasonTest);
-REGISTER_TEST_OBJECT(SajsonTest);
-REGISTER_TEST_OBJECT(UjsonTest);
-REGISTER_TEST_OBJECT(Ujson4cTest);
-REGISTER_TEST_OBJECT(PJsonTest);
-REGISTER_TEST_OBJECT(UdbTest);
-REGISTER_TEST_OBJECT(JusonTest);
-REGISTER_TEST_OBJECT(CcanTest);
-REGISTER_TEST_OBJECT(CjsonTest);
-REGISTER_TEST_OBJECT(VinenthzTest);
-REGISTER_TEST_OBJECT(YajlTest);
-REGISTER_TEST_OBJECT(JsoncTest);
-REGISTER_TEST_OBJECT(JsmnTest);
+//REGISTER_TEST_OBJECT(ArduinojsonTest);
+//REGISTER_TEST_OBJECT(CajunTest);
+//REGISTER_TEST_OBJECT(ConfiguruTest);
+//REGISTER_TEST_OBJECT(FastjsonTest);
+//REGISTER_TEST_OBJECT(JeayesonTest);
+//REGISTER_TEST_OBJECT(JsonboxTest);
+//REGISTER_TEST_OBJECT(JsonconsTest);
+//REGISTER_TEST_OBJECT(JsoncppTest);
+//REGISTER_TEST_OBJECT(VoorheesTest);
+//REGISTER_TEST_OBJECT(JsonxxTest);
+//REGISTER_TEST_OBJECT(JvarTest);
+//REGISTER_TEST_OBJECT(JzonTest);
+//REGISTER_TEST_OBJECT(NlohmannTest);
+//REGISTER_TEST_OBJECT(PicojsonTest);
+//REGISTER_TEST_OBJECT(RapidjsonTest);
+//REGISTER_TEST_OBJECT(RapidjsonFullPrecTest);
+//REGISTER_TEST_OBJECT(RapidjsonInsituTest);
+//REGISTER_TEST_OBJECT(RapidjsonIterativeTest);
+//REGISTER_TEST_OBJECT(RapidjsonAutoUTFTest);
+//REGISTER_TEST_OBJECT(GasonTest);
+//REGISTER_TEST_OBJECT(SajsonTest);
+//REGISTER_TEST_OBJECT(UjsonTest);
+//REGISTER_TEST_OBJECT(Ujson4cTest);
+//REGISTER_TEST_OBJECT(PJsonTest);
+//REGISTER_TEST_OBJECT(UdbTest);
+//REGISTER_TEST_OBJECT(JusonTest);
+//REGISTER_TEST_OBJECT(CcanTest);
+//REGISTER_TEST_OBJECT(CjsonTest);
+//REGISTER_TEST_OBJECT(VinenthzTest);
+//REGISTER_TEST_OBJECT(YajlTest);
+//REGISTER_TEST_OBJECT(JsoncTest);
+//REGISTER_TEST_OBJECT(JsmnTest);
+
