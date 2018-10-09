@@ -41,14 +41,13 @@ TestSetUp::~TestSetUp()
     }
 }
 
-TestSuite::TestSuite(Options& options, std::string const& name)
-    : bName(name)
-    , options(options)
+TestSuite::TestSuite(Options& options)
+    : options(options)
 {}
 
-void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList)
+void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList, std::string const& dirName)
 {
-    std::cerr << "BenchMark: " << benchmarkName() << "\n";
+    std::cerr << "BenchMark: " << dirName << "\n";
     if (!tests.empty())
     {
         DataLoader  loadData(*this);

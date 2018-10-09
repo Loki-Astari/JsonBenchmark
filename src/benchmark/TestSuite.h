@@ -45,13 +45,12 @@ class TestSetUp
 class TestSuite
 {
     using Cont = std::vector<Test>;
-    std::string bName;
     protected:
         Options&    options;
         Cont        tests;
     public:
-        TestSuite(Options& options, std::string const& name);
-        void executeTestOnAllParsers(ParsrList const& parsrList);
+        TestSuite(Options& options);
+        void executeTestOnAllParsers(ParsrList const& parsrList, std::string const& dirName);
         virtual void executeTest(TestBase const& parser);
         virtual State executeTest(TestBase const& parser, Test const& test) = 0;
 
@@ -73,9 +72,6 @@ class TestSuite
 
         /* Used by preload() */
         virtual void preloadData(Test&) = 0;
-
-        /* used by executeTestOnAllParsers() */
-        virtual std::string benchmarkName() const                   {return bName;}
 
         /* used in executeTest() to init TestSetUp() */
         virtual std::string setupName(Test const&)                  {return "";}

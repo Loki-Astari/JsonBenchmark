@@ -13,11 +13,11 @@
 namespace BM = ThorsAnvil::Benchmark;
 
 using DirIter   = ThorsAnvil::FileSystem::DirectoryIterator;
-using BenchList = std::map<std::string, BM::TestSuite*>;
+using TestSuiteList = std::map<std::string, BM::TestSuite*>;
 
 BM::Options getOptions(int argc, char* argv[]);
 void        displayOptions();
-void        getBenchList(std::string const& testFilter, BenchList& benchList);
+void        getTestSuiteList(std::string const& testFilter, TestSuiteList& tSuiteList);
 ParsrList   getParsrList(std::string const& parserFilter);
 
 int main(int argc, char* argv[])
@@ -25,32 +25,28 @@ int main(int argc, char* argv[])
     BM::Options  options = getOptions(argc, argv);
     ParsrList    parsrList = getParsrList(options.parserFilter);
 
-    BM::PassChecker         jsoncheckerPass(options, "jsonchecker_pass");
-    BM::FailChecker         jsoncheckerFail(options, "jsonchecker_fail");
-    BM::PerformanceChecker  performance(options, "performance");
-    BM::RoundTripChecker    roundtrip(options, "roundtrip");
-    BM::ValidateFloat       validate_float(options, "validate_float");
-    BM::ValidateString      validate_string(options, "validate_string");
+    BM::PassChecker         jsoncheckerPass(options);
+    BM::FailChecker         jsoncheckerFail(options);
+    BM::PerformanceChecker  performance(options);
+    BM::RoundTripChecker    roundtrip(options);
+    BM::ValidateFloat       validate_float(options);
+    BM::ValidateString      validate_string(options);
 
-    BenchList   benchList   = { {"jsonchecker_pass",&jsoncheckerPass},
+    TestSuiteList tSuiteList = {{"jsonchecker_pass",&jsoncheckerPass},
                                 {"jsonchecker_fail",&jsoncheckerFail},
                                 {"performance",     &performance},
                                 {"roundtrip",       &roundtrip},
                                 {"validate_float",  &validate_float},
                                 {"validate_string", &validate_string}
-                              };
-    getBenchList(options.testFilter, benchList);
+                               };
+    getTestSuiteList(options.testFilter, tSuiteList);
     options.conformance << "Type,Library,Test,Result\n";
     options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte)\n";
 
-
-    jsoncheckerPass.executeTestOnAllParsers(parsrList);
-    jsoncheckerFail.executeTestOnAllParsers(parsrList);
-    validate_float.executeTestOnAllParsers(parsrList);
-    validate_string.executeTestOnAllParsers(parsrList);
-    roundtrip.executeTestOnAllParsers(parsrList);
-
-    performance.executeTestOnAllParsers(parsrList);
+    for(auto const& test: tSuiteList)
+    {
+        test.second->executeTestOnAllParsers(parsrList, test.first);
+    }
 }
 
 BM::Options getOptions(int argc, char* argv[])
@@ -133,7 +129,7 @@ benchmark [--filter=<filter>] [--parser=<parser>] [--help] <conformance file> <p
 #pragma vera-pop
 }
 
-void getBenchList(std::string const& testFilter, BenchList& benchList)
+void getTestSuiteList(std::string const& testFilter, TestSuiteList& suiteList)
 {
     for (auto const& dir: DirIter(QUOTE(DATA_DIR)))
     {
@@ -155,8 +151,8 @@ void getBenchList(std::string const& testFilter, BenchList& benchList)
             {   continue;
             }
 
-            auto find = benchList.find(dir.name());
-            if (find != benchList.end())
+            auto find = suiteList.find(dir.name());
+            if (find != suiteList.end())
             {
                 find->second->emplace_back(file.path());
             }
