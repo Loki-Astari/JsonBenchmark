@@ -65,7 +65,7 @@ class TestSetUp
             }
         }
 };
-class Benchmark
+class TestSuite
 {
     using Cont = std::vector<Test>;
     std::string bName;
@@ -141,8 +141,8 @@ class Benchmark
 
         struct DataLoader
         {
-            Benchmark& benchmark;
-            DataLoader(Benchmark& benchmark) : benchmark(benchmark) {benchmark.preload();}
+            TestSuite& benchmark;
+            DataLoader(TestSuite& benchmark) : benchmark(benchmark) {benchmark.preload();}
            ~DataLoader()                                            {benchmark.clear();}
         };
         void executeTestOnAllParsers(ParsrList const& parsrList)
@@ -158,7 +158,7 @@ class Benchmark
                 }
             }
         }
-        Benchmark(Options& options, std::string const& name)
+        TestSuite(Options& options, std::string const& name)
             : bName(name)
             , options(options)
         {}

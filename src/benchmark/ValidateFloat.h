@@ -12,10 +12,10 @@ namespace ThorsAnvil
     namespace Benchmark
     {
 
-class ValidateFloat: public Benchmark
+class ValidateFloat: public TestSuite
 {
     public:
-        using Benchmark::Benchmark;
+        using TestSuite::TestSuite;
         virtual std::string setupName(Test const&) override
         {
             return "vector-double";

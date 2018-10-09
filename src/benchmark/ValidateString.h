@@ -10,10 +10,10 @@ namespace ThorsAnvil
     namespace Benchmark
     {
 
-class ValidateString: public Benchmark
+class ValidateString: public TestSuite
 {
     public:
-        using Benchmark::Benchmark;
+        using TestSuite::TestSuite;
         virtual std::string setupName(Test const&) override
         {
             return "vector-string";
