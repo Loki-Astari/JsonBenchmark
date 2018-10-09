@@ -15,11 +15,14 @@ class PerformanceChecker: public CommonReader
     static const int loopCount = 10;
     public:
         using CommonReader::CommonReader;
-        virtual void printResults(TestBase const&, int (&)[3], std::vector<Test const*>&) override{}
-        virtual bool useSetUp() const override {return false;}
         virtual void executeTest(TestBase const& parser) override;
         virtual State executeTest(TestBase const& parser, Test const& test) override;
+
+    private:
+        virtual bool useSetUp() const override {return false;}
+
         virtual void generateConPerData(TestBase const& parser, Test const& test, State state) override;
+        virtual void printResults(TestBase const&, int (&)[3], std::vector<Test const*>&) override{}
     private:
         void getCodeSize(TestBase const& parser);
         void validatePerformance(TestBase const& parser);
