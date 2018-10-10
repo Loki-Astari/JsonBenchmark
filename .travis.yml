@@ -1,5 +1,8 @@
 git:
     submodules: true
+branches:
+    only:
+        - master
 sudo: required
 os:
     - linux
@@ -21,4 +24,4 @@ script:
     - make 
     - benchmark17 Conformance.csv Performance.csv
 after_success:
-    - ./success ${TRAVIS_OS_NAME}
+    - if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then ./success ${TRAVIS_OS_NAME}; fi
