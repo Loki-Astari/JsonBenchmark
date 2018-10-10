@@ -23,6 +23,7 @@ The intent of this library is to allow:
 
 * New Json Libraries to be easily added for inclusion.
 * New Test suites to be easily added for inclusion.
+* New Test data for test suites.
 * The results to be automatically published for both Mac and Linux.
 
 We will allow readers of the tests to decide what the data means.
@@ -49,15 +50,34 @@ Running this script will generate the file `buildJsonLibrary`. Running this scri
 
 After running these two scripts you will simply need to fill out the C++ to use the the Json library.
 
-### Adding new Tests
+### Tests
 
-Adding new test data to an existing test suite is as simple as adding a file to the appropriate directory under data.  
-The test harness will automatically loop through all test data files in the directory belonging to the test suite. Please pay attention to TestS
+Test Suite | Executing Class | Data Directory | SetUp/TearDown Name | TestBase API Used | TestDescription
+---------- | --------------- | -------------- | ------------------- | ----------------- | ---------------
+Fail        | FailChecker           | jsonchecker_fail  | <Dir>/<File>  | Parse()           | Tests that should all fail.
+Pass        | PassChecker           | jsonchecker_pass  | <Dir>/<File>  | Parse()           | Tests that should all pass.
+Float       | ValidateFloat         | validate_float    | vector-double | ParseDouble()     | Float Value (as a string) and a floating point value. Make sure the string is correctly converted to a floating point value.
+String      | ValidateString        | validate_string   | vector-string | ParseString()     | String with escape sequences and utf-8 encoded string. Make sure the escaped string is correctly converted to utf-8.
+Round Trip  | RoundTripChecker      | roundtrip         | <Dir>/<File>  | Parse() Stringify()  | A Json object is read into internal representation then converted back to a string. Ignore space (not in a string) make sure they are the same.
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  |                      | Some big Json objects. See below:
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse()              | Parse: Parse Json string into object: Get execution time.
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse() Stringify()  | Stringify: Convert internal object to string (Object from Parse): Get execusion time.
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse() Prettify()   | Prettify: Like stringify but is supposed do generate neat Json: Get execution time.
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse() Statistics() | Statistics: Make sure the correct number of objects are created by Parse.
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  | SaxRoundtrip()       | SaxRoundtrip: Needs documentation.
+Performance | PerformanceChecker    | performance       | <Dir>/<File>  | SaxStatistics()      | SaxStatistics: Needs documentation.
+
+#### Adding a new Test Suite
 
 Adding a new test suite is a two part processes.
 
 * Add a new directory under data to hold the test data.
-Simply add a new file to the directory used by the test suite.  
-
 * Add a test suite
+
+#### Adding new Test data
+
+Adding new test data to an existing test suite is as simple as adding a file to the appropriate directory under data.  
+The test harness will automatically loop through all test data files in the directory belonging to the test suite.  
+NOTE: All tests files must end in ".json" if the file name includes the name "EXCLUDE" it will be ignored.
+
 

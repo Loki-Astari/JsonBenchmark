@@ -76,7 +76,7 @@ class TestSuite
         virtual void preloadData(Test&) = 0;
 
         /* used in executeTest() to init TestSetUp() */
-        virtual std::string setupName(Test const&)                  {return "";}
+        virtual std::string setupName(Test const&) = 0;
         virtual bool useSetUp() const                               {return true;}
 
         /* used executeTest() */
