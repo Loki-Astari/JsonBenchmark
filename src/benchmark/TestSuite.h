@@ -3,7 +3,9 @@
 
 #include "filesystem.h"
 #include "ThirdParty/test.h"
+#include "ThirdParty/TestManager.h"
 #include <string>
+#include <vector>
 #include <fstream>
 
 namespace ThorsAnvil

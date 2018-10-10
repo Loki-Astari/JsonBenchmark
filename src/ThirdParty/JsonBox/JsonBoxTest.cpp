@@ -11,6 +11,7 @@
 
 #include <sstream>
 #include <memory>
+#include <string.h>
 
 using namespace JsonBox;
 

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <memory>
 #include <string>
+#include <string.h>
 
 struct json_val_elem {
     char *key;

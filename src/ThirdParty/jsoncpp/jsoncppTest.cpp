@@ -4,6 +4,7 @@
 #include "jsoncpp/json/value.h"
 #include "jsoncpp/json/writer.h"
 #include <memory>
+#include <string.h>
 
 using namespace Json;
 

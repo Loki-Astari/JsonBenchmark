@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
                                };
 
     getTestSuiteList(options.testFilter, tSuiteList);
-    for(auto const& test: tSuiteList)
+    for (auto const& test: tSuiteList)
     {
         test->executeTestOnAllParsers(parsrList);
     }

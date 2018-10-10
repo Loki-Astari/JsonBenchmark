@@ -117,5 +117,3 @@ void TestSuite::clear()
         test.clear();
     }
 }
-
-

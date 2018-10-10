@@ -4,6 +4,7 @@
 #include <cassert>
 #include <memory>
 #include <string>
+#include <string.h>
 
 
 static void GenStat(Stat* s, const juson_value_t* v) {

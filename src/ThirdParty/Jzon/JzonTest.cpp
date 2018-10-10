@@ -2,6 +2,7 @@
 
 #include "Jzon.h"
 #include <memory>
+#include <string.h>
 
 using namespace Jzon;
 

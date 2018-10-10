@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <sstream>
+#include <string.h>
 
 static void GenStat(Stat& stat, const JsonValue& v) {
     switch (v.getTag()) {

@@ -1,6 +1,7 @@
 #include "../test.h"
 #include "jsonxx.h"
 #include <memory>
+#include <string.h>
 
 using namespace jsonxx;
 

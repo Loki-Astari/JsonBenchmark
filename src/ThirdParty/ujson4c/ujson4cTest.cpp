@@ -1,10 +1,12 @@
 #include "../test.h"
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "ujson4c/ujdecode.h"
 #include <clocale>
 #include <stdlib.h>
+#include <string.h>
 
 extern "C" {
 

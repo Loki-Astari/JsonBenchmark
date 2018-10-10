@@ -1,6 +1,7 @@
 #include "../test.h"
 #include <memory>
 #include <string>
+#include <string.h>
 
 extern "C" {
 #include "yajl/yajl_common.h"

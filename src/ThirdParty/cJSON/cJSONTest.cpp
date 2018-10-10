@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <stdlib.h>
+#include <string.h>
 
 static void GenStat(Stat* s, const cJSON* v) {
     if (cJSON_IsObject(v)) {

@@ -3,6 +3,7 @@
 #include "json-c/json.h"
 #include <memory>
 #include <string>
+#include <string.h>
 
 static void GenStat(Stat* s, json_object* v) {
     switch (json_object_get_type(v)) {
