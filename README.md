@@ -52,20 +52,20 @@ After running these two scripts you will simply need to fill out the C++ to use 
 
 ### Tests
 
-Test Suite | Executing Class | Data Directory | SetUp/TearDown Name | TestBase API Used | TestDescription
----------- | --------------- | -------------- | ------------------- | ----------------- | ---------------
-Fail        | FailChecker           | jsonchecker_fail  | <Dir>/<File>  | Parse()           | Tests that should all fail.
-Pass        | PassChecker           | jsonchecker_pass  | <Dir>/<File>  | Parse()           | Tests that should all pass.
-Float       | ValidateFloat         | validate_float    | vector-double | ParseDouble()     | Float Value (as a string) and a floating point value. Make sure the string is correctly converted to a floating point value.
-String      | ValidateString        | validate_string   | vector-string | ParseString()     | String with escape sequences and utf-8 encoded string. Make sure the escaped string is correctly converted to utf-8.
-Round Trip  | RoundTripChecker      | roundtrip         | <Dir>/<File>  | Parse() Stringify()  | A Json object is read into internal representation then converted back to a string. Ignore space (not in a string) make sure they are the same.
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  |                      | Some big Json objects. See below:
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse()              | Parse: Parse Json string into object: Get execution time.
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse() Stringify()  | Stringify: Convert internal object to string (Object from Parse): Get execusion time.
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse() Prettify()   | Prettify: Like stringify but is supposed do generate neat Json: Get execution time.
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  | Parse() Statistics() | Statistics: Make sure the correct number of objects are created by Parse.
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  | SaxRoundtrip()       | SaxRoundtrip: Needs documentation.
-Performance | PerformanceChecker    | performance       | <Dir>/<File>  | SaxStatistics()      | SaxStatistics: Needs documentation.
+Executing Class | Data Directory | SetUp/TearDown Name | TestBase API Used | TestDescription
+--------------- | -------------- | ------------------- | ----------------- | ---------------
+FailChecker           | jsonchecker_fail  | &lt;Dir&gt;/&lt;File&gt;  | Parse()           | Tests that should all fail.
+PassChecker           | jsonchecker_pass  | &lt;Dir&gt;/&lt;File&gt;  | Parse()           | Tests that should all pass.
+ValidateFloat         | validate_float    | vector-double | ParseDouble()     | Float Value (as a string) and a floating point value. Make sure the string is correctly converted to a floating point value.
+ValidateString        | validate_string   | vector-string | ParseString()     | String with escape sequences and utf-8 encoded string. Make sure the escaped string is correctly converted to utf-8.
+RoundTripChecker      | roundtrip         | &lt;Dir&gt;/&lt;File&gt;  | Parse() Stringify()  | A Json object is read into internal representation then converted back to a string. Ignore space (not in a string) make sure they are the same.
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  |                      | Some big Json objects. See below:
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  | Parse()              | Parse: Parse Json string into object: Get execution time.
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  | Parse() Stringify()  | Stringify: Convert internal object to string (Object from Parse): Get execusion time.
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  | Parse() Prettify()   | Prettify: Like stringify but is supposed do generate neat Json: Get execution time.
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  | Parse() Statistics() | Statistics: Make sure the correct number of objects are created by Parse.
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  | SaxRoundtrip()       | SaxRoundtrip: Needs documentation.
+PerformanceChecker    | performance       | &lt;Dir&gt;/&lt;File&gt;  | SaxStatistics()      | SaxStatistics: Needs documentation.
 
 #### Adding a new Test Suite
 
