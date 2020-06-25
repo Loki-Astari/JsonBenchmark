@@ -14,6 +14,7 @@ cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha
 mv t1 SConstruct
 echo "env.Append( CXXFLAGS='-fPIC')" >> SConstruct
 make
+sudo rm /usr/local/include/fastjson
 sudo ln -s $(pwd)/include/fastjson /usr/local/include/fastjson
 sudo cp libfastjson.a /usr/local/lib/
 >&2 echo "fastjson DONE"
@@ -32,6 +33,7 @@ make && sudo make install
 
 cd ../jsoncons
 >&2 echo "jsoncons"
+sudo rm /usr/local/include/jsoncons  /usr/local/include/jsoncons_ext
 sudo ln -s $(pwd)/include/jsoncons /usr/local/include/jsoncons
 sudo ln -s $(pwd)/include/jsoncons_ext /usr/local/include/jsoncons_ext
 >&2 echo "jsoncons DONE"
@@ -58,6 +60,7 @@ make && sudo make install
 
 cd ../nlohmann
 >&2 echo "nlohmann"
+sudo rm /usr/local/include/nlohmann
 sudo ln -s $(pwd)/include/nlohmann /usr/local/include/nlohmann
 >&2 echo "nlohmann DONE"
 
