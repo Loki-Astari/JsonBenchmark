@@ -8,6 +8,8 @@ make && sudo make install
 
 cd ../fastjson
 >&2 echo "fastjson"
+cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' -e's/print "Building version/# print "Building version/' > t1
+mv t1 SConstruct
 echo "env.Append( CXXFLAGS='-fPIC')" >> SConstruct
 make
 sudo ln -s $(pwd)/include/fastjson /usr/local/include/fastjson
