@@ -1,6 +1,5 @@
 THORSANVIL_ROOT             = $(realpath ../../..)
 
-LDLIBS                      = -ljsmn
 TARGET                      = jsmnTest.slib
 
 NO_HEADER                   = true

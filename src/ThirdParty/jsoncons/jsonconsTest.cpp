@@ -5,52 +5,48 @@
 using namespace jsoncons;
 
 static void GenStat(Stat& stat, const json& v) {
-    switch (v.major_type()) {
-    case json_major_type::array_t:
-        for (json::const_array_iterator itr = v.begin_elements(); itr != v.end_elements(); ++itr)
+    switch (v.type()) {
+    case json_type::array_value:
+        for (json::const_array_iterator itr = v.array_range().begin(); itr != v.array_range().end(); ++itr)
             GenStat(stat, *itr);
         stat.arrayCount++;
         stat.elementCount += v.size();
         break;
 
-    case json_major_type::empty_object_t:
-    case json_major_type::object_t:
-        for (json::const_object_iterator itr = v.begin_members(); itr != v.end_members(); ++itr) {
+    // case json_major_type::empty_object_t:
+    case json_type::object_value:
+        for (json::const_object_iterator itr = v.object_range().begin(); itr != v.object_range().end(); ++itr) {
             GenStat(stat, itr->value());
-            stat.stringLength += itr->name().size();
+            stat.stringLength += itr->key().size();
         }
         stat.objectCount++;
         stat.memberCount += v.size();
         stat.stringCount += v.size();
         break;
 
-    case json_major_type::byte_string_t: 
+    case json_type::byte_string_value: 
         stat.stringCount++;
         stat.stringLength += v.as_string().size();
         break;
-    case json_major_type::short_string_t: 
+    case json_type::string_value: 
         stat.stringCount++;
         stat.stringLength += v.as_string().size();
         break;
-    case json_major_type::long_string_t: 
-        stat.stringCount++;
-        stat.stringLength += v.as_string().size();
-        break;
-
-    case json_major_type::double_t:
-    case json_major_type::integer_t:
-    case json_major_type::uinteger_t:
+    case json_type::double_value:
+    case json_type::int64_value:
+    case json_type::uint64_value:
+    case json_type::half_value:
         stat.numberCount++;
         break;
 
-    case json_major_type::bool_t:
+    case json_type::bool_value:
         if (v.as_bool())
             stat.trueCount++;
         else
             stat.falseCount++;
         break;
 
-    case json_major_type::null_t:
+    case json_type::null_value:
         stat.nullCount++;
         break;
     }
@@ -76,7 +72,7 @@ public:
         (void)length;
         JsonconsParseResult* pr = new JsonconsParseResult;
         try {
-            pr->root = json::parse_string(json);
+            pr->root = json::parse(json);
         }
         catch (...) {
             delete pr;
@@ -95,7 +91,8 @@ public:
     virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
         const JsonconsParseResult* pr = static_cast<const JsonconsParseResult*>(parseResult);
         JsonconsStringResult* sr = new JsonconsStringResult;
-        sr->s = pr->root.to_string(output_format());
+        pr->root.dump(sr->s);
+        //sr->s = pr->root.to_string(json_options());
         return sr;
     }
 
@@ -108,7 +105,7 @@ public:
 
     virtual bool ParseDouble(const char* json_, double* d) const {
         try {
-            json root = json::parse_string(json_);
+            json root = json::parse(json_);
             *d = root.at(0).as_double();
             return true;
         }
@@ -119,7 +116,7 @@ public:
 
     virtual bool ParseString(const char* json_, std::string& s) const {
         try {
-            json root = json::parse_string(json_);
+            json root = json::parse(json_);
             s = root.at(0).as_string();
             return true;
         }

@@ -108,7 +108,7 @@ make && sudo make install && sudo mv /usr/local/include/json-builder.h /usr/loca
 cd ../juson
 >&2 echo "juson"
 # sed -i -e 's/ isxdigit\([^(]\)/ xdigit\1/' juson.c
-gcc -c -o juson.o juson.c -fPIC -O3
+gcc -c -o juson.o juson.c -fPIC -O3 -DNDEBUG
 ar rv libjuson.a juson.o
 ranlib libjuson.a
 sudo cp libjuson.a /usr/local/lib

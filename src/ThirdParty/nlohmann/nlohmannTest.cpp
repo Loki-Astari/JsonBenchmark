@@ -45,6 +45,7 @@ static void GenStat(Stat& stat, const json& v) {
         break;
     case json::value_t::discarded:
         break;
+    default: break;
     }
 }
 
