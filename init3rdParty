@@ -8,6 +8,7 @@ make && sudo make install
 
 cd ../fastjson
 >&2 echo "fastjson"
+git checkout SConstruct
 cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' -e's/print "Building version/# print "Building version/' > t1
 mv t1 SConstruct
 echo "env.Append( CXXFLAGS='-fPIC')" >> SConstruct
@@ -125,6 +126,7 @@ sudo cp ccan/json/json.h /usr/local/include/ccan/
 
 cd ../cJSON
 >&2 echo "cJSON"
+git checkout cJSON.c
 cat cJSON.c | sed  -e"s/return NAN/return (double)NAN/" > t1
 mv t1 cJSON.c
 cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_FLAGS=-fPIC .
