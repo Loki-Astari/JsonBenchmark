@@ -57,7 +57,7 @@
 	url = https://github.com/wgtdkp/juson.git
 [submodule "thirdparty/jvar"]
 	path = thirdparty/jvar
-	url = https://github.com/Loki-Astari/jvar.git
+	url = https://github.com/YasserAsmi/jvar.git
 [submodule "thirdparty/nlohmann"]
 	path = thirdparty/nlohmann
 	url = https://github.com/nlohmann/json.git
