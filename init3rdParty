@@ -3,6 +3,7 @@ set -e
 cd thirdparty/ThorsSerializer
 >&2 echo "ThorsSerializer"
 ./configure ${LOCAL_BOOST} --disable-binary --disable-yaml --disable-vera --enable-static
+sudo make veryclean
 make && sudo make install
 >&2 echo "ThorsSerializer DONE"
 
