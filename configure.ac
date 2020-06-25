@@ -12,19 +12,17 @@ AX_THOR_FUNC_BUILD
 
 
 AC_CONFIG_SRCDIR([src/benchmark/benchmark.cpp])
-
-# Find the C++ Copiler
-# The minimumm requirements.
 AC_PROG_CXX
-AX_CHECK_COMPILE_FLAG([-ansi], [AC_SUBST([CXXFLAGS], [" -ansi"])])
-# Check what version of the C++ language is supported
-AX_THOR_FUNC_LANG_FLAG(17)
-
-# Find the code coverage tool.
-# All the testing will depend on this.
 AX_THOR_PROG_COV
 
-# Add support for shared libraries.
+AC_LANG_PUSH([C++])
+AX_CHECK_COMPILE_FLAG([-ansi], [AC_SUBST([CXXFLAGS], ["$CXXFLAGS -ansi"])])
+AX_CHECK_COMPILE_FLAG([-Wno-literal-suffix], [AC_SUBST([LITERAL_WARNING_SUFFIX], [-Wno-literal-suffix])], [], [$CXX_STD_FLAG -Werror -Wall -Wextra])
+AX_CHECK_COMPILE_FLAG([-Wno-literal-range],  [AC_SUBST([LITERAL_WARNING_RANGE],  [-Wno-literal-range])],  [], [$CXX_STD_FLAG -Werror -Wall -Wextra])
+AC_LANG_POP([C++])
+
+AX_THOR_FUNC_LANG_FLAG(17)
+
 LT_INIT
 
 
