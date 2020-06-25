@@ -34,14 +34,14 @@ sudo ln -s $(pwd)/include/jsoncons_ext /usr/local/include/jsoncons_ext
 
 cd ../jsoncpp
 >&2 echo "jsoncpp"
-sed -i CMakeLists.txt -e 's/CMAKE_MINIMUM_REQUIRED(VERSION 3.[0-9])/CMAKE_MINIMUM_REQUIRED(VERSION 2.8)/'
+# sed -i CMakeLists.txt -e 's/CMAKE_MINIMUM_REQUIRED(VERSION 3.[0-9])/CMAKE_MINIMUM_REQUIRED(VERSION 2.8)/'
 cmake -DCMAKE_BUILD_TYPE=release -DBUILD_STATIC_LIBS=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_INCLUDEDIR=include/jsoncpp -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_FLAGS=-fPIC -G "Unix Makefiles" .
 make && sudo make install
 >&2 echo "jsoncpp DONE"
 
 cd ../json-voorhees
 >&2 echo "json-voorhees"
-sed -i CMakeLists.txt -e 's/cmake_minimum_required(VERSION 3.[0-9])/cmake_minimum_required(VERSION 2.8)/'
+# sed -i CMakeLists.txt -e 's/cmake_minimum_required(VERSION 3.[0-9])/cmake_minimum_required(VERSION 2.8)/'
 cmake ${CMAKE_BOOST} -DLIBRARY_INSTALL_DIR=/usr/local/lib -DLIBRARY_TYPE=STATIC -DCMAKE_CXX_FLAGS=-fPIC .
 make && sudo make install
 >&2 echo "json-voorhees DONE"
@@ -89,6 +89,8 @@ cd ../udb-jsason-parser
 ./configure
 make && sudo make install
 sudo rm /usr/local/lib/libjsonparser.so || sudo rm /usr/local/lib/libjsonparser.dylib
+
+
 cd ../udb-json-builder
 cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I/usr/local/include/json-parser' .
 make && sudo make install && sudo mv /usr/local/include/json-builder.h /usr/local/include/json-parser/json-builder.h
@@ -96,7 +98,7 @@ make && sudo make install && sudo mv /usr/local/include/json-builder.h /usr/loca
 
 cd ../juson
 >&2 echo "juson"
-sed -i -e 's/ isxdigit\([^(]\)/ xdigit\1/' juson.c
+# sed -i -e 's/ isxdigit\([^(]\)/ xdigit\1/' juson.c
 gcc -c -o juson.o juson.c -fPIC -O3
 ar rv libjuson.a juson.o
 ranlib libjuson.a
@@ -117,6 +119,8 @@ sudo cp ccan/json/json.h /usr/local/include/ccan/
 
 cd ../cJSON
 >&2 echo "cJSON"
+cat cJSON.c | sed  -e"s/return NAN/return (double)NAN/" > t1
+mv t1 cJSON.c
 cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_FLAGS=-fPIC .
 make && sudo make install
 >&2 echo "cJSON DONE"
@@ -147,10 +151,10 @@ make && sudo make install
 
 cd ../jsmn
 >&2 echo "jsmn"
-gcc -c -o jsmn.o jsmn.c -fPIC -O3
-ar rv libjsmn.a jsmn.o
-ranlib libjsmn.a
-sudo cp libjsmn.a /usr/local/lib/
+#gcc -c -o jsmn.o jsmn.c -fPIC -O3
+#ar rv libjsmn.a jsmn.o
+#ranlib libjsmn.a
+#sudo cp libjsmn.a /usr/local/lib/
 sudo mkdir /usr/local/include/jsmn
 sudo cp jsmn.h /usr/local/include/jsmn
 >&2 echo "jsmn DONE"
