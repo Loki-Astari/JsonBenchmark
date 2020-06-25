@@ -47,11 +47,11 @@ Please install via
     ], []
 )
 
-Add a test for sed -i
-Already works on Linux.
-But on Mac you need:
+# Add a test for sed -i
+# Already works on Linux.
+# But on Mac you need:
 
-brew install gnu-sed --with-default-names
+# brew install gnu-sed --with-default-names
 
 
 
