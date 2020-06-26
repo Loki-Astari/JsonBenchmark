@@ -55,6 +55,7 @@ cd ../jvar
 >&2 echo "jvar"
 cmake -DCMAKE_CXX_FLAGS=-fPIC .
 make && sudo make install
+ls /usr/local/lib/libjvar*
 >&2 echo "jvar DONE"
 
 cd ../nlohmann
