@@ -167,7 +167,7 @@ sudo mkdir /usr/local/include/jsmn
 sudo cp jsmn.h /usr/local/include/jsmn
 >&2 echo "jsmn DONE"
 
-cd thirdparty/ThorsSerializer
+cd ../ThorsSerializer
 >&2 echo "ThorsSerializer"
 ./configure ${LOCAL_BOOST} --disable-binary --disable-yaml --disable-vera --enable-static
 sudo make veryclean
