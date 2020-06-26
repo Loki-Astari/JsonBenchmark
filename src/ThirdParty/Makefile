@@ -12,6 +12,7 @@ TARGET                      = $(THIRDPARTY_PROJECTS) ThirdParty.slib
 ThirdParty.slib:              $(THIRDPARTY_PROJECTS)
 
 LINK_LIBS                   =  $(foreach target,$(THIRD_PARTY), $(target)Test)
+LDLIBS                      = -ljvar
 
 %.third:
 	@if [ "$(TARGET_MODE)" == "debug" ]; then											\
