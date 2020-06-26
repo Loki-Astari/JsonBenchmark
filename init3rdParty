@@ -12,7 +12,7 @@ cd ../fastjson
 git checkout SConstruct
 cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' -e's/print "Building version/# print "Building version/' > t1
 mv t1 SConstruct
-echo "env.Append( CXXFLAGS='-fPIC')" >> SConstruct
+echo "env.Append( CXXFLAGS='-fPIC -Wno-unused-const-variable')" >> SConstruct
 make
 sudo rm /usr/local/include/fastjson
 sudo ln -s $(pwd)/include/fastjson /usr/local/include/fastjson
