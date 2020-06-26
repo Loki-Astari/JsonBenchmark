@@ -1,5 +1,8 @@
 git:
     submodules: true
+env:
+  global:
+      - TMPDIR=/tmp
 branches:
     only:
         - master
