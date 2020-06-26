@@ -5,8 +5,13 @@ cd thirdparty/ThorsSerializer
 cd ../fastjson
 >&2 echo "fastjson"
 git checkout SConstruct
-cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' -e's/print "Building version/# print "Building version/' > t1
-cat t1 | sed -e"s/'-O2'/'-O2', '-fPIC', '-Wno-unused-const-variable', '-Wno-return-type'/" > SConstruct
+if [[ "$1" == "osx" ]]; then
+    cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' > t1
+else
+    mv SConstruct t1
+fi
+cat t1 | sed -e's/print "Building version/# print "Building version/' > t2
+cat t2 | sed -e"s/'-O2'/'-O2', '-fPIC', '-Wno-unused-const-variable', '-Wno-return-type'/" > SConstruct
 make
 sudo rm -rf /usr/local/include/fastjson
 sudo ln -s $(pwd)/include/fastjson /usr/local/include/fastjson
