@@ -5,7 +5,6 @@ branches:
         - master
 sudo: required
 os:
-    - linux
     - osx
 language: cpp
 install:
@@ -15,7 +14,7 @@ install:
 script:
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export LOCAL_BOOST="--with-boost=/tmp/extra"; fi
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export CMAKE_BOOST="-DBOOST_ROOT=/tmp/extra"; fi
-    - ./init3rdParty > /dev/null
+    - ./init3rdParty
     - 
     - ./configure ${LOCAL_BOOST}
     - export PATH="${PATH}:$(pwd)/build/bin"

@@ -21,7 +21,7 @@ if [[ "$1" == "osx" ]]; then
     brew install gnu-sed --with-default-names
     export PATH=${PATH}
     brew install scons
-    brew install boost --with-python
+    brew install boost
     brew install boost-python
     brew install cmake
     brew install tcl-tk
