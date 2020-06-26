@@ -1,11 +1,6 @@
 set -e
 
 cd thirdparty/ThorsSerializer
->&2 echo "ThorsSerializer"
-./configure ${LOCAL_BOOST} --disable-binary --disable-yaml --disable-vera --enable-static
-sudo make veryclean
-make && sudo make install
->&2 echo "ThorsSerializer DONE"
 
 cd ../fastjson
 >&2 echo "fastjson"
@@ -13,7 +8,7 @@ git checkout SConstruct
 cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' -e's/print "Building version/# print "Building version/' > t1
 cat t1 | sed -e"s/'-O2'/'-O2', '-fPIC', '-Wno-unused-const-variable', '-Wno-return-type'/" > SConstruct
 make
-sudo rm /usr/local/include/fastjson
+sudo rm -rf /usr/local/include/fastjson
 sudo ln -s $(pwd)/include/fastjson /usr/local/include/fastjson
 sudo cp libfastjson.a /usr/local/lib/
 >&2 echo "fastjson DONE"
@@ -32,7 +27,7 @@ make && sudo make install
 
 cd ../jsoncons
 >&2 echo "jsoncons"
-sudo rm /usr/local/include/jsoncons  /usr/local/include/jsoncons_ext
+sudo rm -rf /usr/local/include/jsoncons  /usr/local/include/jsoncons_ext
 sudo ln -s $(pwd)/include/jsoncons /usr/local/include/jsoncons
 sudo ln -s $(pwd)/include/jsoncons_ext /usr/local/include/jsoncons_ext
 >&2 echo "jsoncons DONE"
@@ -59,7 +54,7 @@ make && sudo make install
 
 cd ../nlohmann
 >&2 echo "nlohmann"
-sudo rm /usr/local/include/nlohmann
+sudo rm -rf /usr/local/include/nlohmann
 sudo ln -s $(pwd)/include/nlohmann /usr/local/include/nlohmann
 >&2 echo "nlohmann DONE"
 
@@ -96,7 +91,7 @@ cd ../udb-jsason-parser
 >&2 echo "udb"
 ./configure
 make && sudo make install
-sudo rm /usr/local/lib/libjsonparser.so || sudo rm /usr/local/lib/libjsonparser.dylib
+sudo rm -rf /usr/local/lib/libjsonparser.so || sudo rm -rf /usr/local/lib/libjsonparser.dylib
 
 
 cd ../udb-json-builder
@@ -152,7 +147,7 @@ cd ../yajl
 >&2 echo "yajl"
 cmake -DCMAKE_C_FLAGS=-fPIC .
 make && sudo make install
-sudo rm /usr/local/lib/libyajl.so.2.1.1 /usr/local/lib/libyajl.so.2 /usr/local/lib/libyajl.so || sudo rm /usr/local/lib/libyajl.2.1.1.dylib /usr/local/lib/libyajl.2.dylib /usr/local/lib/libyajl.dylib
+sudo rm -rf /usr/local/lib/libyajl.so.2.1.1 /usr/local/lib/libyajl.so.2 /usr/local/lib/libyajl.so || sudo rm -rf /usr/local/lib/libyajl.2.1.1.dylib /usr/local/lib/libyajl.2.dylib /usr/local/lib/libyajl.dylib
 >&2 echo "yajl DONE"
 
 cd ../json-c
@@ -171,4 +166,12 @@ sudo rm -rf /usr/local/include/jsmn
 sudo mkdir /usr/local/include/jsmn
 sudo cp jsmn.h /usr/local/include/jsmn
 >&2 echo "jsmn DONE"
+
+cd thirdparty/ThorsSerializer
+>&2 echo "ThorsSerializer"
+./configure ${LOCAL_BOOST} --disable-binary --disable-yaml --disable-vera --enable-static
+sudo make veryclean
+make && sudo make install
+>&2 echo "ThorsSerializer DONE"
+
 

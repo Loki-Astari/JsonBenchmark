@@ -18,7 +18,6 @@ if [[ "$1" == "linux" ]]; then
     cd ..
 fi
 if [[ "$1" == "osx" ]]; then
-    brew install gnu-sed --with-default-names
     export PATH=${PATH}
     brew install scons
     brew install boost
