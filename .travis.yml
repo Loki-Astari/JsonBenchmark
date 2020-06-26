@@ -7,9 +7,21 @@ sudo: required
 os:
     - linux
 language: cpp
+before_install:
+    - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+    - sudo apt-get update
 install:
     - openssl aes-256-cbc -K $encrypted_c6297d5b304c_key -iv $encrypted_c6297d5b304c_iv -in Travis.enc -out ~/.ssh/id_rsa -d
     - chmod 600 ~/.ssh/id_rsa
+    - sudo apt-get install -qq g++-9 -y
+    - sudo apt-get install python-dev -y
+    - sudo apt-get install -qq libboost-all-dev
+    - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+    - wget -O boost_1_71_0.tar.gz https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.gz
+    - tar xzf boost_1_71_0.tar.gz;cd boost_1_71_0/;mkdir -p /tmp/extra;./bootstrap.sh --prefix=/tmp/extra
+    - ./b2 cxxflags="-Wno-strict-aliasing -Wno-unused-local-typedefs -Wno-maybe-uninitialized -Wno-deprecated-declarations -Wno-placement-new" --with-system --with-context --with-coroutine
+    - sudo ./b2 --with-system --with-context --with-coroutine install | awk 'NR == 1 || NR % 25 == 0'
+    - cd ..
     - ./initPlatform ${TRAVIS_OS_NAME}
 script:
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export LOCAL_BOOST="--with-boost=/tmp/extra"; fi
