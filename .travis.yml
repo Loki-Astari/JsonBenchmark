@@ -16,7 +16,7 @@ install:
 script:
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export LOCAL_BOOST="--with-boost=/tmp/extra"; fi
     - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export CMAKE_BOOST="-DBOOST_ROOT=/tmp/extra"; fi
-    - ./init3rdParty
+    - ./init3rdParty ${TRAVIS_OS_NAME}
     - 
     - ./configure ${LOCAL_BOOST}
     - export PATH="${PATH}:$(pwd)/build/bin"

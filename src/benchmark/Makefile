@@ -7,6 +7,7 @@ FILE_WARNING_FLAGS          += -Wno-unknown-pragmas
 TARGET                      = benchmark.app memory.app
 
 LINK_LIBS                   = ThirdParty ThorSerialize
+LDLIBS                      = -ljvar
 memory_LINK_LIBS            = Memory
 memory_LDLIBS               = -ldl
 
