@@ -1,5 +1,7 @@
 THORSANVIL_ROOT             = $(realpath ../../)
 
+VERBOSE                     = On
+
 THIRD_PARTY                 = ThorsSerializer ArduinoJson cajun-jsonapi Configuru fastjson	\
 							  jeayeson JsonBox jsoncons jsoncpp json-voorhees jsonxx jvar	\
 							  Jzon nlohmann picojson rapidjson gason sajson ujson			\
