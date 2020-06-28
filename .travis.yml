@@ -9,8 +9,10 @@ branches:
 sudo: required
 os:
     - osx
-    - linux
+    - bionic
 language: cpp
+before_install:
+    - openssl aes-256-cbc -K $encrypted_c6297d5b304c_key -iv $encrypted_c6297d5b304c_iv -in Travis.enc -out ~/.ssh/id_rsa -d
 install:
     - ./initPlatform ${TRAVIS_OS_NAME}
 script:
