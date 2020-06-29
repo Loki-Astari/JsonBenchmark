@@ -29,4 +29,3 @@ if [[ "$1" == "osx" ]]; then
     done
 fi
 
-chmod 600 ~/.ssh/id_rsa
