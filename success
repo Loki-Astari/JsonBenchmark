@@ -20,5 +20,6 @@ php ./script/conformance.php Conformance.csv > loki-astari.github.io/source/Json
 php ./script/performance.php Performance.csv > loki-astari.github.io/source/Json/Performance.html
 cd loki-astari.github.io
 
+# Push back to github.
 andvari deploy
 
