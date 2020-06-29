@@ -125,4 +125,4 @@ public:
     }
 };
 
-REGISTER_TEST(UjsonTest);
+// REGISTER_TEST(UjsonTest);
