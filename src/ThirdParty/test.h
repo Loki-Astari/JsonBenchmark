@@ -62,6 +62,6 @@ class TestBase
         virtual bool SaxStatisticsUTF16(const char* /*json*/, std::size_t /*length*/, Stat* /*stat*/) const { return false; }
 };
 
-#define REGISTER_TEST(cls)  std::unique_ptr<TestBase> get ## cls() { return std::make_unique<cls>(); }static_assert(true)
+#define REGISTER_TEST(cls)  std::unique_ptr<TestBase> get ## cls() { return std::make_unique<cls>(); }static_assert(true, "Should Work")
 
 #endif
