@@ -167,10 +167,11 @@ sudo cp jsmn.h /usr/local/include/jsmn
 
 cd ../ThorsSerializer
 >&2 echo "ThorsSerializer"
-sudo rm *
-sudo git checkout header-only
+rm -rf *
+sudo rm -rf /usr/local/include/ThorSerialize  /usr/local/include/ThorsIOUtil
+git checkout header-only
 sudo mv ThorSerialize /usr/local/include/
-sudo ln ThorsIOUtil /usr/local/include/
+sudo mv ThorsIOUtil /usr/local/include/
 >&2 echo "ThorsSerializer DONE"
 
 cd ../ArduinoJson

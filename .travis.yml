@@ -18,17 +18,15 @@ before_install:
     - eval "$(ssh-agent -s)"
     - DISPLAY=":0.0" SSH_ASKPASS="/tmp/askpass" ssh-add /tmp/git_deploy_key </dev/null
 install:
-    - ./initPlatform ${TRAVIS_OS_NAME} > /dev/null
+    - ./initPlatform ${TRAVIS_OS_NAME}
 script:
-    - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export LOCAL_BOOST="--with-boost=/tmp/extra"; fi
-    - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then export CMAKE_BOOST="-DBOOST_ROOT=/tmp/extra"; fi
-    - ./init3rdParty ${TRAVIS_OS_NAME} > /dev/null
+    - ./init3rdParty ${TRAVIS_OS_NAME}
     - 
-    - ./configure ${LOCAL_BOOST}
+    - ./configure --disable-vera ${LOCAL_BOOST}
     - export PATH="${PATH}:$(pwd)/build/bin"
     - export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
     - export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
-    - make 
+    - make release
     - benchmark17 Conformance.csv Performance.csv
 after_success:
     - if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then ./success ${TRAVIS_OS_NAME}; fi
