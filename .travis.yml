@@ -30,3 +30,4 @@ script:
     - benchmark17 Conformance.csv Performance.csv
 after_success:
     - if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then ./success ${TRAVIS_OS_NAME}; fi
+
