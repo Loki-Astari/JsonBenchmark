@@ -33,6 +33,7 @@ ujson_CXXFLAGS				+= -Wno-implicit-fallthrough -Wno-missing-field-initializers
 udbTest_CXXFLAGS			+= -I /usr/local/include/json-parser/
 json-cTest_CXXFLAGS			+= -Wno-sign-compare
 jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
+double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
