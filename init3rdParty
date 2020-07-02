@@ -170,6 +170,8 @@ cd ../ThorsSerializer
 rm -rf *
 sudo rm -rf /usr/local/include/ThorSerialize  /usr/local/include/ThorsIOUtil
 git checkout header-only
+git checkout ThorSerialize
+git checkout ThorsIOUtil
 sudo mv ThorSerialize /usr/local/include/
 sudo mv ThorsIOUtil /usr/local/include/
 >&2 echo "ThorsSerializer DONE"
