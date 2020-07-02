@@ -1,39 +1,53 @@
 THORSANVIL_ROOT             = $(realpath ../../)
 
-VERBOSE                     = On
+THIRD_PARTY                 = \
+							  \
+							  \
+							  \
+							  \
+							  jsmn
 
-THIRD_PARTY                 = ThorsSerializer ArduinoJson cajun-jsonapi Configuru fastjson	\
-							  jeayeson JsonBox jsoncons jsoncpp json-voorhees jsonxx jvar	\
-							  Jzon nlohmann picojson rapidjson gason sajson ujson			\
-							  rapidjsonAutoUTF  rapidjsonFullPrec  rapidjsonInsitu			\
-							  rapidjsonIterative ujson4c pjson udb juson ccan cJSON			\
-							  vincenthz-libjson yajl json-c jsmn
-THIRDPARTY_PROJECTS         = $(foreach target,$(THIRD_PARTY),$(target).third)
+TARGET                      = ThirdParty.slib
 
-TARGET                      = $(THIRDPARTY_PROJECTS) ThirdParty.slib
-ThirdParty.slib:              $(THIRDPARTY_PROJECTS)
+VERA                        = true
 
-LINK_LIBS                   =  $(foreach target,$(THIRD_PARTY), $(target)Test)
+LDLIBS                      += -lccan
+LDLIBS                      += -lcjson
+LDLIBS                      += -lfastjson
+LDLIBS                      += -lJsonBox
+LDLIBS                      += -ljson-c
+LDLIBS                      += -ljsoncpp
+LDLIBS                      += -ljsonv
+LDLIBS                      += -ljuson
+LDLIBS                      += -ljvar
+LDLIBS                      += -lpjson
+LDLIBS                      += -ljsonparser -ljsonbuilder
+LDLIBS                      += -lujson4c
+LDLIBS                      += -lvincenthz-libjson
+LDLIBS                      += -lyajl_s
 
-%.third:
-	@if [ "$(TARGET_MODE)" == "debug" ]; then											\
-		echo "Building Third Party $*";													\
-		if test -d $*; then																\
-			$(MAKE) --silent -C $* $(ACTION);											\
-		fi;																				\
-		echo "Building Third Party $* Done";											\
-	fi
+Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
+gason_CXXFLAGS				+= -Wno-implicit-fallthrough
+sajsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-pedantic
+ujson_CXXFLAGS				+= -Wno-implicit-fallthrough -Wno-missing-field-initializers
+udbTest_CXXFLAGS			+= -I /usr/local/include/json-parser/
+json-cTest_CXXFLAGS			+= -Wno-sign-compare
+jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
+
+EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
+                               ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
+                               ArduinoJson.h ArduinoJson.hpp	\
+                               configuru.hpp                    \
+                               jsonxx.h                         \
+                               Jzon.h							\
+							   picojson.h						\
+							   rapidjsonTest.h					\
+							   gason.h							\
+							   sajson.h							\
+							   ujson.hpp double-conversion.h	\
+
 
 
 FILE_WARNING_FLAGS          += -Wno-unknown-pragmas
-ACTION                      ?= build
-VERA                        = true
 
 include $(THORSANVIL_ROOT)/build/tools/Makefile
-
-veryclean:	ACTION          = veryclean
-veryclean:                  $(THIRDPARTY_PROJECTS)
-
-
-
-

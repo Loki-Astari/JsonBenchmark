@@ -39,14 +39,12 @@ sudo ln -s $(pwd)/include/jsoncons_ext /usr/local/include/jsoncons_ext
 
 cd ../jsoncpp
 >&2 echo "jsoncpp"
-# sed -i CMakeLists.txt -e 's/CMAKE_MINIMUM_REQUIRED(VERSION 3.[0-9])/CMAKE_MINIMUM_REQUIRED(VERSION 2.8)/'
 cmake -DCMAKE_BUILD_TYPE=release -DBUILD_STATIC_LIBS=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_INCLUDEDIR=include/jsoncpp -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_CXX_FLAGS=-fPIC -G "Unix Makefiles" .
 make && sudo make install
 >&2 echo "jsoncpp DONE"
 
 cd ../json-voorhees
 >&2 echo "json-voorhees"
-# sed -i CMakeLists.txt -e 's/cmake_minimum_required(VERSION 3.[0-9])/cmake_minimum_required(VERSION 2.8)/'
 cmake ${CMAKE_BOOST} -DLIBRARY_INSTALL_DIR=/usr/local/lib -DLIBRARY_TYPE=STATIC -DCMAKE_CXX_FLAGS=-fPIC .
 make && sudo make install
 >&2 echo "json-voorhees DONE"
@@ -55,7 +53,6 @@ cd ../jvar
 >&2 echo "jvar"
 cmake -DCMAKE_CXX_FLAGS=-fPIC .
 make && sudo make install
-ls /usr/local/lib/libjvar*
 >&2 echo "jvar DONE"
 
 cd ../nlohmann
@@ -107,7 +104,6 @@ make && sudo make install && sudo mv /usr/local/include/json-builder.h /usr/loca
 
 cd ../juson
 >&2 echo "juson"
-# sed -i -e 's/ isxdigit\([^(]\)/ xdigit\1/' juson.c
 gcc -c -o juson.o juson.c -fPIC -O3 -DNDEBUG
 ar rv libjuson.a juson.o
 ranlib libjuson.a
@@ -164,10 +160,6 @@ make && sudo make install
 
 cd ../jsmn
 >&2 echo "jsmn"
-#gcc -c -o jsmn.o jsmn.c -fPIC -O3
-#ar rv libjsmn.a jsmn.o
-#ranlib libjsmn.a
-#sudo cp libjsmn.a /usr/local/lib/
 sudo rm -rf /usr/local/include/jsmn
 sudo mkdir /usr/local/include/jsmn
 sudo cp jsmn.h /usr/local/include/jsmn
@@ -175,9 +167,23 @@ sudo cp jsmn.h /usr/local/include/jsmn
 
 cd ../ThorsSerializer
 >&2 echo "ThorsSerializer"
-./configure ${LOCAL_BOOST} --disable-binary --disable-yaml --disable-vera --enable-static
-sudo make veryclean
-make && sudo make install
+sudo rm *
+sudo git checkout header-only
+sudo mv ThorSerialize /usr/local/include/
+sudo ln ThorsIOUtil /usr/local/include/
 >&2 echo "ThorsSerializer DONE"
+
+cd ../ArduinoJson
+>&2 echo "ArduinoJson"
+sudo rm -f /usr/local/include/ArduinoJson
+sudo ln -s $(pwd)/src/ArduinoJson /usr/local/include/
+>&2 echo "ArduinoJson DONE"
+
+cd ../cajun-jsonapi
+>&2 echo "cajun"
+sudo rm -f /usr/local/include/cajun
+sudo ln -s $(pwd)/include/cajun /usr/local/include/
+>&2 echo "cajun DONE"
+
 
 
