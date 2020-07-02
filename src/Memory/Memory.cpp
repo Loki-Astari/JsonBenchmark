@@ -63,7 +63,7 @@ MemoryInfo& MemoryInfo::getInstance()
 #if THOR_MEMORY_INSERT == 1
 #include <dlfcn.h>
 extern "C"
-void free(void *ptr)
+void free(void *ptr) throw()
 {
     void *(*libc_free)(void*) = (void *(*)(void*))dlsym(RTLD_NEXT, "free");
     libc_free(ptr);
@@ -72,7 +72,7 @@ void free(void *ptr)
 }
 
 extern "C"
-void* malloc(size_t size)
+void* malloc(size_t size) throw()
 {
     void *(*libc_malloc)(size_t) = (void *(*)(size_t))dlsym(RTLD_NEXT, "malloc");
     void* result = libc_malloc(size);
@@ -83,7 +83,7 @@ void* malloc(size_t size)
 }
 
 extern "C"
-void* realloc(void *ptr, size_t size)
+void* realloc(void *ptr, size_t size) throw()
 {
     void *(*libc_realloc)(void*, size_t) = (void *(*)(void*, size_t))dlsym(RTLD_NEXT, "realloc");
     void* result = libc_realloc(ptr, size);
@@ -96,7 +96,7 @@ void* realloc(void *ptr, size_t size)
 #endif
 #if THOR_MEMORY_INSERT == 2
 extern "C"
-void* mycalloc(size_t count, size_t size)
+void* mycalloc(size_t count, size_t size) throw()
 {
     void* result = calloc(count, size);
 
@@ -106,7 +106,7 @@ void* mycalloc(size_t count, size_t size)
 }
 
 extern "C"
-void myfree(void *ptr)
+void myfree(void *ptr) throw()
 {
     free(ptr);
 
@@ -114,7 +114,7 @@ void myfree(void *ptr)
 }
 
 extern "C"
-void* mymalloc(size_t size)
+void* mymalloc(size_t size) throw()
 {
     void* result = malloc(size);
 
@@ -124,7 +124,7 @@ void* mymalloc(size_t size)
 }
 
 extern "C"
-void* myrealloc(void *ptr, size_t size)
+void* myrealloc(void *ptr, size_t size) throw()
 {
     void* result = realloc(ptr, size);
 
@@ -135,7 +135,7 @@ void* myrealloc(void *ptr, size_t size)
 }
 
 extern "C"
-void* myreallocf(void *ptr, size_t size)
+void* myreallocf(void *ptr, size_t size) throw()
 {
     void* result = reallocf(ptr, size);
 
@@ -146,7 +146,7 @@ void* myreallocf(void *ptr, size_t size)
 }
 
 extern "C"
-void* myvalloc(size_t size)
+void* myvalloc(size_t size) throw()
 {
     void* result = valloc(size);
 
