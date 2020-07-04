@@ -45,46 +45,60 @@ TestSuite::TestSuite(Options& options)
     : options(options)
 {}
 
-void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList)
+void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList, Options const& options)
 {
-    std::cerr << "BenchMark: " << getDir() << "\n";
     if (!tests.empty())
     {
         DataLoader  loadData(*this);
 
         for (auto const& parser: parsrList)
         {
-            executeTest(*parser);
+            executeTest(*parser, options);
         }
     }
 }
 
-void TestSuite::executeTest(TestBase const& parser)
+void TestSuite::executeTest(TestBase const& parser, Options const& options)
 {
     int count[3] = {0, 0, 0};
     std::vector<Test const*>  failed;
+    std::vector<Test const*>  passed;
 
     for (auto const& test: tests)
     {
-        TestSetUp   testSetUp(parser, setupName(test), useSetUp());
-
-        State state = executeTest(parser, test);
+        State state = Fail;
+        if (!options.markFailed)
+        {
+            TestSetUp   testSetUp(parser, setupName(test), useSetUp());
+            state = executeTest(parser, test);
+        }
         generateConPerData(parser, test, state);
         ++count[static_cast<int>(state)];
         if (state == Fail)
         {
             failed.push_back(&test);
         }
+        else
+        {
+            passed.push_back(&test);
+        }
     }
-    printResults(parser, count, failed);
+    printResults(parser, count, passed, failed);
 }
 
-void TestSuite::printResults(TestBase const& parser, int (&count)[3], std::vector<Test const*>& failed)
+void TestSuite::printResults(TestBase const& parser, int (&count)[3], std::vector<Test const*>& passed, std::vector<Test const*>& failed)
 {
     std::cerr << "\tParser: " << parser.GetName();
     if (count[0] == 0 && count[2] == 0)
     {
-        std::cerr << "  Perfect\n";
+        if (passed.size() == 1)
+        {
+            std::cerr << "  Passed: " << *passed[0] << "\n";
+        }
+        else
+        {
+            std::cerr << "  Perfect\n";
+        }
     }
     else
     {

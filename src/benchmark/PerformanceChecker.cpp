@@ -59,22 +59,27 @@ std::map<std::string, Stat const*> const PerformanceChecker::validator
     {"twitter.json"s,        &twitter}
 };
 
-void PerformanceChecker::executeTest(TestBase const& parser)
+void PerformanceChecker::executeTest(TestBase const& parser, Options const& options)
 {
-    std::cerr << "\t" << parser.GetName() << "\n";
     validatePerformance(parser);
-    CommonReader::executeTest(parser);
-    getCodeSize(parser);
+    CommonReader::executeTest(parser, options);
 }
 
 State PerformanceChecker::executeTest(TestBase const& parser, Test const& test)
 {
-    executeParse(parser, test);
-    executeStringify(parser, test);
-    executePrettify(parser, test);
-    executeStatistics(parser, test);
-    executeSaxRoundtrip(parser, test);
-    executeSaxStatistics(parser, test);
+    if (test.path.str().find("size.json") == std::string::npos)
+    {
+        executeParse(parser, test);
+        executeStringify(parser, test);
+        executePrettify(parser, test);
+        executeStatistics(parser, test);
+        executeSaxRoundtrip(parser, test);
+        executeSaxStatistics(parser, test);
+    }
+    else
+    {
+        getCodeSize(parser);
+    }
     return Pass;
 }
 

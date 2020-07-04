@@ -371,7 +371,7 @@ public:
 
 class VinenthzTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "vincenthz-libjson (C)"; }
+    virtual const char* GetName() const { return "vincenthz-libjson-C"; }
     virtual const char* GetFilename() const { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* json, size_t length) const {

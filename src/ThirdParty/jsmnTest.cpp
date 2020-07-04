@@ -60,7 +60,7 @@ public:
 
 class JsmnTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "jsmn (C)"; }
+    virtual const char* GetName() const { return "jsmn-C"; }
     virtual const char* GetFilename() const { return __FILE__; }
 	
     virtual ParseResultBase* Parse(const char* json, size_t length) const {

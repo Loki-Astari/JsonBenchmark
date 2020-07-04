@@ -23,8 +23,16 @@ ParsrList   getParsrList(std::string const& parserFilter);
 int main(int argc, char* argv[])
 {
     BM::Options  options = getOptions(argc, argv);
-    options.conformance << "Type,Library,Test,Result\n";
-    options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte)\n";
+    if (!options.append)
+    {
+        options.conformance << "Type,Library,Test,Result\n";
+        options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte)\n";
+    }
+    if (options.titleOnly)
+    {
+        // We are simply adding the title to the two files.
+        return 0;
+    }
 
     ParsrList    parsrList = getParsrList(options.parserFilter);
 
@@ -44,9 +52,47 @@ int main(int argc, char* argv[])
                                };
 
     getTestSuiteList(options.testFilter, tSuiteList);
+
+    if (options.displayOptionsOnly)
+    {
+        displayOptions();
+        return 0;
+    }
+    if (options.listTest)
+    {
+        std::string  dataDir = QUOTE(DATA_DIR);
+        std::size_t  dataDirSize = dataDir.size();
+        if (dataDir[dataDirSize - 1] != '/')
+        {
+            ++dataDirSize;
+        }
+
+        for (auto const& test: tSuiteList)
+        {
+            for (auto const& item: *test)
+            {
+                std::string fileName = item.path.str();
+                std::string testName = fileName.substr(dataDirSize, (fileName.size() - dataDirSize - 5 /*.json*/));
+                std::cout << testName << " ";
+            }
+        }
+        std::cout << "\n";
+        return 0;
+    }
+    if (options.listParser)
+    {
+        for (auto const& parse: parsrList)
+        {
+            char const* name = parse->GetName();
+            //std::size_t len  = strlen(name);
+            std::cout << name << " ";
+        }
+        return 0;
+    }
+
     for (auto const& test: tSuiteList)
     {
-        test->executeTestOnAllParsers(parsrList);
+        test->executeTestOnAllParsers(parsrList, options);
     }
 }
 
@@ -66,8 +112,29 @@ BM::Options getOptions(int argc, char* argv[])
         }
         else if (strcmp(argv[loop], "--help") == 0)
         {
-            displayOptions();
-            exit(0);
+            result.displayOptionsOnly = true;
+        }
+        else if (strcmp(argv[loop], "--titleOnly") == 0)
+        {
+            result.titleOnly = true;
+        }
+        else if (strcmp(argv[loop], "--append") == 0)
+        {
+            result.append = true;
+        }
+        else if (strcmp(argv[loop], "--listTests") == 0)
+        {
+            result.listTest = true;
+            result.useFiles = false;
+        }
+        else if (strcmp(argv[loop], "--listParser") == 0)
+        {
+            result.listParser = true;
+            result.useFiles = false;
+        }
+        else if (strcmp(argv[loop], "--markFailed") == 0)
+        {
+            result.markFailed = true;
         }
         else if (strcmp(argv[loop], "--") == 0)
         {
@@ -80,27 +147,28 @@ BM::Options getOptions(int argc, char* argv[])
                 break;
             }
             std::cerr << "Invalid option: " << argv[loop] << "\n";
-            displayOptions();
-            exit(1);
+            result.displayOptionsOnly = true;
         }
     }
-    if (loop + 2 != argc)
+    if (result.useFiles)
     {
-        std::cerr << "Invalid Options: Need two output file names\n";
-        displayOptions();
-        exit(1);
-    }
-    result.conformance.open(argv[loop]);
-    if (!result.conformance)
-    {
-        std::cerr << "Failed to open 'conformance file'\n";
-        exit(1);
-    }
-    result.performance.open(argv[loop + 1]);
-    if (!result.performance)
-    {
-        std::cerr << "Failed to open 'performance file'\n";
-        exit(1);
+        if (loop + 2 != argc)
+        {
+            std::cerr << "Invalid Options: Need two output file names\n";
+            result.displayOptionsOnly = true;
+        }
+        result.conformance.open(argv[loop], result.append ? std::ios::app : std::ios::out);
+        if (!result.conformance)
+        {
+            std::cerr << "Failed to open 'conformance file'\n";
+            result.displayOptionsOnly = true;
+        }
+        result.performance.open(argv[loop + 1], result.append ? std::ios::app : std::ios::out);
+        if (!result.performance)
+        {
+            std::cerr << "Failed to open 'performance file'\n";
+            result.displayOptionsOnly = true;
+        }
     }
     return result;
 }
@@ -109,17 +177,34 @@ void displayOptions()
 {
 #pragma vera-pushoff
     std::cout << R"(
-benchmark [--filter=<filter>] [--parser=<parser>] [--help] <conformance file> <performance file>
+benchmark [--filter=<filter>] [--parser=<parser>] [--help] [--titleOnly] [--append] [--listTests] [--listParser] <conformance file> <performance file>
 
-    filter: Default value [^/]*/[^/]*
-        This option is used as a regular expression to decide what tests to perform.
-        The first part decides what family of tests jsonchecker/performance/roundtrip.
-        The second part specifies a test name.
+    --markFailed:   Marks a test as failed.
+                    This is called by the test harness after a crash to record the result.
 
-    parser:
-        If unused this will will run all the parsers.
-        If specified it will run the specified parser only. It choose the parser
-        by comparing the value given against the result of GetName() method of each parser.
+    --titleOnly:    Clears the "<conformance file>" and "<performance file>" and adds the
+                    the title line only to these files.
+                    The application then exits.
+
+    --append:       Will run the specified tests and parsers appending the reusult to the
+                    "<conformance file>" and <performancce file>. Not with this options
+                    the title line is not added to these file. You should run the application
+                    onece with only `--titleOnly' to initiate the file then run as required
+                    with this flag to get the results you need.
+
+    --listTests:    Lists the set of tests that can be run.
+                    These values can be used with the --filter= flag.
+
+    -- filter=<type>/<test>
+                    Default value all types and tests.
+                    If this flag is used only the test specified by filter will be run.
+
+    --listParser:   Lists the set of parsers that can be tested.
+                    These values can be used with the --parser= flag.
+
+    --parser=<parser>
+                    Default all parsers.
+                    If this flag is used only the specified parser will be run.
 
     conformance file:
         File conformance data is written to.

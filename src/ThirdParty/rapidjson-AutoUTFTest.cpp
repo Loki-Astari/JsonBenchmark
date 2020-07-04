@@ -101,7 +101,7 @@ public:
 
 class RapidjsonAutoUTFTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "rapidjsonAutoUTF (C++)"; }
+    virtual const char* GetName() const { return "rapidjsonAutoUTF-C++"; }
     virtual const char* GetFilename() const { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* json, size_t length) const {

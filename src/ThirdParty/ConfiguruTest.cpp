@@ -71,7 +71,7 @@ public:
 
 class ConfiguruTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "Configuru (C++11)"; }
+    virtual const char* GetName() const { return "Configuru-C++11"; }
     virtual const char* GetFilename() const { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* j, size_t length) const {

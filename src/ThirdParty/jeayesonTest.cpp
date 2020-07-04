@@ -65,7 +65,7 @@ public:
 };
 class JeayesonTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "jeayeson (C++14)"; }
+    virtual const char* GetName() const { return "jeayeson-C++14"; }
     virtual const char* GetFilename() const { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* json, size_t length) const {

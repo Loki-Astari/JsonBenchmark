@@ -15,10 +15,17 @@ namespace ThorsAnvil
 
 struct Options
 {
-    std::string     testFilter      =R"([^/]*/[^/]*)";
-    std::string     parserFilter    = "";
+    std::string     testFilter          =R"([^/]*/[^/]*)";
+    std::string     parserFilter        = "";
     std::ofstream   conformance;
     std::ofstream   performance;
+    bool            displayOptionsOnly  = false;
+    bool            titleOnly           = false;
+    bool            append              = false;
+    bool            listTest            = false;
+    bool            listParser          = false;
+    bool            markFailed          = false;
+    bool            useFiles            = true;
 };
 
 class Test
@@ -52,14 +59,17 @@ class TestSuite
         Cont        tests;
     public:
         TestSuite(Options& options);
-        void executeTestOnAllParsers(ParsrList const& parsrList);
-        virtual void executeTest(TestBase const& parser);
+        void executeTestOnAllParsers(ParsrList const& parsrList, Options const& options);
+        virtual void executeTest(TestBase const& parser, Options const& options);
         virtual State executeTest(TestBase const& parser, Test const& test) = 0;
 
         /* Interface for the range based for() */
-        using iterator = Cont::iterator;
+        using iterator          = Cont::iterator;
+        using const_iterator    = Cont::const_iterator;
         iterator begin()                                            {return tests.begin();}
         iterator end()                                              {return tests.end();}
+        const_iterator begin()  const                               {return tests.cbegin();}
+        const_iterator end()    const                               {return tests.cend();}
         void     emplace_back(FileSystem::Path const& path)         {tests.emplace_back(path);}
 
         virtual std::string getDir() const = 0;
@@ -83,7 +93,7 @@ class TestSuite
 
         /* used executeTest() */
         virtual void generateConPerData(TestBase const& parser, Test const& test, State state) = 0;
-        virtual void printResults(TestBase const& parser, int (&count)[3], std::vector<Test const*>& failed);
+        virtual void printResults(TestBase const& parser, int (&count)[3], std::vector<Test const*>& passed, std::vector<Test const*>& failed);
 
 };
 

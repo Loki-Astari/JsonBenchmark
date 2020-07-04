@@ -76,7 +76,7 @@ namespace {
 
 class PJsonTest : public TestBase {
 public:
-	virtual const char* GetName() const override { return "pjson (C)"; }
+	virtual const char* GetName() const override { return "pjson-C"; }
 	virtual const char* GetFilename() const override { return __FILE__; }
 
 // pjson does not support parsing to DOM, so Parse() and Statistics() are disabled.

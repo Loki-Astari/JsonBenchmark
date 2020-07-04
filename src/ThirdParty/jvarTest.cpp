@@ -90,7 +90,7 @@ class JvarTest : public TestBase {
 public:
     virtual const char* GetName() const
     {
-        return "jvar (C++)";
+        return "jvar-C++";
     }
     virtual const char* GetFilename() const
     {
