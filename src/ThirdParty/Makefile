@@ -34,6 +34,19 @@ udbTest_CXXFLAGS			+= -I /usr/local/include/json-parser/
 json-cTest_CXXFLAGS			+= -Wno-sign-compare
 jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
+# Extra Headers for makefiles
+cajun-jsonapiTest_CXXFLAGS	+= -Wno-unused-parameter
+ccanTest_CXXFLAGS			+= -Wno-nested-anon-types
+fastjsonTest_CXXFLAGS		+= -Wno-return-type
+jsonconsTest_CXXFLAGS		+= -Wno-unused-parameter
+jsonxx_CXXFLAGS				+= -Wno-dollar-in-identifier-extension
+jsonxxTest_CXXFLAGS			+= -Wno-dollar-in-identifier-extension
+jusonTest_CXXFLAGS			+= -Wno-gnu-anonymous-struct -Wno-nested-anon-types
+jvarTest_CXXFLAGS			+= -Wno-gnu-zero-variadic-macro-arguments -Wno-nested-anon-types
+nlohmannTest_CXXFLAGS		+= -Wno-unused-local-typedef
+pjsonTest_CXXFLAGS			+= -Wno-nested-anon-types
+ujson_CXXFLAGS				+= -Wno-unused-parameter -Wno-potentially-evaluated-expression
+ujsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-potentially-evaluated-expression
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
