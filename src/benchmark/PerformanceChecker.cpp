@@ -61,7 +61,10 @@ std::map<std::string, Stat const*> const PerformanceChecker::validator
 
 void PerformanceChecker::executeTest(TestBase const& parser, Options const& options)
 {
-    validatePerformance(parser);
+    if (!options.markFailed)
+    {
+        validatePerformance(parser);
+    }
     CommonReader::executeTest(parser, options);
 }
 

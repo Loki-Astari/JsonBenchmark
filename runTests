@@ -11,6 +11,11 @@ for parser in $(benchmark17 --listParser); do
         benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
         if [[ $? != 0 ]]; then
             benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
+            r=$?
+            if [[ $r != 0 ]]; then 
+                echo "Big Issue: $? ${parser} ${filter}"
+                exit 1
+            fi
         fi
     done
 done
