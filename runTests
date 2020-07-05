@@ -4,6 +4,14 @@ export PATH="${PATH}:$(pwd)/build/bin"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
 
+if [[ $1 == "linux" ]]; then
+    dateAt="-d @"
+fi
+if [[ $1 == "osx" ]]; then
+    dateAt="-r "
+fi
+
+
 # benchmark17 Conformance.csv Performance.csv
 benchmark17 --titleOnly Conformance.csv Performance.csv
 for parser in $(benchmark17 --listParser); do
@@ -11,7 +19,8 @@ for parser in $(benchmark17 --listParser); do
         #benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
         a=1
         if [[ $? != 0 ]]; then
-            benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
+            #benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
+            r=1
             r=$?
             if [[ $r != 0 ]]; then 
                 echo "Big Issue: $? ${parser} ${filter}"
@@ -20,14 +29,17 @@ for parser in $(benchmark17 --listParser); do
         fi
     done
     cd thirdparty/${parser}
-    pwd
     first=$(git log --reverse --pretty=%ct | head -1)
-    firstOrdered=$(date -d @${first} +"%F => %c")
+    firstOrdered=$(date ${dateAt}${first} +"%F => %c")
 
     last=$(git log --pretty=%ct | head -1)
-    lastOrdered=$(date -d @${last} +"%F => %c")
+    lastOrdered=$(date ${dateAt}${last} +"%F => %c")
 
     cd ../..
-    echo "8. Commits,${parser},First,${firstOrdered},0,0,0,0,0,0" >> Performance.csv
-    echo "8. Commits,${parser},Last,${lastOrdered},0,0,0,0,0,0"   >> Performance.csv
+
+    typeOfLib=$(benchmark17 --parser=${parser} --parserType)
+    echo "Type: ${typeOfLib}"
+    echo "7. Commits,${parser},First,${firstOrdered},0,0,0,0,0,0" >> Performance.csv
+    echo "7. Commits,${parser},Last,${lastOrdered},0,0,0,0,0,0"   >> Performance.csv
+    echo "7. Commits,${parser},Type,${typeOfLib},0,0,0,0,0,0"     >> Performance.csv
 done

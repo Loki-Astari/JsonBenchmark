@@ -35,6 +35,7 @@ class TestRunner: public TestBase
             TestManager::instance().addTest(this);
         }
         virtual const char* GetName()                                                   const override {return pimpl->GetName();}
+        virtual const char* Type()                                                      const override {return pimpl->Type();}
         virtual const char* GetFilename()                                               const override {return pimpl->GetFilename();}
 
         virtual void SetUp(char const* test)                                            const override {return pimpl->SetUp(test);}
