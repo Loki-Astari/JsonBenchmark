@@ -16,11 +16,9 @@ fi
 benchmark17 --titleOnly Conformance.csv Performance.csv
 for parser in $(benchmark17 --listParser); do
     for filter in $(benchmark17 --listTests); do
-        #benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
-        a=1
+        benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
         if [[ $? != 0 ]]; then
-            #benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
-            r=1
+            benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
             r=$?
             if [[ $r != 0 ]]; then 
                 echo "Big Issue: $? ${parser} ${filter}"
