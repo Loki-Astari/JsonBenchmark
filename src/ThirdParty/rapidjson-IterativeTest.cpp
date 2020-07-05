@@ -1,6 +1,6 @@
 #define TEST_ITERATIVE
 #define TEST_PARSE_FLAG kParseIterativeFlag
-#define TEST_NAME "rapidjsonIterative-C++"
+#define TEST_NAME "rapidjsonIterative"
 #define TEST_CLASS RapidjsonIterativeTest
 #define RapidjsonParseResult RapidjsonParseIterativeResult
 

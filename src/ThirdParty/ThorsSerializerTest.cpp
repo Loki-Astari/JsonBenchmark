@@ -137,7 +137,8 @@ class ThorsSerializerTest: public TestBase
         currentRunner = &testNotImplemented;
     }
 
-    virtual const char* GetName() const /*override*/        { return "ThorsSerializer-C++17"; }
+    virtual const char* GetName() const /*override*/        { return "ThorsSerializer"; }
+    virtual const char* Type()    const /*override*/        { return "C++17";}
     virtual const char* GetFilename() const /*override*/    { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* json, size_t length) const {

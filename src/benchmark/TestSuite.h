@@ -25,6 +25,7 @@ struct Options
     bool            listTest            = false;
     bool            listParser          = false;
     bool            markFailed          = false;
+    bool            parserType          = false;
     bool            useFiles            = true;
 };
 

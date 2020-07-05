@@ -8,7 +8,8 @@ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
 benchmark17 --titleOnly Conformance.csv Performance.csv
 for parser in $(benchmark17 --listParser); do
     for filter in $(benchmark17 --listTests); do
-        benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
+        #benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
+        a=1
         if [[ $? != 0 ]]; then
             benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
             r=$?
@@ -18,4 +19,15 @@ for parser in $(benchmark17 --listParser); do
             fi
         fi
     done
+    cd thirdparty/${parser}
+    pwd
+    first=$(git log --reverse --pretty=%ct | head -1)
+    firstOrdered=$(date -d @${first} +"%F => %c")
+
+    last=$(git log --pretty=%ct | head -1)
+    lastOrdered=$(date -d @${last} +"%F => %c")
+
+    cd ../..
+    echo "8. Commits,${parser},First,${firstOrdered},0,0,0,0,0,0" >> Performance.csv
+    echo "8. Commits,${parser},Last,${lastOrdered},0,0,0,0,0,0"   >> Performance.csv
 done

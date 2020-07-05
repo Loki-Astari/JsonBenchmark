@@ -77,7 +77,8 @@ public:
 
 class CcanTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "ccan-C"; }
+    virtual const char* GetName() const { return "ccan"; }
+    virtual const char* Type()    const { return "C";}
     virtual const char* GetFilename() const { return __FILE__; }
 	
     virtual ParseResultBase* Parse(const char* json, size_t length) const {

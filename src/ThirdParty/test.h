@@ -42,6 +42,7 @@ class TestBase
         bool operator<(const TestBase& rhs) const;
 
         virtual const char* GetName() const = 0;
+        virtual const char* Type()    const = 0;
         virtual const char* GetFilename() const = 0;
 
         // For each operation, call SetUp() before and TearDown() after.

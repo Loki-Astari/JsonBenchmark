@@ -83,10 +83,18 @@ int main(int argc, char* argv[])
     {
         for (auto const& parse: parsrList)
         {
-            char const* name = parse->GetName();
-            //std::size_t len  = strlen(name);
-            std::cout << name << " ";
+            std::cout << parse->GetName() << " ";
         }
+        std::cout << "\n";
+        return 0;
+    }
+    if (options.parserType)
+    {
+        for (auto const& parse: parsrList)
+        {
+            std::cout << parse->Type() << " ";
+        }
+        std::cout << "\n";
         return 0;
     }
 
@@ -117,6 +125,11 @@ BM::Options getOptions(int argc, char* argv[])
         else if (strcmp(argv[loop], "--titleOnly") == 0)
         {
             result.titleOnly = true;
+        }
+        else if (strcmp(argv[loop], "--parserType") == 0)
+        {
+            result.parserType = true;
+            result.useFiles = false;
         }
         else if (strcmp(argv[loop], "--append") == 0)
         {
@@ -185,6 +198,9 @@ benchmark [--filter=<filter>] [--parser=<parser>] [--help] [--titleOnly] [--appe
     --titleOnly:    Clears the "<conformance file>" and "<performance file>" and adds the
                     the title line only to these files.
                     The application then exits.
+
+    --parserType:   Print the parser type
+                    Don't run any tests
 
     --append:       Will run the specified tests and parsers appending the reusult to the
                     "<conformance file>" and <performancce file>. Not with this options
