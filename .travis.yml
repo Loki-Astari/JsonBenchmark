@@ -24,7 +24,7 @@ script:
     - 
     - ./configure --disable-vera ${LOCAL_BOOST}
     - make
-    - ./runTests
+    - ./runTests ${TRAVIS_OS_NAME}
 after_success:
     - if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then ./success ${TRAVIS_OS_NAME}; fi
 
