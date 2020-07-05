@@ -102,7 +102,7 @@ void PerformanceChecker::getCodeSize(TestBase const& parser)
     obj.seekg(0, std::ios_base::end);
     std::size_t     size = obj.tellg();
 
-    options.performance << "7. Code size," << parser.GetName() << ",XXX,0,0,0,0,0,0," << size << "\n";
+    options.performance << "7. Code size," << parser.GetName() << ",XXX,0,0,0,0,0,0,0,0,0," << size << "\n";
 }
 
 void PerformanceChecker::validatePerformance(TestBase const& parser)
@@ -302,7 +302,8 @@ PerformanceChecker::Output::~Output()
                             << name << ","
                             << parser.GetName() << ","
                             << test.path.str().substr(test.path.str().rfind('/') + 1) << ","
-                            << (minDuration * 1000) << ",";
+                            << (minDuration * 1000) << ","
+                            << "0,0,0,";
         validateMemory();
         options.performance << "0\n";
     }

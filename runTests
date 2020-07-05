@@ -36,8 +36,7 @@ for parser in $(benchmark17 --listParser); do
     cd ../..
 
     typeOfLib=$(benchmark17 --parser=${parser} --parserType)
-    echo "Type: ${typeOfLib}"
-    echo "7. Commits,${parser},First,${firstOrdered},0,0,0,0,0,0" >> Performance.csv
-    echo "7. Commits,${parser},Last,${lastOrdered},0,0,0,0,0,0"   >> Performance.csv
-    echo "7. Commits,${parser},Type,${typeOfLib},0,0,0,0,0,0"     >> Performance.csv
+    echo "7. Commits,${parser},All,0,0,0,0,0,0,0,${firstOrdered},0,0," >> Performance.csv
+    echo "7. Commits,${parser},All,0,0,0,0,0,0,0,0,${lastOrdered},0,"  >> Performance.csv
+    echo "7. Commits,${parser},All,0,0,0,0,0,0,0,0,0,${typeOfLib},"    >> Performance.csv
 done
