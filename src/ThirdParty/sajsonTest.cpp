@@ -74,8 +74,7 @@ public:
     virtual const char* GetFilename() const { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        (void)length;
-        SajsonParseResult* pr = new SajsonParseResult(parse(dynamic_allocation(), literal(json)));
+        SajsonParseResult* pr = new SajsonParseResult(parse(dynamic_allocation(), string(json, length)));
         if (!pr->d.is_valid()) {
             //std::cout << "Error (" << pr->d.get_error_line() << ":" << pr->d.get_error_column() << "): " << pr->d.get_error_message() << std::endl;
             delete pr;
@@ -92,7 +91,7 @@ public:
     }
 
     virtual bool ParseDouble(const char* json, double* d) const {
-        document doc = parse(dynamic_allocation(), literal(json));
+        document doc = parse(dynamic_allocation(), string(json, strlen(json)));
         if (doc.is_valid() &&
             doc.get_root().get_type() == TYPE_ARRAY &&
             doc.get_root().get_length() == 1 &&
@@ -106,7 +105,7 @@ public:
     }
 
     virtual bool ParseString(const char* json, std::string& s) const {
-        document doc = parse(dynamic_allocation(), literal(json));
+        document doc = parse(dynamic_allocation(), string(json, strlen(json)));
         if (doc.is_valid() &&
             doc.get_root().get_type() == TYPE_ARRAY &&
             doc.get_root().get_length() == 1 &&
