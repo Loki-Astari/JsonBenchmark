@@ -4,6 +4,7 @@ if [[ "$1" == "linux" ]]; then
     sudo apt-get update
     sudo apt-get install scons -y
     sudo apt-get install libboost-all-dev
+    sudo apt-get install jq
 fi
 if [[ "$1" == "osx" ]]; then
     export PATH=${PATH}
@@ -12,6 +13,7 @@ if [[ "$1" == "osx" ]]; then
     brew install boost-python
     brew install cmake
     brew install tcl-tk
+    brew install jq
     for a in /usr/local/lib/libboost_python[0-9][0-9]* ; do
         sudo ln -s ${a} ${a/[0-9][0-9]/}
     done
