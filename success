@@ -18,7 +18,9 @@ cd ..
 
 php ./script/conformance.php Conformance.csv $1 > loki-astari.github.io/source/Json/Conformance.$1.html
 php ./script/performance.php Performance.csv $1 > loki-astari.github.io/source/Json/Performance.$1.html
-php ./script/stats.php       Stats.csv          > loki-astari.github.io/source/Json/Stats.html
+if [[ "$1" == "linux" ]]; then
+    php ./script/stats.php       Stats.csv          > loki-astari.github.io/source/Json/Stats.html
+fi
 cd loki-astari.github.io
 
 # Push back to github.
