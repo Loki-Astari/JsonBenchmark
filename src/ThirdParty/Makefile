@@ -36,7 +36,7 @@ json-cTest_CXXFLAGS			+= -Wno-sign-compare
 jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
-cajun-jsonapiTest_CXXFLAGS	+= -Wno-unused-parameter
+cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unused-parameter
 ccanTest_CXXFLAGS			+= -Wno-nested-anon-types
 fastjsonTest_CXXFLAGS		+= -Wno-return-type
 jsonconsTest_CXXFLAGS		+= -Wno-unused-parameter
