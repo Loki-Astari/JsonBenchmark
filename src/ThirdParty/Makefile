@@ -47,6 +47,7 @@ nlohmannTest_CXXFLAGS		+= -Wno-unused-local-typedef
 pjsonTest_CXXFLAGS			+= -Wno-nested-anon-types
 ujson_CXXFLAGS				+= -Wno-unused-parameter -Wno-potentially-evaluated-expression
 ujsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-potentially-evaluated-expression
+ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
