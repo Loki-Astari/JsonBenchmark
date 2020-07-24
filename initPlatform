@@ -14,6 +14,7 @@ if [[ "$1" == "osx" ]]; then
     brew install cmake
     brew install tcl-tk
     brew install jq
+    brew install curl
     for a in /usr/local/lib/libboost_python[0-9][0-9]* ; do
         sudo ln -s ${a} ${a/[0-9][0-9]/}
     done
