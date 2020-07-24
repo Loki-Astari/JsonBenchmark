@@ -126,14 +126,8 @@ $(function() {
   });
 
   // Add configurations
-  var thisConfig = <?="\"".basename($argv[1], '.'.pathinfo($argv[1], PATHINFO_EXTENSION))."\""?>;
-  var configurations = [<?=
-    implode(",", 
-      array_map(
-        function ($filename) {
-          return "\"" . basename($filename, ".csv") . "\"";
-        }, glob("*.csv")))
-    ?>];
+  var thisConfig = <?="\"".basename($argv[1], '.'.pathinfo($argv[1], PATHINFO_EXTENSION)).'.'.$argv[2]."\""?>;
+  var configurations = [ "Conformance.osx", "Conformance.linux", "Performance.osx", "Performance.linux", "Stats"];
 
   for (var i in configurations) {
     var c = configurations[i];
@@ -323,7 +317,7 @@ body { padding-top: 70px; }
   </div><!-- /.container-fluid -->
 </nav>
 <div class="page-header">
-<h1 id="title"><?=basename($argv[1], '.'.pathinfo($argv[1], PATHINFO_EXTENSION))?></h1>
+<h1 id="title"><?=basename($argv[1], '.'.pathinfo($argv[1], PATHINFO_EXTENSION)).'.'.$argv[2]?></h1>
 </div>
 <div id="main"></div>
 <h2>Source CSV</h2>

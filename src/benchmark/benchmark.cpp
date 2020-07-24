@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     if (!options.append)
     {
         options.conformance << "Type,Library,Test,Result\n";
-        options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte),First Commit, Last Commit, Type\n";
+        options.performance << "Type,Library,Filename,Time (ms),Memory (byte),MemoryPeak (byte),AllocCount,LeakedBytes,LeakCount,FileSize (byte)\n";
     }
     if (options.titleOnly)
     {
