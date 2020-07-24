@@ -11,7 +11,7 @@ TARGET                      = ThirdParty.slib
 
 VERA                        = true
 
-LDLIBS                      += -lccan
+LDLIBS                      += -L../../thirdparty/ccan/     -lccan
 LDLIBS                      += -L../../thirdparty/cJSON/    -lcjson
 LDLIBS                      += -lfastjson
 LDLIBS                      += -L../../thirdparty/JsonBox/  -lJsonBox
@@ -37,7 +37,7 @@ jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
 cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unused-parameter
-ccanTest_CXXFLAGS			+= -Wno-nested-anon-types
+ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 fastjsonTest_CXXFLAGS		+= -Wno-return-type
 jsonconsTest_CXXFLAGS		+= -Wno-unused-parameter
 jsonxx_CXXFLAGS				+= -Wno-dollar-in-identifier-extension
