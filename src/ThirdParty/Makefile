@@ -12,7 +12,7 @@ TARGET                      = ThirdParty.slib
 VERA                        = true
 
 LDLIBS                      += -lccan
-LDLIBS                      += -lcjson
+LDLIBS                      += -L../../thirdparty/cJSON/    -lcjson
 LDLIBS                      += -lfastjson
 LDLIBS                      += -L../../thirdparty/JsonBox/  -lJsonBox
 LDLIBS                      += -ljson-c
@@ -27,6 +27,7 @@ LDLIBS                      += -lvincenthz-libjson
 LDLIBS                      += -lyajl_s
 
 Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
+cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
 gason_CXXFLAGS				+= -Wno-implicit-fallthrough
 sajsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-pedantic
 ujson_CXXFLAGS				+= -Wno-implicit-fallthrough -Wno-missing-field-initializers
