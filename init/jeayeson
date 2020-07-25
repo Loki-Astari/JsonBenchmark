@@ -1,0 +1,5 @@
+#
+# jeayeson
+#
+./configure
+CXX_FLAGS=-Wno-deprecated-declarations make

@@ -51,6 +51,7 @@ ujsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-potentially-evaluated-express
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src
 JsonBoxTest_CXXFLAGS		+= -I../../thirdparty/JsonBox/include/ -I../../thirdparty/JsonBox/
 ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/
+jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
