@@ -1,0 +1,9 @@
+#
+# vincenthz
+#
+
+gcc -c -o json.o json.c -fPIC -O3
+gcc -c -o jsonlint.o jsonlint.c -fPIC -O3
+ar rv libvincenthz-libjson.a *.o
+ranlib libvincenthz-libjson.a
+
