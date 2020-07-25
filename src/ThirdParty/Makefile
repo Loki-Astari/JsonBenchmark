@@ -48,6 +48,11 @@ jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
 json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/
 jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/
+rapidjson-AutoUTFTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
+rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
