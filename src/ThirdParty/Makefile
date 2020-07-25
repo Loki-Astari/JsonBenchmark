@@ -16,7 +16,7 @@ LDLIBS                      += -L../../thirdparty/jvar/lib          -ljvar
 LDLIBS                      += -L../../thirdparty/pjson             -lpjson
 LDLIBS                      += -L../../thirdparty/udb-jsason-parser -ljsonparser -L../../thirdparty/udb-json-builder -ljsonbuilder
 LDLIBS                      += -L../../thirdparty/ujson/ujson       -lujson
-LDLIBS                      += -lujson4c
+LDLIBS                      += -L../../thirdparty/ujson4c           -lujson4c
 LDLIBS                      += -lvincenthz-libjson
 LDLIBS                      += -lyajl_s
 
@@ -53,6 +53,7 @@ rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+ujson4cTest_CXXFLAGS		+= -I../../thirdparty/ujson4c/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
