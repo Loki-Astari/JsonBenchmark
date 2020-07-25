@@ -1,0 +1,9 @@
+#
+# jsonxx
+#
+
+make
+ar rv libjsonxx.a jsonxx.o
+ranlib libjsonxx.a
+
+

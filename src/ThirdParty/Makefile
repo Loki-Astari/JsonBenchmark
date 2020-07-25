@@ -19,10 +19,13 @@ LDLIBS                      += -L../../thirdparty/ujson/ujson           -lujson
 LDLIBS                      += -L../../thirdparty/ujson4c               -lujson4c
 LDLIBS                      += -L../../thirdparty/vincenthz-libjson     -lvincenthz-libjson
 LDLIBS                      += -L../../thirdparty/yajl/yajl-2.1.1/lib   -lyajl_s
+LDLIBS                      += -L../../thirdparty/jsonxx                -ljsonxx
+LDLIBS                      += -:../../thirdparty/jsonxx                -ljsonxx
+LDLIBS						+= -L../../thirdparty/gason                 -lgason
 
 Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
-gason_CXXFLAGS				+= -Wno-implicit-fallthrough
+gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/
 sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
 udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser
 
@@ -34,8 +37,7 @@ cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unu
 ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 fastjsonTest_CXXFLAGS		+= -I../../thirdparty/fastjson/include/ -Wno-return-type
 jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter
-jsonxx_CXXFLAGS				+= -Wno-dollar-in-identifier-extension
-jsonxxTest_CXXFLAGS			+= -Wno-dollar-in-identifier-extension
+jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 jusonTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-anonymous-struct -Wno-nested-anon-types
 jvarTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-zero-variadic-macro-arguments -Wno-nested-anon-types
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
