@@ -1,6 +1,6 @@
 #include "test.h"
 
-#include "pjson/pjson.h"
+#include "inc/pjson.h"
 #include <array>
 #include <vector>
 #include <memory>
