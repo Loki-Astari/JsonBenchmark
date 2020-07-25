@@ -1,6 +1,6 @@
 #include "test.h"
 
-#include "sajson.h"
+#include "include/sajson.h"
 #include <iostream>
 #include <memory>
 

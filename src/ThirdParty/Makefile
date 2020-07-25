@@ -23,7 +23,7 @@ LDLIBS                      += -L../../thirdparty/yajl/yajl-2.1.1/lib   -lyajl_s
 Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
 gason_CXXFLAGS				+= -Wno-implicit-fallthrough
-sajsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-pedantic
+sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
 udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser
 
 json-cTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-sign-compare
