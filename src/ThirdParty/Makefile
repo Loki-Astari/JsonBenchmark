@@ -8,7 +8,7 @@ LDLIBS                      += -L../../thirdparty/ccan/     -lccan
 LDLIBS                      += -L../../thirdparty/cJSON/    -lcjson
 LDLIBS                      += -L../../thirdparty/fastjson  -lfastjson
 LDLIBS                      += -L../../thirdparty/JsonBox/  -lJsonBox
-LDLIBS                      += -ljson-c
+LDLIBS                      += -L../../thirdparty/json-c/   -ljson-c
 LDLIBS                      += -ljsoncpp
 LDLIBS                      += -ljsonv
 LDLIBS                      += -ljuson
@@ -25,7 +25,7 @@ gason_CXXFLAGS				+= -Wno-implicit-fallthrough
 sajsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-pedantic
 ujson_CXXFLAGS				+= -Wno-implicit-fallthrough -Wno-missing-field-initializers
 udbTest_CXXFLAGS			+= -I /usr/local/include/json-parser/
-json-cTest_CXXFLAGS			+= -Wno-sign-compare
+json-cTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-sign-compare
 jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles

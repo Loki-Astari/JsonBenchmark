@@ -1,0 +1,7 @@
+#
+# json-c
+#
+
+cmake -DCMAKE_C_FLAGS=-fPIC .
+make
+
