@@ -4,13 +4,13 @@ TARGET                      = ThirdParty.slib
 
 VERA                        = true
 
-LDLIBS                      += -L../../thirdparty/ccan/     -lccan
-LDLIBS                      += -L../../thirdparty/cJSON/    -lcjson
-LDLIBS                      += -L../../thirdparty/fastjson  -lfastjson
-LDLIBS                      += -L../../thirdparty/JsonBox/  -lJsonBox
-LDLIBS                      += -L../../thirdparty/json-c/   -ljson-c
+LDLIBS                      += -L../../thirdparty/ccan/      -lccan
+LDLIBS                      += -L../../thirdparty/cJSON/     -lcjson
+LDLIBS                      += -L../../thirdparty/fastjson   -lfastjson
+LDLIBS                      += -L../../thirdparty/JsonBox/   -lJsonBox
+LDLIBS                      += -L../../thirdparty/json-c/    -ljson-c
 LDLIBS                      += -ljsoncpp
-LDLIBS                      += -ljsonv
+LDLIBS                      += -L../../thirdparty/json-voorhees -ljsonv
 LDLIBS                      += -ljuson
 LDLIBS                      += -ljvar
 LDLIBS                      += -lpjson
@@ -46,6 +46,7 @@ JsonBoxTest_CXXFLAGS		+= -I../../thirdparty/JsonBox/include/ -I../../thirdparty/
 ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/
 jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
+json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
