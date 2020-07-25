@@ -1,0 +1,10 @@
+#
+# ujson
+#
+
+cd ujson
+cmake -DCMAKE_CXX_STANDARD=11 -DCMAKE_CXX_FLAGS=-fPIC .
+make
+cd ..
+
+

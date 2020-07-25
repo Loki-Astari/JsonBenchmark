@@ -1,7 +1,7 @@
 #include "test.h"
 
-#include "ujson.hpp"
-#include "double-conversion.h"
+#include "ujson/ujson.hpp"
+#include "ujson/double-conversion.h"
 #include <memory>
 
 using namespace ujson;
