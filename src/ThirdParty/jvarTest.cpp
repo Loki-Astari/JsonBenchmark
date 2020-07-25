@@ -1,11 +1,11 @@
 #include "test.h"
 
-#include "jvar/jvar.h"
-#include "jvar/util.h"
-#include "jvar/var.h"
-#include "jvar/str.h"
-#include "jvar/json.h"
-#include "jvar/arr.h"
+#include "jvar/include/jvar.h"
+#include "jvar/include/util.h"
+#include "jvar/include/var.h"
+#include "jvar/include/str.h"
+#include "jvar/include/json.h"
+#include "jvar/include/arr.h"
 
 #include <memory>
 
