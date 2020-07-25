@@ -20,10 +20,10 @@ LDLIBS                      += -L../../thirdparty/ujson4c               -lujson4
 LDLIBS                      += -L../../thirdparty/vincenthz-libjson     -lvincenthz-libjson
 LDLIBS                      += -L../../thirdparty/yajl/yajl-2.1.1/lib   -lyajl_s
 LDLIBS                      += -L../../thirdparty/jsonxx                -ljsonxx
-LDLIBS                      += -:../../thirdparty/jsonxx                -ljsonxx
 LDLIBS						+= -L../../thirdparty/gason                 -lgason
+LDLIBS                      += -L../../thirdparty/Jzon                  -lJzon
 
-Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
+JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
 gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/
 sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
