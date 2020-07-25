@@ -1,0 +1,7 @@
+#
+# yajl
+#
+
+cmake -DCMAKE_C_FLAGS=-fPIC .
+make
+

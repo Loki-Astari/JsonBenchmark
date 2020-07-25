@@ -4,21 +4,21 @@ TARGET                      = ThirdParty.slib
 
 VERA                        = true
 
-LDLIBS                      += -L../../thirdparty/ccan/             -lccan
-LDLIBS                      += -L../../thirdparty/cJSON/            -lcjson
-LDLIBS                      += -L../../thirdparty/fastjson          -lfastjson
-LDLIBS                      += -L../../thirdparty/JsonBox/          -lJsonBox
-LDLIBS                      += -L../../thirdparty/json-c/           -ljson-c
-LDLIBS                      += -L../../thirdparty/jsoncpp/lib/      -ljsoncpp
-LDLIBS                      += -L../../thirdparty/json-voorhees     -ljsonv
-LDLIBS                      += -L../../thirdparty/juson             -ljuson
-LDLIBS                      += -L../../thirdparty/jvar/lib          -ljvar
-LDLIBS                      += -L../../thirdparty/pjson             -lpjson
-LDLIBS                      += -L../../thirdparty/udb-jsason-parser -ljsonparser -L../../thirdparty/udb-json-builder -ljsonbuilder
-LDLIBS                      += -L../../thirdparty/ujson/ujson       -lujson
-LDLIBS                      += -L../../thirdparty/ujson4c           -lujson4c
-LDLIBS                      += -L../../thirdparty/vincenthz-libjson -lvincenthz-libjson
-LDLIBS                      += -lyajl_s
+LDLIBS                      += -L../../thirdparty/ccan/                 -lccan
+LDLIBS                      += -L../../thirdparty/cJSON/                -lcjson
+LDLIBS                      += -L../../thirdparty/fastjson              -lfastjson
+LDLIBS                      += -L../../thirdparty/JsonBox/              -lJsonBox
+LDLIBS                      += -L../../thirdparty/json-c/               -ljson-c
+LDLIBS                      += -L../../thirdparty/jsoncpp/lib/          -ljsoncpp
+LDLIBS                      += -L../../thirdparty/json-voorhees         -ljsonv
+LDLIBS                      += -L../../thirdparty/juson                 -ljuson
+LDLIBS                      += -L../../thirdparty/jvar/lib              -ljvar
+LDLIBS                      += -L../../thirdparty/pjson                 -lpjson
+LDLIBS                      += -L../../thirdparty/udb-jsason-parser     -ljsonparser -L../../thirdparty/udb-json-builder -ljsonbuilder
+LDLIBS                      += -L../../thirdparty/ujson/ujson           -lujson
+LDLIBS                      += -L../../thirdparty/ujson4c               -lujson4c
+LDLIBS                      += -L../../thirdparty/vincenthz-libjson     -lvincenthz-libjson
+LDLIBS                      += -L../../thirdparty/yajl/yajl-2.1.1/lib   -lyajl_s
 
 Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
@@ -55,6 +55,7 @@ rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 ujson4cTest_CXXFLAGS		+= -I../../thirdparty/ujson4c/
 vincenthz-libjsonTest_CXXFLAGS		+= -I../../thirdparty/
+yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.1/include/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
