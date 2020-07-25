@@ -1,0 +1,26 @@
+
+#
+# udb-jsason-parser
+#
+./configure
+make
+
+cd ../udb-json-builder
+
+#
+# udb-json-builder
+#
+cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' .
+make
+
+
+cd ../udb-jsason-parser
+
+
+rm -rf udb
+mkdir udb
+cd udb
+
+ln -s ../json.h .
+ln -s ../../udb-json-builder/json-builder.h .
+
