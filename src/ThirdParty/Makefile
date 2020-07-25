@@ -56,11 +56,11 @@ rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 ujson4cTest_CXXFLAGS		+= -I../../thirdparty/ujson4c/
 vincenthz-libjsonTest_CXXFLAGS		+= -I../../thirdparty/
 yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.1/include/
+ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
                                ArduinoJson.h ArduinoJson.hpp	\
-                               configuru.hpp                    \
                                jsonxx.h                         \
                                Jzon.h							\
 							   picojson.h						\

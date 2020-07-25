@@ -3,7 +3,7 @@
 #define CONFIGURU_IMPLEMENTATION 1
 #include <algorithm>
 #include <limits>
-#include "configuru.hpp"
+#include "Configuru/configuru.hpp"
 #include <iostream>
 
 using namespace configuru;
