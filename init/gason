@@ -1,0 +1,7 @@
+#
+# gason
+#
+
+cmake '-DCMAKE_CXX_FLAGS=-I../rapidjson//include -fPIC' .
+make
+

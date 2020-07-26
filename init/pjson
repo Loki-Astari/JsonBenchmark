@@ -1,0 +1,8 @@
+#
+# pjson
+#
+
+gcc -c -o pjson.o src/pjson.c -fPIC -O3 -Iinc
+ar rv libpjson.a pjson.o
+ranlib libpjson.a
+

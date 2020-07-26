@@ -3,6 +3,8 @@ git:
 env:
   global:
       - TMPDIR=/tmp
+      - LD_LIBRARY_PATH=$(pwd)/build/lib
+      - DYLD_LIBRARY_PATH=$(pwd)/build/lib
 branches:
     only:
         - master
@@ -23,7 +25,9 @@ script:
     - ./init3rdParty ${TRAVIS_OS_NAME}
     - 
     - ./configure --disable-vera ${LOCAL_BOOST}
-    - make
+    - ls -la build/lib
+    - echo ${LD_LIBRARY_PATH}
+    - LD_LIBRARY_PATH=$(pwd)/build/lib make
     - ./runTests ${TRAVIS_OS_NAME}
 after_success:
     - if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then ./success ${TRAVIS_OS_NAME}; fi

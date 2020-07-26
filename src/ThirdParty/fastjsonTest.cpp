@@ -1,7 +1,7 @@
 #include "test.h"
 
-#include <fastjson/fastjson.h>
-#include <fastjson/dom.h>
+#include "fastjson/fastjson.h"
+#include "fastjson/dom.h"
 #include <memory>
 #include <cstdio>
 

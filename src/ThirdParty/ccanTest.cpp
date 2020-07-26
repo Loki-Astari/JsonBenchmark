@@ -1,7 +1,7 @@
 #include "test.h"
 
 extern "C" {
-#include "ccan/json.h"
+#include "ccan/json/json.h"
 }
 
 #include <memory>

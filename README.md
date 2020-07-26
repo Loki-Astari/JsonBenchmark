@@ -38,6 +38,7 @@ Create a fork of this project. Then checkout your fork and build it locally.
 > git checkout git@github.com:<You>/JsonBenchmark.git
 > cd JsonBenchmark
 > git submodule update --init --recursive
+> ./init3rdParty
 > ./configure
 > make
 ````

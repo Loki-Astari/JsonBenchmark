@@ -1,1 +1,0 @@
-../../thirdparty/Configuru/configuru.hpp

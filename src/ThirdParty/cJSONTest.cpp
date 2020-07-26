@@ -1,5 +1,5 @@
 #include "test.h"
-#include "cjson/cJSON.h"
+#include "cJSON/cJSON.h"
 #include <memory>
 #include <string>
 #include <stdlib.h>

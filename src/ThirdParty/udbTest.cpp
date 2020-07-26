@@ -1,7 +1,7 @@
 #include "test.h"
 
 #include "json-parser/json.h"
-#include "json-parser/json-builder.h"
+#include "json-builder.h"
 #include <memory>
 #include <string>
 

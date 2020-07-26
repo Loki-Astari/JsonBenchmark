@@ -1,0 +1,7 @@
+#
+# json-voorhees
+#
+
+cmake -DLIBRARY_INSTALL_DIR=/usr/local/lib -DLIBRARY_TYPE=STATIC -DCMAKE_CXX_FLAGS=-fPIC .
+make
+

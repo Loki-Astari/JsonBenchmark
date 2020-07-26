@@ -1,60 +1,70 @@
 THORSANVIL_ROOT             = $(realpath ../../)
 
-THIRD_PARTY                 = \
-							  \
-							  \
-							  \
-							  \
-							  jsmn
-
 TARGET                      = ThirdParty.slib
 
 VERA                        = true
+LDLIBS                      += ../../thirdparty/ccan/libccan.a
+LDLIBS                      += ../../thirdparty/cJSON/libcjson.a
+LDLIBS                      += ../../thirdparty/fastjson/libfastjson.a
+LDLIBS                      += ../../thirdparty/JsonBox/libJsonBox.a
+LDLIBS                      += ../../thirdparty/json-c/libjson-c.a
+LDLIBS                      += ../../thirdparty/jsoncpp/lib/libjsoncpp.a
+LDLIBS                      += ../../thirdparty/json-voorhees/libjsonv.a
+LDLIBS                      += ../../thirdparty/juson/libjuson.a
+LDLIBS                      += ../../thirdparty/jvar/lib/libjvar.a
+LDLIBS                      += ../../thirdparty/pjson/libpjson.a
+LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonparser.a
+LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonbuilder.a
+LDLIBS                      += ../../thirdparty/ujson/ujson/libujson.a
+LDLIBS                      += ../../thirdparty/ujson4c/libujson4c.a
+LDLIBS                      += ../../thirdparty/vincenthz-libjson/libvincenthz-libjson.a
+LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
+LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
+LDLIBS                      += ../../thirdparty/gason/libgason.a
+LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 
-LDLIBS                      += -lccan
-LDLIBS                      += -lcjson
-LDLIBS                      += -lfastjson
-LDLIBS                      += -lJsonBox
-LDLIBS                      += -ljson-c
-LDLIBS                      += -ljsoncpp
-LDLIBS                      += -ljsonv
-LDLIBS                      += -ljuson
-LDLIBS                      += -ljvar
-LDLIBS                      += -lpjson
-LDLIBS                      += -ljsonparser -ljsonbuilder
-LDLIBS                      += -lujson4c
-LDLIBS                      += -lvincenthz-libjson
-LDLIBS                      += -lyajl_s
+JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/
+cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
+gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/
+sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
+udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/usr/local/include/ -I../../thirdparty/udb-jsason-parser/usr/local/include/json-parser
 
-Jzon_CXXFLAGS               += -Wno-implicit-fallthrough
-gason_CXXFLAGS				+= -Wno-implicit-fallthrough
-sajsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-pedantic
-ujson_CXXFLAGS				+= -Wno-implicit-fallthrough -Wno-missing-field-initializers
-udbTest_CXXFLAGS			+= -I /usr/local/include/json-parser/
-json-cTest_CXXFLAGS			+= -Wno-sign-compare
-jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
+json-cTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-sign-compare
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
-cajun-jsonapiTest_CXXFLAGS	+= -Wno-unused-parameter
-ccanTest_CXXFLAGS			+= -Wno-nested-anon-types
-fastjsonTest_CXXFLAGS		+= -Wno-return-type
-jsonconsTest_CXXFLAGS		+= -Wno-unused-parameter
-jsonxx_CXXFLAGS				+= -Wno-dollar-in-identifier-extension
-jsonxxTest_CXXFLAGS			+= -Wno-dollar-in-identifier-extension
-jusonTest_CXXFLAGS			+= -Wno-gnu-anonymous-struct -Wno-nested-anon-types
-jvarTest_CXXFLAGS			+= -Wno-gnu-zero-variadic-macro-arguments -Wno-nested-anon-types
-nlohmannTest_CXXFLAGS		+= -Wno-unused-local-typedef
-pjsonTest_CXXFLAGS			+= -Wno-nested-anon-types
-ujson_CXXFLAGS				+= -Wno-unused-parameter -Wno-potentially-evaluated-expression
-ujsonTest_CXXFLAGS			+= -Wno-unused-parameter -Wno-potentially-evaluated-expression
+cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unused-parameter
+ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
+fastjsonTest_CXXFLAGS		+= -I../../thirdparty/fastjson/include/ -Wno-return-type
+jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter
+jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
+jusonTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-pedantic -Wno-gnu-anonymous-struct -Wno-nested-anon-types
+jvarTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-zero-variadic-macro-arguments -Wno-ignored-qualifiers -Wno-nested-anon-types -D_GLIBCXX_USE_CXX11_ABI=0
+nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
+pjsonTest_CXXFLAGS			+= -I../../thirdparty/pjson -Wno-nested-anon-types
+ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression
+ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src
+JsonBoxTest_CXXFLAGS		+= -I../../thirdparty/JsonBox/include/ -I../../thirdparty/JsonBox/
+ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/
+jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/
+jsmnTest_CXXFLAGS			+= -I../../thirdparty/
+json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/
+jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/
+rapidjson-AutoUTFTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
+rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+ujson4cTest_CXXFLAGS		+= -I../../thirdparty/ujson4c/
+vincenthz-libjsonTest_CXXFLAGS		+= -I../../thirdparty/
+yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.1/include/
+ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/
+picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \
                                ArduinoJson.h ArduinoJson.hpp	\
-                               configuru.hpp                    \
                                jsonxx.h                         \
                                Jzon.h							\
-							   picojson.h						\
 							   rapidjsonTest.h					\
 							   gason.h							\
 							   sajson.h							\
