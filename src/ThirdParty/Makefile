@@ -35,7 +35,7 @@ double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unused-parameter
 ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 fastjsonTest_CXXFLAGS		+= -I../../thirdparty/fastjson/include/ -Wno-return-type
-jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter
+jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 jusonTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-pedantic -Wno-gnu-anonymous-struct -Wno-nested-anon-types
 jvarTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-zero-variadic-macro-arguments -Wno-ignored-qualifiers -Wno-nested-anon-types -D_GLIBCXX_USE_CXX11_ABI=0
