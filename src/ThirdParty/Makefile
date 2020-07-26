@@ -3,34 +3,33 @@ THORSANVIL_ROOT             = $(realpath ../../)
 TARGET                      = ThirdParty.slib
 
 VERA                        = true
-
-LDLIBS                      += -L../../thirdparty/ccan/                 -lccan
-LDLIBS                      += -L../../thirdparty/cJSON/                -lcjson
-LDLIBS                      += -L../../thirdparty/fastjson              -lfastjson
-LDLIBS                      += -L../../thirdparty/JsonBox/              -lJsonBox
-LDLIBS                      += -L../../thirdparty/json-c/               -ljson-c
-LDLIBS                      += -L../../thirdparty/jsoncpp/lib/          -ljsoncpp
-LDLIBS                      += -L../../thirdparty/json-voorhees         -ljsonv
-LDLIBS                      += -L../../thirdparty/juson                 -ljuson
-LDLIBS                      += -L../../thirdparty/jvar/lib              -ljvar
-LDLIBS                      += -L../../thirdparty/pjson                 -lpjson
-LDLIBS                      += -L../../thirdparty/udb-jsason-parser     -ljsonparser -L../../thirdparty/udb-json-builder -ljsonbuilder
-LDLIBS                      += -L../../thirdparty/ujson/ujson           -lujson
-LDLIBS                      += -L../../thirdparty/ujson4c               -lujson4c
-LDLIBS                      += -L../../thirdparty/vincenthz-libjson     -lvincenthz-libjson
-LDLIBS                      += -L../../thirdparty/yajl/yajl-2.1.1/lib   -lyajl_s
-LDLIBS                      += -L../../thirdparty/jsonxx                -ljsonxx
-LDLIBS						+= -L../../thirdparty/gason                 -lgason
-LDLIBS                      += -L../../thirdparty/Jzon                  -lJzon
+LDLIBS                      += ../../thirdparty/ccan/libccan.a
+LDLIBS                      += ../../thirdparty/cJSON/libcjson.a
+LDLIBS                      += ../../thirdparty/fastjson/libfastjson.a
+LDLIBS                      += ../../thirdparty/JsonBox/libJsonBox.a
+LDLIBS                      += ../../thirdparty/json-c/libjson-c.a
+LDLIBS                      += ../../thirdparty/jsoncpp/lib/libjsoncpp.a
+LDLIBS                      += ../../thirdparty/json-voorhees/libjsonv.a
+LDLIBS                      += ../../thirdparty/juson/libjuson.a
+LDLIBS                      += ../../thirdparty/jvar/lib/libjvar.a
+LDLIBS                      += ../../thirdparty/pjson/libpjson.a
+LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonparser.a
+LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonbuilder.a
+LDLIBS                      += ../../thirdparty/ujson/ujson/libujson.a
+LDLIBS                      += ../../thirdparty/ujson4c/libujson4c.a
+LDLIBS                      += ../../thirdparty/vincenthz-libjson/libvincenthz-libjson.a
+LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
+LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
+LDLIBS                      += ../../thirdparty/gason/libgason.a
+LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
 gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/
 sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
-udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser
+udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/usr/local/include/ -I../../thirdparty/udb-jsason-parser/usr/local/include/json-parser
 
 json-cTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-sign-compare
-jvarTest_CXXFLAGS			+= -D_GLIBCXX_USE_CXX11_ABI=0
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
 cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unused-parameter
@@ -38,8 +37,8 @@ ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 fastjsonTest_CXXFLAGS		+= -I../../thirdparty/fastjson/include/ -Wno-return-type
 jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
-jusonTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-anonymous-struct -Wno-nested-anon-types
-jvarTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-zero-variadic-macro-arguments -Wno-nested-anon-types
+jusonTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-pedantic -Wno-gnu-anonymous-struct -Wno-nested-anon-types
+jvarTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-zero-variadic-macro-arguments -Wno-ignored-qualifiers -Wno-nested-anon-types -D_GLIBCXX_USE_CXX11_ABI=0
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
 pjsonTest_CXXFLAGS			+= -I../../thirdparty/pjson -Wno-nested-anon-types
 ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression

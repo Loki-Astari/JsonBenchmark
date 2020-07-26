@@ -2,6 +2,10 @@
 # jsonxx
 #
 
+git checkout Makefile
+sed -e 's/CXXFLAGS=/CXXFLAGS=-fPIC /' Makefile > t1
+mv t1 Makefile
+
 make
 ar rv libjsonxx.a jsonxx.o
 ranlib libjsonxx.a

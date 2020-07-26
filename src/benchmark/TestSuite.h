@@ -2,8 +2,8 @@
 #define THORS_ANVIL_BENCHMARK_BENCHMARK_H
 
 #include "filesystem.h"
-#include "ThirdParty/test.h"
-#include "ThirdParty/TestManager.h"
+#include "../ThirdParty/test.h"
+#include "../ThirdParty/TestManager.h"
 #include <string>
 #include <vector>
 #include <fstream>

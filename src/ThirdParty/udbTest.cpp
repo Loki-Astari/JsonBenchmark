@@ -1,7 +1,7 @@
 #include "test.h"
 
-#include "udb/json.h"
-#include "udb/json-builder.h"
+#include "json-parser/json.h"
+#include "json-builder.h"
 #include <memory>
 #include <string>
 
