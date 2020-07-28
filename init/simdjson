@@ -1,0 +1,7 @@
+#
+# simdjson
+#
+
+cmake .
+make
+

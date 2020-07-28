@@ -59,6 +59,7 @@ vincenthz-libjsonTest_CXXFLAGS		+= -I../../thirdparty/
 yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.1/include/
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
+simdjsonTest_CXXFLAGS		+= -I../../thirdparty/simdjson/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
                                ThorsSerializer_GetStats.h  ThorsSerializer_StringNumber.h  ThorsSerializer_Twitter.h \

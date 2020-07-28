@@ -91,3 +91,6 @@
 [submodule "thirdparty/yajl"]
 	path = thirdparty/yajl
 	url = https://github.com/lloyd/yajl.git
+[submodule "thirdparty/simdjson"]
+	path = thirdparty/simdjson
+	url = https://github.com/simdjson/simdjson
