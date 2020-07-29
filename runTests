@@ -12,7 +12,7 @@ if [[ $1 == "osx" ]]; then
 fi
 
 
-echo "Library,FirstCommit,FirstCommit,LanguageType,Stars" > Stats.csv
+echo "Library,First Commit,Last Commit,Language Type,Stars" > Stats.csv
 benchmark17 --titleOnly Conformance.csv Performance.csv
 for parser in $(benchmark17 --listParser); do
     for filter in $(benchmark17 --listTests); do
