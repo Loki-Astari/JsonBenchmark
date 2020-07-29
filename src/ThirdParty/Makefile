@@ -32,7 +32,7 @@ udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/usr/local/include/ -I
 json-cTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-sign-compare
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
-cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/ -Wno-unused-parameter
+cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/ -Wno-unused-parameter
 ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 fastjsonTest_CXXFLAGS		+= -I../../thirdparty/fastjson/include/ -Wno-return-type
 jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces

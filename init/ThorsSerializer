@@ -2,6 +2,9 @@
 # ThorsSerializer
 #
 
+if [[ ! -e tags ]]; then
+    git describe --tags `git rev-parse HEAD` > tags
+fi
 git checkout header-only
 git checkout ThorSerialize
 git checkout ThorsIOUtil

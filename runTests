@@ -12,7 +12,7 @@ if [[ $1 == "osx" ]]; then
 fi
 
 
-echo "Library,FirstCommit,FirstCommit,LanguageType,Stars" > Stats.csv
+echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language Type,Stars" > Stats.csv
 benchmark17 --titleOnly Conformance.csv Performance.csv
 for parser in $(benchmark17 --listParser); do
     for filter in $(benchmark17 --listTests); do
@@ -29,8 +29,6 @@ for parser in $(benchmark17 --listParser); do
     cd thirdparty/${parser}
 
     gitInfo=$(git remote  get-url origin)
-    gitmainbranch=$(git remote show ${gitInfo} | grep "HEAD branch" | awk '{print $3}')
-    git checkout ${gitmainbranch}
 
     first=$(git log --reverse --pretty=%ct | head -1)
     firstOrdered=$(date ${dateAt}${first} +"%c")
@@ -48,7 +46,14 @@ for parser in $(benchmark17 --listParser); do
     gitRepo=${gitInfo2#*/}
     stars=$(curl -s "https://api.github.com/repos/${gitUser}/${gitRepo}?page=$i&per_page=100" | jq '.stargazers_count // 0')
 
+    gitLatestVersion=$(git describe --tags `git rev-list --tags --max-count=1`)
+    if [[ -e tags ]]; then
+        getCurrentVersion=$(cat tags)
+    else
+        getCurrentVersion=$(git describe --tags `git rev-parse HEAD`)
+    fi
+
     cd ../..
 
-    echo "${parser}, ${firstOrderNumeric}, ${lastOrderNumeric}, ${typeOfLib}, ${stars}" >> Stats.csv
+    echo "${parser}, ${firstOrderNumeric}, ${lastOrderNumeric}, ${getCurrentVersion}, ${gitLatestVersion}, ${typeOfLib}, ${stars}" >> Stats.csv
 done

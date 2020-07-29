@@ -1,7 +1,7 @@
 #include "test.h"
 
-#include "cajun/json/reader.h"
-#include "cajun/json/writer.h"
+#include "json/reader.h"
+#include "json/writer.h"
 #include <string.h>
 
 using namespace json;
