@@ -18,11 +18,19 @@ cd ..
 
 php ./script/conformance.php Conformance.csv $1 > loki-astari.github.io/source/Json/Conformance.$1.html
 php ./script/performance.php Performance.csv $1 > loki-astari.github.io/source/Json/Performance.$1.html
-if [[ "$1" == "linux" ]]; then
+if [[ "$1" == "osx" ]]; then
     php ./script/stats.php       Stats.csv          > loki-astari.github.io/source/Json/Stats.html
+
+    cd loki-astari.github.io
+    git commit -a -m "Update OSX Files"
+    git push
+    andvari deploy
+else
+    cd loki-astari.github.io
+    git commit -a -m "Update Linux Files"
+    git push
 fi
-cd loki-astari.github.io
+
 
 # Push back to github.
-andvari deploy
 
