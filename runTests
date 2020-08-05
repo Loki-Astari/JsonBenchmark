@@ -57,3 +57,6 @@ for parser in $(benchmark17 --listParser); do
 
     echo "${parser}, ${firstOrderNumeric}, ${lastOrderNumeric}, ${getCurrentVersion}, ${gitLatestVersion}, ${typeOfLib}, ${stars}" >> Stats.csv
 done
+
+cat Stats.csv
+
