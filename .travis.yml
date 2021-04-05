@@ -10,7 +10,6 @@ branches:
         - master
 sudo: required
 os:
-    - osx
     - bionic
 language: cpp
 before_install:
