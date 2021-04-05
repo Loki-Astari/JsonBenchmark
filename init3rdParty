@@ -1,9 +1,15 @@
 set -e
 
+export OS=$1
+
+if [[ "${OS}" == "" ]]; then
+    export OS=`uname`
+fi
+
 for thirdparty in $(ls init); do
     echo "Initializing: ${thirdparty}"
     cd thirdparty/${thirdparty}
-    ../../init/${thirdparty} $1
+    ../../init/${thirdparty} ${OS}
     cd ../..
     echo "DONE"
     echo

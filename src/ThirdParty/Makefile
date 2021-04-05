@@ -25,7 +25,7 @@ LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
-gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/
+gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/ -Wno-range-loop-analysis
 sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
 udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/usr/local/include/ -I../../thirdparty/udb-jsason-parser/usr/local/include/json-parser
 
@@ -44,8 +44,8 @@ pjsonTest_CXXFLAGS			+= -I../../thirdparty/pjson -Wno-nested-anon-types
 ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src
 JsonBoxTest_CXXFLAGS		+= -I../../thirdparty/JsonBox/include/ -I../../thirdparty/JsonBox/
-ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/
-jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/
+ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/ -Wno-return-stack-address -Wno-range-loop-analysis
+jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/ -Wno-c11-extensions
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
 json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/
 jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/

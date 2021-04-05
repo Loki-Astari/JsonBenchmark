@@ -2,7 +2,7 @@
 # fastjson
 #
 git checkout SConstruct
-if [[ "$1" == "osx" ]]; then
+if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
     cat SConstruct | sed -e's/ git_sha/ sha/' -e's/p1 =/sha="".join(map(chr, git_sha));p1 =/' > t1
 else
     mv SConstruct t1

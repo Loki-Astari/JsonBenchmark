@@ -2,4 +2,4 @@
 # jeayeson
 #
 ./configure
-CXX_FLAGS=-Wno-deprecated-declarations make
+CXX_FLAGS="-Wno-deprecated-declarations -Wno-c11-extensions" make
