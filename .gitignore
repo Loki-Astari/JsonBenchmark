@@ -25,3 +25,4 @@ stamp-*
 
 config.h
 *Config.h
+config.h.in~
