@@ -9,6 +9,8 @@ debug/
 release/
 profile/
 vera/
+makedependency/
+report/
 
 makefile_tmp
 Makefile.extra
@@ -26,3 +28,4 @@ stamp-*
 config.h
 *Config.h
 config.h.in~
+

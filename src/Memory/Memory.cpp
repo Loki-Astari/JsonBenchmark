@@ -63,7 +63,7 @@ MemoryInfo& MemoryInfo::getInstance()
 #if THOR_MEMORY_INSERT == 1
 #include <dlfcn.h>
 extern "C"
-void free(void *ptr) throw()
+void free(void *ptr) noexcept
 {
     void *(*libc_free)(void*) = (void *(*)(void*))dlsym(RTLD_NEXT, "free");
     libc_free(ptr);
@@ -72,7 +72,7 @@ void free(void *ptr) throw()
 }
 
 extern "C"
-void* malloc(size_t size) throw()
+void* malloc(size_t size) noexcept
 {
     void *(*libc_malloc)(size_t) = (void *(*)(size_t))dlsym(RTLD_NEXT, "malloc");
     void* result = libc_malloc(size);
@@ -83,7 +83,7 @@ void* malloc(size_t size) throw()
 }
 
 extern "C"
-void* realloc(void *ptr, size_t size) throw()
+void* realloc(void *ptr, size_t size) noexcept
 {
     void *(*libc_realloc)(void*, size_t) = (void *(*)(void*, size_t))dlsym(RTLD_NEXT, "realloc");
     void* result = libc_realloc(ptr, size);
@@ -96,7 +96,7 @@ void* realloc(void *ptr, size_t size) throw()
 #endif
 #if THOR_MEMORY_INSERT == 2
 extern "C"
-void* mycalloc(size_t count, size_t size) throw()
+void* mycalloc(size_t count, size_t size) noexcept
 {
     void* result = calloc(count, size);
 
@@ -106,7 +106,7 @@ void* mycalloc(size_t count, size_t size) throw()
 }
 
 extern "C"
-void myfree(void *ptr) throw()
+void myfree(void *ptr) noexcept
 {
     free(ptr);
 
@@ -114,7 +114,7 @@ void myfree(void *ptr) throw()
 }
 
 extern "C"
-void* mymalloc(size_t size) throw()
+void* mymalloc(size_t size) noexcept
 {
     void* result = malloc(size);
 
@@ -124,7 +124,7 @@ void* mymalloc(size_t size) throw()
 }
 
 extern "C"
-void* myrealloc(void *ptr, size_t size) throw()
+void* myrealloc(void *ptr, size_t size) noexcept
 {
     void* result = realloc(ptr, size);
 
@@ -135,7 +135,7 @@ void* myrealloc(void *ptr, size_t size) throw()
 }
 
 extern "C"
-void* myreallocf(void *ptr, size_t size) throw()
+void* myreallocf(void *ptr, size_t size) noexcept
 {
     void* result = reallocf(ptr, size);
 
@@ -146,7 +146,7 @@ void* myreallocf(void *ptr, size_t size) throw()
 }
 
 extern "C"
-void* myvalloc(size_t size) throw()
+void* myvalloc(size_t size) noexcept
 {
     void* result = valloc(size);
 
