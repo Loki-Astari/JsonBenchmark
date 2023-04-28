@@ -9,7 +9,7 @@ else
 fi
 
 cat t1 | sed -e's/print "Building version/# print "Building version/' > t2
-cat t2 | sed -e"s/'-O2'/'-O2', '-fPIC', '-Wno-unused-const-variable', '-Wno-return-type'/" > SConstruct
+cat t2 | sed -e"s/'-O2'/'-O2', '-fPIC', '-Wno-unused-const-variable', '-Wno-return-type', '--target=arm64-apple-darwin22.4.0' /" > SConstruct
 
 SCONSFLAGS="arch=arm64" make
 
