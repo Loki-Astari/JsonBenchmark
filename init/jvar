@@ -2,6 +2,6 @@
 # jvar
 #
 
-cmake -DCMAKE_CXX_FLAGS=-fPIC .
+cmake -DCMAKE_CXX_FLAGS=-fPIC -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 .
 make
 

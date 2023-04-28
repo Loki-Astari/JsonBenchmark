@@ -2,6 +2,6 @@
 # gason
 #
 
-cmake '-DCMAKE_CXX_FLAGS=-I../rapidjson//include -fPIC' .
+cmake '-DCMAKE_CXX_FLAGS=-I../rapidjson//include -fPIC' -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 .
 make
 

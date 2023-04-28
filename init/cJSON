@@ -5,6 +5,6 @@
 git checkout cJSON.c
 cat cJSON.c | sed  -e"s/return NAN/return (double)NAN/" > t1
 mv t1 cJSON.c
-cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_FLAGS=-fPIC .
+cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_C_FLAGS=-fPIC -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 .
 make
 
