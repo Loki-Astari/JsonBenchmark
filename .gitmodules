@@ -91,3 +91,6 @@
 [submodule "thirdparty/yajl"]
 	path = thirdparty/yajl
 	url = https://github.com/lloyd/yajl.git
+[submodule ".build"]
+	path = .build
+	url = git@github.com:Loki-Astari/ThorMaker.git
