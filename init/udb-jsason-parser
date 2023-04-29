@@ -12,7 +12,11 @@ cd ../udb-json-builder
 #
 # udb-json-builder
 #
-cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 .
+if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
+    archisArm="-DCMAKE_APPLE_SILICON_PROCESSOR=arm64"
+fi
+
+cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' ${archisArm} .
 make
 make install
 

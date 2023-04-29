@@ -38,9 +38,14 @@ Create a fork of this project. Then checkout your fork and build it locally.
 > git checkout git@github.com:<You>/JsonBenchmark.git
 > cd JsonBenchmark
 > git submodule update --init --recursive
-> ./init3rdParty
 > ./configure
+> # To install standard packages that are used to run tests.
+> ./initPlatform
+> # To build all 3rd party JSON libraries.
+> ./init3rdParty
+> # Build the test platform.
 > make
+> ./runTests
 ````
 
 ### Adding a new Json Library

@@ -1,7 +1,11 @@
 #
 # gason
 #
+if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
+    archisArm="-DCMAKE_APPLE_SILICON_PROCESSOR=arm64"
+fi
 
-cmake '-DCMAKE_CXX_FLAGS=-I../rapidjson//include -fPIC' -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 .
+
+cmake '-DCMAKE_CXX_FLAGS=-I../rapidjson//include -fPIC' ${archisArm} .
 make
 

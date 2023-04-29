@@ -4,10 +4,16 @@ export PATH="${PATH}:$(pwd)/build/bin"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
 
-if [[ $1 == "linux" ]]; then
+export OS=$1
+
+if [[ "${OS}" == "" ]]; then
+    export OS=`uname`
+fi
+
+if [[ ${OS} == "linux" ]]; then
     dateAt="-d @"
 fi
-if [[ $1 == "osx" ]]; then
+if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
     dateAt="-r "
 fi
 
