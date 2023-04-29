@@ -18,7 +18,7 @@ LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/
 LDLIBS                      += ../../thirdparty/ujson/ujson/libujson.a
 LDLIBS                      += ../../thirdparty/ujson4c/libujson4c.a
 LDLIBS                      += ../../thirdparty/vincenthz-libjson/libvincenthz-libjson.a
-LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.0/lib/libyajl_s.a
+LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/gason/libgason.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
@@ -56,7 +56,7 @@ rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 ujson4cTest_CXXFLAGS		+= -I../../thirdparty/ujson4c/
 vincenthz-libjsonTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-deprecated-declarations
-yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.0/include/
+yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.1/include/
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 
