@@ -69,6 +69,12 @@ class Traits<Cord>
             static constexpr MemberExtractor    memberExtractor;
             return memberExtractor;
         }
+        static std::size_t getPrintSize(PrinterInterface& /*printer*/, Cord const& /*object*/, bool /*poly*/)
+        {
+            // Only used by BSON.
+            // So not needed for JSON tests.
+            return 0;
+        }
 };
     }
 }
