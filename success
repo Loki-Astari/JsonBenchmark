@@ -4,26 +4,15 @@ if [[ "$1" == "linux" ]]; then
     sudo apt-get install node.js
 fi
 
-git clone git@github.com:Loki-Astari/andvari.git
-cd andvari
-npm install
-export PATH=${PATH}:$(pwd)/bin
-cd ..
+git clone git@github.com:Loki-Astari/geeky-nextjs
 
-git clone git@github.com:Loki-Astari/loki-astari.github.io.git
-cd loki-astari.github.io
-git checkout source
-git submodule update --init --recursive
-cd ..
-
-php ./script/conformance.php Conformance.csv $1 > loki-astari.github.io/source/Json/Conformance.$1.html
-php ./script/performance.php Performance.csv $1 > loki-astari.github.io/source/Json/Performance.$1.html
+php ./script/conformance.php Conformance.csv $1 > geeky-nextjs/public/Json/Conformance.$1.html
+php ./script/performance.php Performance.csv $1 > geeky-nextjs/public/Json/Performance.$1.html
 if [[ "$1" == "osx" ]]; then
 
     cd loki-astari.github.io
     git commit -a -m "Update OSX Files"
     git push
-    andvari deploy
 else
     php ./script/stats.php       Stats.csv          > loki-astari.github.io/source/Json/Stats.html
 
