@@ -18,14 +18,12 @@ LDLIBS                      += ../../thirdparty/ujson4c/libujson4c.a
 LDLIBS                      += ../../thirdparty/vincenthz-libjson/libvincenthz-libjson.a
 LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
-LDLIBS                      += ../../thirdparty/gason/libgason.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 LDLIBS                      += -L ../../thirdparty/ThorsSerializer/build/lib  -lThorSerialize -lThorsLogging
 
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/ -Wno-deprecated-declarations
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
-gasonTest_CXXFLAGS			+= -I../../thirdparty/gason/ -Wno-range-loop-analysis -Wno-deprecated-declarations
 sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
 udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/usr/local/include/ -I../../thirdparty/udb-jsason-parser/usr/local/include/json-parser
 
@@ -64,7 +62,6 @@ EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_ca
                                jsonxx.h                         \
                                Jzon.h							\
 							   rapidjsonTest.h					\
-							   gason.h							\
 							   sajson.h							\
 							   ujson.hpp double-conversion.h	\
 
