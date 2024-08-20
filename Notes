@@ -13,3 +13,5 @@ Removed libraries that had not been updated in over 5 years.
     ujson
     vincenthz-libjson
     yajl
+Removed because it does not support C++17
+    cajun:  Used std::unary_function    (this has been removed from the standard)

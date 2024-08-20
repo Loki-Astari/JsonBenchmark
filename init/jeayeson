@@ -1,5 +1,0 @@
-#
-# jeayeson
-#
-./configure
-LD_LIBS="-Wno-deprecated-declarations -Wno-c11-extensions -Wno-deprecated-copy-with-user-provided-copy" make
