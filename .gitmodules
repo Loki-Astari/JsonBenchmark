@@ -19,9 +19,6 @@
 [submodule "thirdparty/ccan"]
 	path = thirdparty/ccan
 	url = https://github.com/rustyrussell/ccan.git
-[submodule "thirdparty/fastjson"]
-	path = thirdparty/fastjson
-	url = https://github.com/mikeando/fastjson.git
 [submodule "thirdparty/gason"]
 	path = thirdparty/gason
 	url = https://github.com/vivkin/gason.git

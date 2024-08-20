@@ -5,7 +5,6 @@ TARGET                      = ThirdParty.slib
 VERA                        = true
 LDLIBS                      += ../../thirdparty/ccan/libccan.a
 LDLIBS                      += ../../thirdparty/cJSON/libcjson.a
-LDLIBS                      += ../../thirdparty/fastjson/libfastjson.a
 LDLIBS                      += ../../thirdparty/json-c/libjson-c.a
 LDLIBS                      += ../../thirdparty/jsoncpp/build/lib/libjsoncpp.a
 LDLIBS                      += ../../thirdparty/json-voorhees/libjsonv.a
@@ -35,7 +34,6 @@ double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
 cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/cajun/ -Wno-unused-parameter -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor
 ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
-fastjsonTest_CXXFLAGS		+= -I../../thirdparty/fastjson/include/ -Wno-return-type -Wno-deprecated-declarations
 jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 jusonTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-pedantic -Wno-gnu-anonymous-struct -Wno-nested-anon-types
