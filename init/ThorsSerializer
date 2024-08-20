@@ -1,0 +1,21 @@
+
+CWD=$(pwd)
+
+git clone git@github.com:Loki-Astari/ThorsIOUtil.git
+cd ThorsIOUtil
+./configure --prefix $(realpath ${CWD}/build)
+make
+make install
+cd ..
+
+git clone git@github.com:Loki-Astari/ThorsLogging.git
+cd ThorsLogging
+./configure --prefix $(realpath ${CWD}/build) --with-thorserialize-root=$(realpath ${CWD}/build)
+make
+make install
+cd ..
+
+
+./configure
+make
+

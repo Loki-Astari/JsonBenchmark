@@ -22,6 +22,8 @@ LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/gason/libgason.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
+LDLIBS                      += -L ../../thirdparty/ThorsSerializer/build/lib  -lThorSerialize -lThorsLogging
+
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/ -Wno-deprecated-declarations
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
@@ -44,7 +46,7 @@ pjsonTest_CXXFLAGS			+= -I../../thirdparty/pjson -Wno-nested-anon-types
 ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src -Wno-deprecated-dynamic-exception-spec
 JsonBoxTest_CXXFLAGS		+= -I../../thirdparty/JsonBox/include/ -I../../thirdparty/JsonBox/
-ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/ -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
+ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/build/include -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
 jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/ -Wno-c11-extensions -Wno-deprecated-copy-with-user-provided-copy
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
 json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/ -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor

@@ -32,8 +32,8 @@ class TestAction
 
 using ThorsAnvil::Serialize::jsonExport;
 using ThorsAnvil::Serialize::jsonImport;
-using ThorsAnvil::Serialize::ParserInterface;
-using ThorsAnvil::Serialize::PrinterInterface;
+using ThorsAnvil::Serialize::ParseType;
+using ThorsAnvil::Serialize::OutputType;
 
 class VectorDouble: public TestAction
 {
@@ -41,7 +41,7 @@ class VectorDouble: public TestAction
     virtual bool ParseDouble(const char* json, double* d) const {
         std::stringstream stream(json);
         std::vector<double> result;
-        stream >> jsonImport(result, ParserInterface::ParseType::Weak, true);
+        stream >> jsonImport(result, ParseType::Weak, true);
         if (stream && result.size() == 1) {
             *d = result[0];
             return true;
@@ -55,7 +55,7 @@ class VectorString: public TestAction
     virtual bool ParseString(const char* json, std::string& output) const {
         std::stringstream stream(json);
         std::vector<std::string> result;
-        stream >> jsonImport(result, ParserInterface::ParseType::Weak, true);
+        stream >> jsonImport(result, ParseType::Weak, true);
         if (stream && result.size() == 1) {
             output = result[0];
             return true;
@@ -84,7 +84,7 @@ class GetValue: public TestAction
     virtual ParseResultBase* Parse(const char* json, size_t) const {
         GetValueResult<Value>* result = new GetValueResult<Value>();
         std::stringstream stream(json);
-        stream >> jsonImport(result->data, ParserInterface::ParseType::Weak, true);
+        stream >> jsonImport(result->data, ParseType::Weak, true);
         char bad;
         if (!stream || stream >> bad) {
             delete result;
@@ -95,13 +95,13 @@ class GetValue: public TestAction
     virtual StringResultBase* Stringify(ParseResultBase const* value) const {
         GetValueStream* result = new GetValueStream;
         GetValueResult<Value> const* inputValue = dynamic_cast<GetValueResult<Value> const*>(value);
-        result->stream << jsonExport(inputValue->data, PrinterInterface::OutputType::Stream, true);
+        result->stream << jsonExport(inputValue->data, OutputType::Stream, true);
         return result;
     }
     virtual StringResultBase* Prettify(const ParseResultBase* value) const {
         GetValueStream* result = new GetValueStream;
         GetValueResult<Value> const* inputValue = dynamic_cast<GetValueResult<Value> const*>(value);
-        result->stream << jsonExport(inputValue->data, PrinterInterface::OutputType::Config, true);
+        result->stream << jsonExport(inputValue->data, OutputType::Config, true);
         return result;
     }
     virtual bool Statistics(const ParseResultBase* value, Stat* stat) const {
