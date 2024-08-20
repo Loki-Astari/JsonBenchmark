@@ -10,7 +10,6 @@ LDLIBS                      += ../../thirdparty/jsoncpp/build/lib/libjsoncpp.a
 LDLIBS                      += ../../thirdparty/json-voorhees/libjsonv.a
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonparser.a
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonbuilder.a
-LDLIBS                      += ../../thirdparty/ujson/ujson/libujson.a
 LDLIBS                      += ../../thirdparty/ujson4c/libujson4c.a
 LDLIBS                      += ../../thirdparty/vincenthz-libjson/libvincenthz-libjson.a
 LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
@@ -32,7 +31,6 @@ ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
-ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src -Wno-deprecated-dynamic-exception-spec
 ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/build/include -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
@@ -56,7 +54,6 @@ EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_ca
                                Jzon.h							\
 							   rapidjsonTest.h					\
 							   sajson.h							\
-							   ujson.hpp double-conversion.h	\
 
 
 
