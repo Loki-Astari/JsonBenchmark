@@ -7,9 +7,6 @@
 [submodule "thirdparty/Configuru"]
 	path = thirdparty/Configuru
 	url = https://github.com/emilk/Configuru.git
-[submodule "thirdparty/JsonBox"]
-	path = thirdparty/JsonBox
-	url = https://github.com/anhero/JsonBox.git
 [submodule "thirdparty/Jzon"]
 	path = thirdparty/Jzon
 	url = https://github.com/Zguy/Jzon.git
