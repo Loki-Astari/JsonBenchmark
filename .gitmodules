@@ -19,9 +19,6 @@
 [submodule "thirdparty/cJSON"]
 	path = thirdparty/cJSON
 	url = https://github.com/DaveGamble/cJSON.git
-[submodule "thirdparty/cajun-jsonapi"]
-	path = thirdparty/cajun-jsonapi
-	url = https://github.com/cajun-jsonapi/cajun-jsonapi.git
 [submodule "thirdparty/ccan"]
 	path = thirdparty/ccan
 	url = https://github.com/rustyrussell/ccan.git

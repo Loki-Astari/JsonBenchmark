@@ -56,7 +56,6 @@ class TestRunner: public TestBase
 
 REGISTER_TEST_OBJECT(ThorsSerializerTest);
 REGISTER_TEST_OBJECT(ArduinojsonTest);
-REGISTER_TEST_OBJECT(CajunTest);
 REGISTER_TEST_OBJECT(ConfiguruTest);
 REGISTER_TEST_OBJECT(FastjsonTest);
 REGISTER_TEST_OBJECT(JeayesonTest);
