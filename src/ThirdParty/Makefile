@@ -10,7 +10,6 @@ LDLIBS                      += ../../thirdparty/jsoncpp/build/lib/libjsoncpp.a
 LDLIBS                      += ../../thirdparty/json-voorhees/libjsonv.a
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonparser.a
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonbuilder.a
-LDLIBS                      += ../../thirdparty/yajl/yajl-2.1.1/lib/libyajl_s.a
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 LDLIBS                      += -L ../../thirdparty/ThorsSerializer/build/lib  -lThorSerialize -lThorsLogging
@@ -39,7 +38,6 @@ rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
-yajlTest_CXXFLAGS			+= -I../../thirdparty/yajl//yajl-2.1.1/include/
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 
