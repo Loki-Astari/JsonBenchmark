@@ -8,7 +8,6 @@ LDLIBS                      += ../../thirdparty/cJSON/libcjson.a
 LDLIBS                      += ../../thirdparty/json-c/libjson-c.a
 LDLIBS                      += ../../thirdparty/jsoncpp/build/lib/libjsoncpp.a
 LDLIBS                      += ../../thirdparty/json-voorhees/libjsonv.a
-LDLIBS                      += ../../thirdparty/jvar/lib/libjvar.a
 LDLIBS                      += ../../thirdparty/pjson/libpjson.a
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonparser.a
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/usr/local/lib/libjsonbuilder.a
@@ -33,7 +32,6 @@ cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/cajun/ -W
 ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
 jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
-jvarTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-gnu-zero-variadic-macro-arguments -Wno-ignored-qualifiers -Wno-nested-anon-types -D_GLIBCXX_USE_CXX11_ABI=0
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
 pjsonTest_CXXFLAGS			+= -I../../thirdparty/pjson -Wno-nested-anon-types
 ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression

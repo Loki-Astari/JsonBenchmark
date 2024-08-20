@@ -37,9 +37,6 @@
 [submodule "thirdparty/jsonxx"]
 	path = thirdparty/jsonxx
 	url = https://github.com/hjiang/jsonxx.git
-[submodule "thirdparty/jvar"]
-	path = thirdparty/jvar
-	url = https://github.com/YasserAsmi/jvar.git
 [submodule "thirdparty/nlohmann"]
 	path = thirdparty/nlohmann
 	url = https://github.com/nlohmann/json.git
