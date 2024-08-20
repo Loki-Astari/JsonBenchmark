@@ -1,8 +1,0 @@
-#
-# juson
-#
-
-gcc -c -o juson.o juson.c -fPIC -O3 -DNDEBUG
-ar rv libjuson.a juson.o
-ranlib libjuson.a
-
