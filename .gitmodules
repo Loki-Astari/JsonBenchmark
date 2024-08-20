@@ -1,18 +1,9 @@
 [submodule "build"]
 	path = build
 	url = https://github.com/Loki-Astari/ThorMaker.git
-[submodule "thirdparty/ArduinoJson"]
-	path = thirdparty/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson.git
 [submodule "thirdparty/Configuru"]
 	path = thirdparty/Configuru
 	url = https://github.com/emilk/Configuru.git
-[submodule "thirdparty/JsonBox"]
-	path = thirdparty/JsonBox
-	url = https://github.com/anhero/JsonBox.git
-[submodule "thirdparty/Jzon"]
-	path = thirdparty/Jzon
-	url = https://github.com/Zguy/Jzon.git
 [submodule "thirdparty/ThorsSerializer"]
 	path = thirdparty/ThorsSerializer
 	url = https://github.com/Loki-Astari/ThorsSerializer.git
@@ -25,15 +16,6 @@
 [submodule "thirdparty/ccan"]
 	path = thirdparty/ccan
 	url = https://github.com/rustyrussell/ccan.git
-[submodule "thirdparty/fastjson"]
-	path = thirdparty/fastjson
-	url = https://github.com/mikeando/fastjson.git
-[submodule "thirdparty/gason"]
-	path = thirdparty/gason
-	url = https://github.com/vivkin/gason.git
-[submodule "thirdparty/jeayeson"]
-	path = thirdparty/jeayeson
-	url = https://github.com/jeaye/jeayeson.git
 [submodule "thirdparty/jsmn"]
 	path = thirdparty/jsmn
 	url = https://github.com/zserge/jsmn.git
@@ -52,21 +34,9 @@
 [submodule "thirdparty/jsonxx"]
 	path = thirdparty/jsonxx
 	url = https://github.com/hjiang/jsonxx.git
-[submodule "thirdparty/juson"]
-	path = thirdparty/juson
-	url = https://github.com/wgtdkp/juson.git
-[submodule "thirdparty/jvar"]
-	path = thirdparty/jvar
-	url = https://github.com/YasserAsmi/jvar.git
 [submodule "thirdparty/nlohmann"]
 	path = thirdparty/nlohmann
 	url = https://github.com/nlohmann/json.git
-[submodule "thirdparty/picojson"]
-	path = thirdparty/picojson
-	url = https://github.com/kazuho/picojson.git
-[submodule "thirdparty/pjson"]
-	path = thirdparty/pjson
-	url = https://github.com/ony/pjson.git
 [submodule "thirdparty/rapidjson"]
 	path = thirdparty/rapidjson
 	url = https://github.com/miloyip/rapidjson.git
@@ -79,18 +49,6 @@
 [submodule "thirdparty/udb-json-builder"]
 	path = thirdparty/udb-json-builder
 	url = https://github.com/udp/json-builder.git
-[submodule "thirdparty/ujson"]
-	path = thirdparty/ujson
-	url = https://bitbucket.org/awangk/ujson.git
-[submodule "thirdparty/ujson4c"]
-	path = thirdparty/ujson4c
-	url = https://github.com/esnme/ujson4c.git
-[submodule "thirdparty/vincenthz-libjson"]
-	path = thirdparty/vincenthz-libjson
-	url = https://github.com/vincenthz/libjson.git
-[submodule "thirdparty/yajl"]
-	path = thirdparty/yajl
-	url = https://github.com/lloyd/yajl.git
 [submodule ".build"]
 	path = .build
 	url = git@github.com:Loki-Astari/ThorMaker.git

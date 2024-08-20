@@ -1,1 +1,15 @@
-build/autotools/Notes
+Removed libraries that had not been updated in over 5 years.
+    ArduinoJson
+    JsonBox
+    Jzon
+    fastjson
+    gason
+    jeayeson
+    juson
+    jvar
+    picojson
+    pjson
+    ujson4c
+    ujson
+    vincenthz-libjson
+    yajl
