@@ -19,9 +19,6 @@
 [submodule "thirdparty/ccan"]
 	path = thirdparty/ccan
 	url = https://github.com/rustyrussell/ccan.git
-[submodule "thirdparty/jeayeson"]
-	path = thirdparty/jeayeson
-	url = https://github.com/jeaye/jeayeson.git
 [submodule "thirdparty/jsmn"]
 	path = thirdparty/jsmn
 	url = https://github.com/zserge/jsmn.git

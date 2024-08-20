@@ -41,7 +41,6 @@ pjsonTest_CXXFLAGS			+= -I../../thirdparty/pjson -Wno-nested-anon-types
 ujsonTest_CXXFLAGS			+= -I../../thirdparty/ujson/ -Wno-unused-parameter -Wno-potentially-evaluated-expression
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src -Wno-deprecated-dynamic-exception-spec
 ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/build/include -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
-jeayesonTest_CXXFLAGS		+= -I../../thirdparty/jeayeson/include/ -Wno-c11-extensions -Wno-deprecated-copy-with-user-provided-copy
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
 json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/ -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor
 jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/
