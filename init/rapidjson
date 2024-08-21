@@ -1,7 +1,11 @@
 #
 # rapidjson
 #
+if [[ "$1" == "Msys" ]]; then
+    archisArm="-G MSYS Makefiles"
+fi
 
-cmake -DRAPIDJSON_BUILD_DOC=OFF -DRAPIDJSON_BUILD_EXAMPLES=OFF -DRAPIDJSON_BUILD_TESTS=OFF .
+
+cmake -DRAPIDJSON_BUILD_DOC=OFF -DRAPIDJSON_BUILD_EXAMPLES=OFF -DRAPIDJSON_BUILD_TESTS=OFF "${archisArm}" .
 make
 

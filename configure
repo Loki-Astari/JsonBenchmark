@@ -2906,6 +2906,32 @@ fi
 
 
 
+    sedStrip='s/-.*//'
+    UNAME=`uname -s | sed "${sedStrip}"`
+    echo "Checking Windows Symbolic Links: ${UNAME}"
+    if test "x${UNAME}" = "xMSYS_NT" || test "x${UNAME}" = "xMINGW64_NT"
+then :
+
+        if test ! -e .windows.fix
+then :
+
+                echo "    Fixing"
+                git config --local core.symlinks true
+                find src/ -type f | xargs -I^ git restore --source=HEAD ^
+                echo "    Fixing DONE"
+                touch .windows.fix
+
+
+fi
+
+else case e in #(
+  e)
+        echo "    Not Windows"
+     ;;
+esac
+fi
+
+
 
 
 

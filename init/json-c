@@ -5,7 +5,11 @@ if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
     archisArm="-DCMAKE_APPLE_SILICON_PROCESSOR=arm64"
 fi
 
+if [[ "$1" == "Msys" ]]; then
+    archisArm="-G MSYS Makefiles"
+fi
 
-cmake -DCMAKE_C_FLAGS=-fPIC ${archisArm} .
+
+cmake -DCMAKE_C_FLAGS=-fPIC "${archisArm}" .
 make
 
