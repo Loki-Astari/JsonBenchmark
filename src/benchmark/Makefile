@@ -4,7 +4,7 @@ CXXFLAGS                    = -D THORSANVIL_ROOT=$(THORSANVIL_ROOT) -D DATA_DIR=
 
 FILE_WARNING_FLAGS          += -Wno-unknown-pragmas
 
-TARGET                      = benchmark.app memory.app
+TARGET                      = benchmark.prog memory.prog
 
 LINK_LIBS                   = ThirdParty
 memory_LINK_LIBS            = Memory

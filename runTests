@@ -1,8 +1,10 @@
 #!/bin/bash
 
+CWD=$(pwd)
+
 export PATH="${PATH}:$(pwd)/build/bin"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
-export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:${CWD}/thirdparty/ThorsSerializer/build/lib/"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:${CWD}/thirdparty/ThorsSerializer/build/lib/"
 
 export OS=$1
 
@@ -19,12 +21,12 @@ fi
 
 
 echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language Type,Stars" > Stats.csv
-benchmark17 --titleOnly Conformance.csv Performance.csv
-for parser in $(benchmark17 --listParser); do
-    for filter in $(benchmark17 --listTests); do
-        benchmark17 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
+benchmark20 --titleOnly Conformance.csv Performance.csv
+for parser in $(benchmark20 --listParser); do
+    for filter in $(benchmark20 --listTests); do
+        benchmark20 --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
         if [[ $? != 0 ]]; then
-            benchmark17 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
+            benchmark20 --append --filter=${filter} --parser=${parser} --markFailed Conformance.csv Performance.csv
             r=$?
             if [[ $r != 0 ]]; then 
                 echo "Big Issue: $? ${parser} ${filter}"
@@ -44,7 +46,7 @@ for parser in $(benchmark17 --listParser); do
     lastOrdered=$(date ${dateAt}${last} +"%c")
     lastOrderNumeric=$(date ${dateAt}${last} +"%F")
 
-    typeOfLib=$(benchmark17 --parser=${parser} --parserType)
+    typeOfLib=$(benchmark20 --parser=${parser} --parserType)
 
     gitInfo1=${gitInfo#https://github.com/}
     gitInfo2=${gitInfo1%.*}

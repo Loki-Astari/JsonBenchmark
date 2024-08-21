@@ -28,7 +28,7 @@ class ThorsSerializerTest: public TestBase
     GetValue<std::map<std::string, int*>>        testGetValueMap2IntPointer;
     GetValue<std::map<std::string, M01>>         testGetValueMap2M01;
     GetValue<std::vector<std::string>>           testGetValueVec2String;
-    //GetValue<std::vector<L18>>                   testGetValueVec2L18;
+    //GetValue<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::string>>>>>>>>>>>>>>>>>>>> testGetValueVec2L18;
     GetValue<std::vector<int*>>                  testGetValueVec2IntPointer;
     GetValue<std::vector<bool>>                  testGetValueVec2Bool;
     GetValue<std::vector<int>>                   testGetValueVec2Int;
@@ -88,7 +88,7 @@ class ThorsSerializerTest: public TestBase
         actionMap["jsonchecker_fail/fail33.json"]    = &testGetValueVec2String;
 
         //  pass01.json     ThorsSerializer does not support polymorphic arrays
-        //actionMap["jsonchecker_pass/pass02.json"]    = &testGetValueVec2L18;
+        // actionMap["jsonchecker_pass/pass02.json"]    = &testGetValueVec2L18;
         actionMap["jsonchecker_pass/pass03.json"]    = &testGetValueMap2M01;
 
 
@@ -138,7 +138,7 @@ class ThorsSerializerTest: public TestBase
     }
 
     virtual const char* GetName() const /*override*/        { return "ThorsSerializer"; }
-    virtual const char* Type()    const /*override*/        { return "C++17";}
+    virtual const char* Type()    const /*override*/        { return "C++20";}
     virtual const char* GetFilename() const /*override*/    { return __FILE__; }
 
     virtual ParseResultBase* Parse(const char* json, size_t length) const {
