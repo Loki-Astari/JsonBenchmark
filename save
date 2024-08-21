@@ -12,6 +12,7 @@ else
 fi
 
 git clone https://${token}github.com/Loki-Astari/geeky-nextjs
+
 cp Conformance.csv geeky-nextjs/public/Json/raw/Conformance.$1.csv
 cp Performance.csv geeky-nextjs/public/Json/raw/Performance.$1.csv
 

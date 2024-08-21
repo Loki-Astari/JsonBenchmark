@@ -114,18 +114,22 @@ jobs:
                     mingw-w64-x86_64-boost
                     mingw-w64-x86_64-cmake
             - name: Install Dependencies
+              shell: msys2 {0}
               run: |
                 git clone https://github.com/Neargye/magic_enum.git /tmp/magic_enum
             - name: Run Configure
+              shell: msys2 {0}
               run: |
                 ./configure --disable-vera
                 ./init3rdParty
             - name: Make
+              shell: msys2 {0}
               env:
                 ThorsSerializerTest_CXXFLAGS: "-I /tmp/magic_enum/include/magic_enum"
               run: make
             - run: ./runTests
             - name: Update Results
+              shell: msys2 {0}
               env:
                 GH_TOKEN: ${{ steps.generate-token.outputs.token }}
               run: |
