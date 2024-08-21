@@ -4,6 +4,7 @@
 #include "TestSuite.h"
 #include <fstream>
 #include <string>
+#include <limits>
 
 namespace ThorsAnvil
 {

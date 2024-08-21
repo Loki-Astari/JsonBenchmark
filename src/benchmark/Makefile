@@ -1,13 +1,14 @@
-THORSANVIL_ROOT             = $(realpath ../../)
+THORSANVIL_ROOT				= $(realpath ../../)
 
-CXXFLAGS                    = -D THORSANVIL_ROOT=$(THORSANVIL_ROOT) -D DATA_DIR=$(realpath $(THORSANVIL_ROOT)/data) -D LIBEXT=$(BUILD_EXTENSION).$(SO)
+CXXFLAGS					= -D THORSANVIL_ROOT=$(THORSANVIL_ROOT) -D DATA_DIR=$(realpath $(THORSANVIL_ROOT)/data) -D LIBEXT=$(BUILD_EXTENSION).$(SO)
 
-FILE_WARNING_FLAGS          += -Wno-unknown-pragmas
+FILE_WARNING_FLAGS			+= -Wno-unknown-pragmas
 
-TARGET                      = benchmark.prog memory.prog
+TARGET						= benchmark.prog memory.prog
 
-LINK_LIBS                   = ThirdParty
-memory_LINK_LIBS            = Memory
-memory_LDLIBS               = -ldl
+LDFLAGS						+= -L$(THORSANVIL_ROOT)/thirdparty/ThorsSerializer/build/lib/
+LINK_LIBS					= ThirdParty ThorSerialize ThorsLogging
+memory_LINK_LIBS			= Memory
+memory_LDLIBS				= -ldl
 
 include $(THORSANVIL_ROOT)/build/tools/Makefile
