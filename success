@@ -3,23 +3,26 @@
 if [[ "$1" == "linux" ]]; then
     sudo apt-get install node.js
 fi
+token=${GH_TOKEN}
+if [[ "${token}" != "" ]]; then
+    echo "--- Have Token ---"
+    token="${token}@"
+else
+    echo "--- NO TOKEN ---"
+fi
 
-git clone git@github.com:Loki-Astari/geeky-nextjs
+git clone https://${token}github.com/Loki-Astari/geeky-nextjs
 
 php ./script/conformance.php Conformance.csv $1 > geeky-nextjs/public/Json/Conformance.$1.html
 php ./script/performance.php Performance.csv $1 > geeky-nextjs/public/Json/Performance.$1.html
-if [[ "$1" == "osx" ]]; then
 
-    cd loki-astari.github.io
-    git commit -a -m "Update OSX Files"
-    git push
-else
+if [[ "$1" == "OSX" ]]; then
     php ./script/stats.php       Stats.csv          > loki-astari.github.io/source/Json/Stats.html
-
-    cd loki-astari.github.io
-    git commit -a -m "Update Linux Files"
-    git push
 fi
+
+cd loki-astari.github.io
+git commit -a -m "Update $1 Files"
+git push
 
 
 # Push back to github.

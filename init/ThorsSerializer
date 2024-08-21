@@ -1,21 +1,30 @@
 
 CWD=$(pwd)
+token=${GH_TOKEN}
+if [[ "${token}" != "" ]]; then
+    echo "--- Have Token ---"
+    token="${token}@"
+else
+    echo "--- NO TOKEN ---"
+fi
 
-git clone git@github.com:Loki-Astari/ThorsIOUtil.git
+
+
+git clone https://${token}github.com/Loki-Astari/ThorsIOUtil.git
 cd ThorsIOUtil
-./configure --prefix $(realpath ${CWD}/build)
+./configure --disable-vera --prefix $(realpath ${CWD}/build)
 make
 make install
 cd ..
 
-git clone git@github.com:Loki-Astari/ThorsLogging.git
+git clone https://${token}github.com/Loki-Astari/ThorsLogging.git
 cd ThorsLogging
-./configure --prefix $(realpath ${CWD}/build) --with-thorserialize-root=$(realpath ${CWD}/build)
+./configure --disable-vera --prefix $(realpath ${CWD}/build) --with-thorserialize-root=$(realpath ${CWD}/build)
 make
 make install
 cd ..
 
 
-./configure
+./configure --disable-vera
 make
 
