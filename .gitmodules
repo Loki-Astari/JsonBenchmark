@@ -55,6 +55,3 @@
 [submodule "thirdparty/udb-json-builder"]
 	path = thirdparty/udb-json-builder
 	url = https://github.com/udp/json-builder.git
-[submodule ".build"]
-	path = .build
-	url = git@github.com:Loki-Astari/ThorMaker.git
