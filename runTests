@@ -93,3 +93,17 @@ done
 
 cat Stats.csv
 
+if [[ "${OS}" == "osx" || "${OS}" == "Darwin" ]]; then
+    php ./script/stats.php       Stats.csv          > Stats.html
+fi
+
+echo
+echo
+echo "Saving For: ${OS}"
+echo
+echo
+php ./script/conformance.php Conformance.csv > Conformance.${OS}.html
+php ./script/performance.php Performance.csv > Performance.${OS}.html
+echo "Complete"
+
+

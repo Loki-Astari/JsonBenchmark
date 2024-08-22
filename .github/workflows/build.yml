@@ -23,10 +23,11 @@ jobs:
               uses: actions/checkout@master
               with:
                 submodules: recursive
-                token: ${{ secrets.JSONBENCHMARKKEY }}
+                token: ${{ secrets.GITHUB_TOKEN }}
             - name: Install Dependencies
               run: |
                 env HOMEBREW_NO_AUTO_UPDATE=1 brew install boost
+                env HOMEBREW_NO_AUTO_UPDATE=1 brew install php
             - name: Run Configure
               run: |
                 ./configure --disable-vera
@@ -34,9 +35,14 @@ jobs:
             - name: Make
               run: make
             - run: ./runTests
-            - name: Update Results
-              run: |
-                ./save osx
+            - name: Archive code coverage results
+              uses: actions/upload-artifact@v4
+              with:
+                name: DataOSX
+                path: |
+                  Stats.html
+                  Conformance.Darwin.html
+                  Performance.Darwin.html
     Build_on_Linux:
         runs-on:    ubuntu-latest
         steps:
@@ -44,10 +50,11 @@ jobs:
               uses: actions/checkout@master
               with:
                 submodules: recursive
-                token: ${{ secrets.JSONBENCHMARKKEY }}
+                token: ${{ secrets.GITHUB_TOKEN }}
             - name: Install Dependencies
               run: |
                 sudo apt-get install libboost-all-dev
+                sudo apt-get install php
             - name: Run Configure
               run: |
                 ./configure --disable-vera
@@ -56,9 +63,38 @@ jobs:
               run: |
                 make
             - run: ./runTests
-            - name: Update Results
+            - name: Archive code coverage results
+              uses: actions/upload-artifact@v4
+              with:
+                name: DataLinux
+                path: |
+                  Conformance.linux.html
+                  Performance.linux.html
+    Generate_Blog:
+#        needs:      [Build_on_Mac, Build_on_Linux, Build_on_Windows]
+        needs:      [Build_on_Mac, Build_on_Linux]
+        runs-on:    ubuntu-latest
+        steps:
+            - name: GetBlog
+              uses: actions/checkout@v3
+              with:
+                repository: git@github.com:Loki-Astari/geeky-nextjs.git
+                ref: 'master'
+                token:  ${{ secrets.JSONBENCHMARKKEY }}
+            - name: setup git config
               run: |
-                ./save linux
+                git config user.name "GitHub Actions Bot"
+                git config user.email "<>"
+            - name: Download a single artifact
+              uses: actions/download-artifact@v4
+            - run: |
+                ls
+                mv Conformance.linux.html   geeky-nextjs/public/Json/Conformance.linux.html
+                mv Performance.linux.html   geeky-nextjs/public/Json/Conformance.linus.html
+                mv Conformance.Darwin.html  geeky-nextjs/public/Json/Conformance.osx.html
+                mv Performance.Darwin.html  geeky-nextjs/public/Json/Conformance.osx.html
+                mv Stats.html               geeky-nextjs/source/Json/Stats.html
+            - run: git push origin master
 #    Build_on_Windows:
 #        runs-on:    windows-latest
 #        steps:
@@ -113,27 +149,27 @@ jobs:
 #                GH_TOKEN: ${{ steps.generate-token.outputs.token }}
 #              run: |
 #                ./save windows
-    Combine_Results:
+#    Combine_Results:
 #        needs:      [Build_on_Mac, Build_on_Linux, Build_on_Windows]
-        needs:      [Build_on_Mac, Build_on_Linux]
-        runs-on:    macos-latest
-        steps:
-            - name: Generate a token
-              id: generate-token
-              uses: actions/create-github-app-token@v1
-              with:
-                app-id: ${{ vars.JSONBENCHMARKUPDATER }}
-                private-key: ${{ secrets.JSONBENCHMARKUPDATER_SECRET }}
-            - name: Install Dependencies
-              run: |
-                env HOMEBREW_NO_AUTO_UPDATE=1 brew install php
-            - name: Checkout Project
-              uses: actions/checkout@master
-              with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-            - name: Publish Results
-              env:
-                GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-              run: |
-                success
-
+#        needs:      [Build_on_Mac, Build_on_Linux]
+#        runs-on:    macos-latest
+#        steps:
+#            - name: Generate a token
+#              id: generate-token
+#              uses: actions/create-github-app-token@v1
+#              with:
+#                app-id: ${{ vars.JSONBENCHMARKUPDATER }}
+#                private-key: ${{ secrets.JSONBENCHMARKUPDATER_SECRET }}
+#            - name: Install Dependencies
+#              run: |
+#                env HOMEBREW_NO_AUTO_UPDATE=1 brew install php
+#            - name: Checkout Project
+#              uses: actions/checkout@master
+#              with:
+#                token: ${{ secrets.GITHUB_TOKEN }}
+#            - name: Publish Results
+#              env:
+#                GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+#              run: |
+#                success
+#
