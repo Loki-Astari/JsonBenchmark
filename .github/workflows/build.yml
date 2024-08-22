@@ -19,17 +19,11 @@ jobs:
     Build_on_Mac:
         runs-on:    macos-latest
         steps:
-            - name: Generate a token
-              id: generate-token
-              uses: actions/create-github-app-token@v1
-              with:
-                app-id: ${{ vars.JSONBENCHMARKUPDATER }}
-                private-key: ${{ secrets.JSONBENCHMARKUPDATER_SECRET }}
             - name: Checkout Project
               uses: actions/checkout@master
               with:
                 submodules: recursive
-                token: ${{ secrets.GITHUB_TOKEN }}
+                token: ${{ secrets.JSONBENCHMARKKEY }}
             - name: Install Dependencies
               run: |
                 env HOMEBREW_NO_AUTO_UPDATE=1 brew install boost
@@ -41,59 +35,28 @@ jobs:
               run: make
             - run: ./runTests
             - name: Update Results
-              env:
-                GH_TOKEN: ${{ steps.generate-token.outputs.token }}
               run: |
                 ./save osx
     Build_on_Linux:
         runs-on:    ubuntu-latest
         steps:
-            - name: Generate a token
-              id: generate-token
-              uses: actions/create-github-app-token@v1
-              with:
-                app-id: ${{ vars.JSONBENCHMARKUPDATER }}
-                private-key: ${{ secrets.JSONBENCHMARKUPDATER_SECRET }}
             - name: Checkout Project
               uses: actions/checkout@master
               with:
                 submodules: recursive
-                token: ${{ secrets.GITHUB_TOKEN }}
+                token: ${{ secrets.JSONBENCHMARKKEY }}
             - name: Install Dependencies
               run: |
                 sudo apt-get install libboost-all-dev
-            - name: Install brew
-              run: |
-                echo "1"
-                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-                echo "1"
-                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-                echo "2"
-                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-                echo "3"
-                echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
-                echo "4"
-                echo "5"
-                brew --version
-                echo "6"
-            - name: Verify brew
-              run: |
-                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-                brew --version
             - name: Run Configure
               run: |
                 ./configure --disable-vera
                 ./init3rdParty
             - name: Make
               run: |
-                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
                 make
             - run: ./runTests
             - name: Update Results
-              env:
-                GH_TOKEN: ${{ steps.generate-token.outputs.token }}
               run: |
                 ./save linux
 #    Build_on_Windows:

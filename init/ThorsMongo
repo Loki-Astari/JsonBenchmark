@@ -1,7 +1,14 @@
 
-test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+if [[ "$1" == "osx" || "${1}" == "Darwin" ]]; then
+    brew update
+    brew install thors-mongo
+fi
 
-brew update
-brew install thors-mongo
+if [[ "$1" == "linux" ]]; then
+
+    ./configure
+    make
+    sudo make install
+
+fi
 
