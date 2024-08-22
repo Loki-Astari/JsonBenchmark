@@ -73,7 +73,6 @@ jobs:
                 echo "3"
                 echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
                 echo "4"
-                echo "::add-path::/home/linuxbrew/.linuxbrew/bin"
                 echo "5"
                 brew --version
                 echo "6"
