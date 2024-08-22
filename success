@@ -11,8 +11,7 @@ else
     echo "--- NO TOKEN ---"
 fi
 
-git clone https://${token}github.com/Loki-Astari/geeky-nextjs
-
+git clone https://${token}github.com/Loki-Astari/geeky-nextjs.git
 #for a in osx linux windows; do
 for a in osx linux ; do
 
@@ -27,5 +26,6 @@ cd geeky-nextjs
 git config --global user.email "Loki.Astari@gmail.com"
 git config --global user.name "Loki Astari"
 git commit -a -m "Update $1 Files"
-git push https://${token}github.com/Loki-Astari/geeky-nextjs
+git push https://${token}github.com/Loki-Astari/geeky-nextjs.git
+
 
