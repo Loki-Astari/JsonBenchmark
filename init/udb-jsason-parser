@@ -18,11 +18,10 @@ fi
 
 if [[ "$1" == "Msys" ]]; then
     archisArm="-G MSYS Makefiles"
-    installLoc="--install-prefix ${DST}"
 fi
 
 
-cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' "${archisArm}" ${installLoc} .
+cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' "${archisArm}" --install-prefix ${DST} .
 make
 make install
 

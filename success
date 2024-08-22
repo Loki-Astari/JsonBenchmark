@@ -13,7 +13,8 @@ fi
 
 git clone https://${token}github.com/Loki-Astari/geeky-nextjs
 
-for a in osx linux windows; do
+#for a in osx linux windows; do
+for a in osx linux ; do
 
     php ./script/conformance.php geeky-nextjs/public/Json/raw/Conformance.${os}.csv > geeky-nextjs/public/Json/Conformance.${os}.html
     php ./script/performance.php geeky-nextjs/public/Json/raw/Performance.${os}.csv > geeky-nextjs/public/Json/Performance.${os}.html

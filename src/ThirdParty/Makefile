@@ -38,7 +38,7 @@ rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
-ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-maybe-uninitialized -Wno-uninitialized
+ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-unknown-warning-option -Wno-maybe-uninitialized -Wno-uninitialized 
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \

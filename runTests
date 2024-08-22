@@ -9,16 +9,17 @@ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:$
 export OS=$1
 
 if [[ "${OS}" == "" ]]; then
-    export OS=`uname`
+    export OS=`uname -o`
 fi
 
 if [[ ${OS} == "linux" ]]; then
     dateAt="-d @"
 fi
-if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
+if [[ "${OS}" == "osx" || "${OS}" == "Darwin" ]]; then
     dateAt="-r "
 fi
 
+rootDir=$(pwd)
 
 echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language Type,Stars" > Stats.csv
 benchmark20 --titleOnly Conformance.csv Performance.csv
@@ -39,31 +40,55 @@ for parser in $(benchmark20 --listParser); do
     gitInfo=$(git remote  get-url origin)
 
     first=$(git log --reverse --pretty=%ct | head -1)
+    echo date ${dateAt}${first} '+"%c"'
     firstOrdered=$(date ${dateAt}${first} +"%c")
+    echo "firstOrdered:         ${firstOrdered}"
     firstOrderNumeric=$(date ${dateAt}${first} +"%F")
+    echo "firstOrderNumeric:    ${firstOrderNumeric}"
 
     last=$(git log --pretty=%ct | head -1)
+    echo "last:                 ${last}"
     lastOrdered=$(date ${dateAt}${last} +"%c")
+    echo "lastOrdered:          ${lastOrdered}"
     lastOrderNumeric=$(date ${dateAt}${last} +"%F")
+    echo "lastOrderNumeric:     ${lastOrderNumeric}"
 
     typeOfLib=$(benchmark20 --parser=${parser} --parserType)
+    echo "typeOfLib:            ${typeOfLib}"
 
     gitInfo1=${gitInfo#https://github.com/}
+    echo "gitInfo1:             ${gitInfo1}"
     gitInfo2=${gitInfo1%.*}
+    echo "gitInfo2:             ${gitInfo2}"
     gitUser=${gitInfo2%/*}
+    echo "gitUser:              ${gitUser}"
     gitRepo=${gitInfo2#*/}
+    echo "gitRepo:              ${gitRepo}"
     stars=$(curl -s "https://api.github.com/repos/${gitUser}/${gitRepo}?page=$i&per_page=100" | jq '.stargazers_count // 0')
+    echo "stars:                ${stars}"
 
-    gitLatestVersion=$(git describe --tags `git rev-list --tags --max-count=1`)
-    if [[ -e tags ]]; then
-        getCurrentVersion=$(cat tags)
-    else
-        getCurrentVersion=$(git describe --tags `git rev-parse HEAD`)
+    tags=$(git rev-list --tags --max-count=1)
+    echo "tags:                 ${tags}"
+    gitLatestVersion=""
+    if [[ "${tags}" != "" ]]; then
+        gitLatestVersion=$(git describe --tags ${tags})
     fi
+    echo "gitLatestVersion:     ${gitLatestVersion}"
 
-    cd ../..
+    tagsOld=$(git rev-parse HEAD)
+    echo "tagsOld:              ${tagsOld}"
+    getCurrentVersion=""
+    if [[ "${tagsOld}" != "" ]]; then
+        getCurrentVersion=$(git describe --tags ${tagsOld} 2> /dev/null)
+    fi
+    echo "getCurrentVersion:    ${getCurrentVersion}"
 
+
+    cd ${rootDir}
+
+    echo "${parser}, ${firstOrderNumeric}, ${lastOrderNumeric}, ${getCurrentVersion}, ${gitLatestVersion}, ${typeOfLib}, ${stars}"
     echo "${parser}, ${firstOrderNumeric}, ${lastOrderNumeric}, ${getCurrentVersion}, ${gitLatestVersion}, ${typeOfLib}, ${stars}" >> Stats.csv
+
 done
 
 cat Stats.csv
