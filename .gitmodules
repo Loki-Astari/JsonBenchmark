@@ -52,3 +52,6 @@
 [submodule "thirdparty/udb-json-builder"]
 	path = thirdparty/udb-json-builder
 	url = https://github.com/udp/json-builder.git
+[submodule "thirdparty/ThorsSerializer"]
+	path = thirdparty/ThorsSerializer
+	url = git@github.com:Loki-Astari/ThorsMongo.git
