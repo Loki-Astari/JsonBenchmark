@@ -1,7 +1,7 @@
 #
 # rapidjson
 #
-if [[ "$1" == "Msys" ]]; then
+if [[ "$1" == "MSYS_NT" ]]; then
     archisArm="-G MSYS Makefiles"
 fi
 

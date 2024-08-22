@@ -1,10 +1,10 @@
 
-if [[ "$1" == "osx" || "${1}" == "Darwin" ]]; then
+if [[ "${1}" == "Darwin" ]]; then
     brew update
     brew install thors-mongo
 fi
 
-if [[ "$1" == "linux" ]]; then
+if [[ "$1" == "Linux" ]]; then
 
     ./configure
     make

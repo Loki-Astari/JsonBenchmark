@@ -9,13 +9,13 @@ export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:$
 export OS=$1
 
 if [[ "${OS}" == "" ]]; then
-    export OS=`uname -o`
+    export OS=$(uname -s | awk -F- '{print $1}')
 fi
 
-if [[ ${OS} == "linux" ]]; then
+if [[ ${OS} == "Linux" ]]; then
     dateAt="-d @"
 fi
-if [[ "${OS}" == "osx" || "${OS}" == "Darwin" ]]; then
+if [[ "${OS}" == "Darwin" ]]; then
     dateAt="-r "
 fi
 
@@ -93,7 +93,7 @@ done
 
 cat Stats.csv
 
-if [[ "${OS}" == "osx" || "${OS}" == "Darwin" ]]; then
+if [[ "${OS}" == "Darwin" ]]; then
     php ./script/stats.php       Stats.csv          > Stats.html
 fi
 
