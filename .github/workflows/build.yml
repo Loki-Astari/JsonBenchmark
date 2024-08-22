@@ -77,7 +77,10 @@ jobs:
                 brew --version
                 echo "6"
             - name: Verify brew
-              run: brew --version
+              run: |
+                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+                brew --version
             - name: Run Configure
               run: |
                 ./configure --disable-vera
