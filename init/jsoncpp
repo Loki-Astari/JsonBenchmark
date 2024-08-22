@@ -1,7 +1,7 @@
 #
 # jsoncons
 #
-if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
+if [[ "$1" == "Darwin" ]]; then
     archisArm="-DCMAKE_APPLE_SILICON_PROCESSOR=arm64"
 fi
 

@@ -346,10 +346,10 @@ void PerformanceChecker::Output::validateMemory()
         close(stderrPipe[1]);
         std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
         std::string pName    = parser.GetName();
-        std::string memoryApp= QUOTE(THORSANVIL_ROOT) "/build/bin/memory17";
+        std::string memoryApp= QUOTE(THORSANVIL_ROOT) "/build/bin/memory";
 
-        setenv("DYLD_LIBRARY_PATH", QUOTE(THORSANVIL_ROOT) "/build/lib/", 1);
-        setenv("DYLD_INSERT_LIBRARIES", QUOTE(THORSANVIL_ROOT) "/build/lib/libMemory17.dylib", 1);
+        setenv("DYLD_LIBRARY_PATH", QUOTE(THORSANVIL_ROOT) "/build/lib/:/opt/lib:/opt/homebrew/lib", 1);
+        setenv("DYLD_INSERT_LIBRARIES", QUOTE(THORSANVIL_ROOT) "/build/lib/libMemory.dylib", 1);
         setenv("DYLD_FORCE_FLAT_NAMESPACE", "1", 1);
 
         execl(memoryApp.c_str(), memoryApp.c_str(), pName.c_str(), fileName.c_str(), action.c_str(), nullptr);//, envp);

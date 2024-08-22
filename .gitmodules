@@ -10,9 +10,6 @@
 [submodule "thirdparty/Jzon"]
 	path = thirdparty/Jzon
 	url = https://github.com/Zguy/Jzon.git
-[submodule "thirdparty/ThorsSerializer"]
-	path = thirdparty/ThorsSerializer
-	url = https://github.com/Loki-Astari/ThorsSerializer.git
 [submodule "thirdparty/cJSON"]
 	path = thirdparty/cJSON
 	url = https://github.com/DaveGamble/cJSON.git
@@ -55,3 +52,6 @@
 [submodule "thirdparty/udb-json-builder"]
 	path = thirdparty/udb-json-builder
 	url = https://github.com/udp/json-builder.git
+[submodule "thirdparty/ThorsMongo"]
+	path = thirdparty/ThorsMongo
+	url = git@github.com:Loki-Astari/ThorsMongo.git

@@ -17,6 +17,27 @@
 #include <memory>
 #include "ThorsSerializer_Common.h"
 
+using S                             = std::string;
+using VS                            = std::vector<S>;
+using VVS                           = std::vector<VS>;
+using VVVS                          = std::vector<VVS>;
+using VVVVS                         = std::vector<VVVS>;
+using VVVVVS                        = std::vector<VVVVS>;
+using VVVVVVS                       = std::vector<VVVVVS>;
+using VVVVVVVS                      = std::vector<VVVVVVS>;
+using VVVVVVVVS                     = std::vector<VVVVVVVS>;
+using VVVVVVVVVS                    = std::vector<VVVVVVVVS>;
+using VVVVVVVVVVS                   = std::vector<VVVVVVVVVS>;
+using VVVVVVVVVVVS                  = std::vector<VVVVVVVVVVS>;
+using VVVVVVVVVVVVS                 = std::vector<VVVVVVVVVVVS>;
+using VVVVVVVVVVVVVS                = std::vector<VVVVVVVVVVVVS>;
+using VVVVVVVVVVVVVVS               = std::vector<VVVVVVVVVVVVVS>;
+using VVVVVVVVVVVVVVVS              = std::vector<VVVVVVVVVVVVVVS>;
+using VVVVVVVVVVVVVVVVS             = std::vector<VVVVVVVVVVVVVVVS>;
+using VVVVVVVVVVVVVVVVVS            = std::vector<VVVVVVVVVVVVVVVVS>;
+using VVVVVVVVVVVVVVVVVVS           = std::vector<VVVVVVVVVVVVVVVVVS>;
+using VVVVVVVVVVVVVVVVVVVS          = std::vector<VVVVVVVVVVVVVVVVVVS>;
+
 class ThorsSerializerTest: public TestBase
 {
     TestAction                                   testNotImplemented;
@@ -28,7 +49,8 @@ class ThorsSerializerTest: public TestBase
     GetValue<std::map<std::string, int*>>        testGetValueMap2IntPointer;
     GetValue<std::map<std::string, M01>>         testGetValueMap2M01;
     GetValue<std::vector<std::string>>           testGetValueVec2String;
-    //GetValue<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::vector<std::string>>>>>>>>>>>>>>>>>>>> testGetValueVec2L18;
+    GetValue<Pass01>                             testGetValuePass1;
+    GetValue<VVVVVVVVVVVVVVVVVVVS>               testGetValueVec2L18;
     GetValue<std::vector<int*>>                  testGetValueVec2IntPointer;
     GetValue<std::vector<bool>>                  testGetValueVec2Bool;
     GetValue<std::vector<int>>                   testGetValueVec2Int;
@@ -87,8 +109,8 @@ class ThorsSerializerTest: public TestBase
         actionMap["jsonchecker_fail/fail32.json"]    = &testGetValueMap2Bool;
         actionMap["jsonchecker_fail/fail33.json"]    = &testGetValueVec2String;
 
-        //  pass01.json     ThorsSerializer does not support polymorphic arrays
-        // actionMap["jsonchecker_pass/pass02.json"]    = &testGetValueVec2L18;
+        actionMap["jsonchecker_pass/pass01.json"]    = &testGetValuePass1;
+        actionMap["jsonchecker_pass/pass02.json"]    = &testGetValueVec2L18;
         actionMap["jsonchecker_pass/pass03.json"]    = &testGetValueMap2M01;
 
 

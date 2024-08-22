@@ -3,16 +3,16 @@
 export OS=$1
 
 if [[ "${OS}" == "" ]]; then
-    export OS=`uname`
+    export OS=$(uname -s | awk -F- '{print $1}')
 fi
 
-if [[ "${OS}" == "linux" ]]; then
+if [[ "${OS}" == "Linux" ]]; then
     sudo apt-get update
     sudo apt-get install scons -y
     sudo apt-get install libboost-all-dev
     sudo apt-get install jq
 fi
-if [[ "${OS}" == "osx" || "${OS}" == "Darwin" ]]; then
+if [[ "${OS}" == "Darwin" ]]; then
     export PATH=${PATH}
     brew install scons
     brew install boost
