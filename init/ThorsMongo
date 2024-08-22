@@ -1,3 +1,4 @@
 
+brew update
 brew install thors-mongo
 
