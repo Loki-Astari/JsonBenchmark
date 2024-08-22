@@ -32,9 +32,7 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
             - name: Install Dependencies
               run: |
-                env HOMEBREW_NO_AUTO_UPDATE=1 brew install magic_enum
                 env HOMEBREW_NO_AUTO_UPDATE=1 brew install boost
-                env HOMEBREW_NO_AUTO_UPDATE=1 brew install php
             - name: Run Configure
               run: |
                 ./configure --disable-vera
@@ -63,16 +61,13 @@ jobs:
                 token: ${{ secrets.GITHUB_TOKEN }}
             - name: Install Dependencies
               run: |
-                git clone https://github.com/Neargye/magic_enum.git /tmp/magic_enum
                 sudo apt-get install libboost-all-dev
-                sudo apt-get install php
             - name: Run Configure
               run: |
                 ./configure --disable-vera
                 ./init3rdParty
             - name: Make
               env:
-                ThorsSerializerTest_CXXFLAGS: "-I /tmp/magic_enum/include/magic_enum"
               run: make
             - run: ./runTests
             - name: Update Results
@@ -145,7 +140,9 @@ jobs:
               with:
                 app-id: ${{ vars.JSONBENCHMARKUPDATER }}
                 private-key: ${{ secrets.JSONBENCHMARKUPDATER_SECRET }}
-            - run:  git config --global core.autocrlf input
+            - name: Install Dependencies
+              run: |
+                env HOMEBREW_NO_AUTO_UPDATE=1 brew install php
             - name: Checkout Project
               uses: actions/checkout@master
               with:
