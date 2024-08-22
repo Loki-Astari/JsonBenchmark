@@ -67,7 +67,6 @@ jobs:
                 ./configure --disable-vera
                 ./init3rdParty
             - name: Make
-              env:
               run: make
             - run: ./runTests
             - name: Update Results
