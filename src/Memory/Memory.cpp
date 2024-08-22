@@ -8,6 +8,8 @@
 #define THOR_MEMORY_INSERT 2
 #elif   defined(__linux__)
 #define THOR_MEMORY_INSERT 1
+#elif   defined(__WINNT__)
+#define THOR_MEMORY_INSERT 1
 #else
 #error  "You need to work out how to install these memory libraries before the standard C ones"
 #endif

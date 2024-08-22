@@ -2,9 +2,9 @@
 #
 # udb-jsason-parser
 #
-./configure
+DST=$(pwd)
+./configure --prefix=${DST}
 make
-export DESTDIR=$(pwd)
 make install
 
 cd ../udb-json-builder
@@ -16,7 +16,13 @@ if [[ "$1" == "osx" || "$1" == "Darwin" ]]; then
     archisArm="-DCMAKE_APPLE_SILICON_PROCESSOR=arm64"
 fi
 
-cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' ${archisArm} .
+if [[ "$1" == "Msys" ]]; then
+    archisArm="-G MSYS Makefiles"
+    installLoc="--install-prefix ${DST}"
+fi
+
+
+cmake -DCMAKE_C_FLAGS='-std=c99 -fPIC -I../udb-jsason-parser' "${archisArm}" ${installLoc} .
 make
 make install
 

@@ -18,7 +18,7 @@ LDLIBS                      += -L ../../thirdparty/ThorsSerializer/build/lib  -l
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/ -Wno-deprecated-declarations
 cJSONTest_CXXFLAGS			+= -I../../thirdparty -Wno-nonportable-include-path
 sajsonTest_CXXFLAGS			+= -I../../thirdparty/sajson -Wno-unused-parameter -Wno-pedantic
-udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/usr/local/include/ -I../../thirdparty/udb-jsason-parser/usr/local/include/json-parser
+udbTest_CXXFLAGS			+= -I../../thirdparty/udb-jsason-parser/include/ -I../../thirdparty/udb-jsason-parser/include/json-parser
 
 json-cTest_CXXFLAGS			+= -I../../thirdparty/ -Wno-sign-compare
 double-conversion_CXXFLAGS	+= -Wno-strict-overflow
