@@ -55,11 +55,14 @@ jobs:
               run: |
                 sudo apt-get install libboost-all-dev
                 sudo apt-get install php
+                git clone https://github.com/Neargye/magic_enum.git /tmp/magic_enum
             - name: Run Configure
               run: |
                 ./configure --disable-vera
                 ./init3rdParty
             - name: Make
+              env:
+                ThorsSerializerTest_CXXFLAGS: "-I /tmp/magic_enum/include/magic_enum"
               run: |
                 make
             - run: ./runTests

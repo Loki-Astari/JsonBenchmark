@@ -6,7 +6,7 @@ fi
 
 if [[ "$1" == "Linux" ]]; then
 
-    ./configure
+    ./configure --disable-vera --disable-colour --with-magicenum-header-only-root=/tmp/magic_enum/include/magic_enum/
     make
     sudo make install
 
