@@ -86,7 +86,10 @@ jobs:
                 ./configure --disable-vera
                 ./init3rdParty
             - name: Make
-              run: make
+              run: |
+                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+                make
             - run: ./runTests
             - name: Update Results
               env:
