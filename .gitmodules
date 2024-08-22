@@ -12,7 +12,7 @@
 	url = https://github.com/Zguy/Jzon.git
 [submodule "thirdparty/ThorsSerializer"]
 	path = thirdparty/ThorsSerializer
-	url = https://github.com/Loki-Astari/ThorsSerializer.git
+	url = https://github.com/Loki-Astari/ThorsMongo.git
 [submodule "thirdparty/cJSON"]
 	path = thirdparty/cJSON
 	url = https://github.com/DaveGamble/cJSON.git

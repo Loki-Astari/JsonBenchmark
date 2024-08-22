@@ -12,7 +12,7 @@ LDLIBS                      += ../../thirdparty/udb-jsason-parser/lib/libjsonpar
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/lib/libjsonbuilder.a
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
-LDLIBS                      += -L ../../thirdparty/ThorsSerializer/build/lib  -lThorSerialize -lThorsLogging
+LDLIBS                      += -lThorSerialize -lThorsLogging
 
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/ -Wno-deprecated-declarations
@@ -29,7 +29,7 @@ jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-param
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src -Wno-deprecated-dynamic-exception-spec
-ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsSerializer/build/include -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
+ThorsSerializerTest_CXXFLAGS+= -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
 json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/ -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor
 jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/
