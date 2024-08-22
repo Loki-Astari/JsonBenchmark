@@ -62,9 +62,16 @@ jobs:
             - name: Install Dependencies
               run: |
                 sudo apt-get install libboost-all-dev
-                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/runner/.bashrc
-                eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+            - name: Install brew
+              run: |
+                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+                test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+                test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+                echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+                echo "::add-path::/home/linuxbrew/.linuxbrew/bin"
+                brew --version
+            - name: Verify brew
+              run: brew --version
             - name: Run Configure
               run: |
                 ./configure --disable-vera
