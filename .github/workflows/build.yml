@@ -62,6 +62,7 @@ jobs:
             - name: Install Dependencies
               run: |
                 sudo apt-get install libboost-all-dev
+                /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
             - name: Run Configure
               run: |
                 ./configure --disable-vera
