@@ -280,7 +280,7 @@ inline void getStats(Stat* stat, Obj2 const& value)
 struct Obj3
 {
     Opt<int>        a;
-    std::string     foo;
+    std::string*    foo;
 };
 ThorsAnvil_MakeTrait(Obj3, a, foo);
 inline void getStats(Stat* stat, Obj3 const& value)
@@ -289,7 +289,7 @@ inline void getStats(Stat* stat, Obj3 const& value)
     stat->elementCount += 2;
     ((value.a) ? stat->numberCount : stat->nullCount)++;
     stat->stringCount += 3; /*Key + Key + Value*/
-    stat->stringLength += (3 /*foo*/ + 1 /*a*/ + value.foo.size());
+    stat->stringLength += (3 /*foo*/ + 1 /*a*/ + (value.foo == nullptr ? 0 : value.foo->size()));
 }
 
 #endif
