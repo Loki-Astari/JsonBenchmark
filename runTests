@@ -21,6 +21,11 @@ fi
 
 rootDir=$(pwd)
 
+cd thirdparty
+ln -s ThorsMongo ThorsSerializer
+cd ..
+
+
 echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language Type,Stars" > Stats.csv
 benchmark20 --titleOnly Conformance.csv Performance.csv
 for parser in $(benchmark20 --listParser); do
@@ -64,7 +69,11 @@ for parser in $(benchmark20 --listParser); do
     echo "gitUser:              ${gitUser}"
     gitRepo=${gitInfo2#*/}
     echo "gitRepo:              ${gitRepo}"
-    stars=$(curl -s "https://api.github.com/repos/${gitUser}/${gitRepo}?page=$i&per_page=100" | jq '.stargazers_count // 0')
+    echo "https://api.github.com/repos/${gitUser}/${gitRepo}?page=$i&per_page=100"
+    gitData=$(curl -s "https://api.github.com/repos/${gitUser}/${gitRepo}?page=$i&per_page=100")
+    echo "gitData: ${gitData}"
+    stars=$(echo ${gitData} | jq '.stargazers_count // 0')
+    #stars=$(curl -s "https://api.github.com/repos/${gitUser}/${gitRepo}?page=$i&per_page=100" | jq '.stargazers_count // 0')
     echo "stars:                ${stars}"
 
     tags=$(git rev-list --tags --max-count=1)
