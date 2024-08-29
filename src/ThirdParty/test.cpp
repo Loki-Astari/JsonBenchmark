@@ -41,6 +41,7 @@ class TestRunner: public TestBase
         virtual void SetUp(char const* test)                                            const override {return pimpl->SetUp(test);}
         virtual void TearDown(char const* test)                                         const override {return pimpl->TearDown(test);}
 
+        virtual bool ParseValidate(const char* json, std::size_t length)                const override {return pimpl->ParseValidate(json, length);}
         virtual bool ParseDouble(const char* json, double* d)                           const override {return pimpl->ParseDouble(json, d);}
         virtual bool ParseString(const char* json, std::string& s)                      const override {return pimpl->ParseString(json, s);}
         virtual ParseResultBase* Parse(const char* json, size_t length)                 const override {return pimpl->Parse(json, length);}
