@@ -4,6 +4,10 @@
 class TestAction
 {
     public:
+    virtual bool ParseValidate(const char* json, size_t size) const {
+        std::unique_ptr<ParseResultBase> result{this->Parse(json,size)};
+        return result.get() != nullptr;
+    }
     virtual ParseResultBase* Parse(const char*, size_t) const {
         return nullptr;
     }

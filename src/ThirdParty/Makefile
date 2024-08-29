@@ -12,6 +12,7 @@ LDLIBS                      += ../../thirdparty/udb-jsason-parser/lib/libjsonpar
 LDLIBS                      += ../../thirdparty/udb-jsason-parser/lib/libjsonbuilder.a
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
+LDLIBS						+= ../../thirdparty/simdjson/build/libsimdjson.a
 LDLIBS                      += -lThorSerialize -lThorsLogging
 
 
@@ -38,6 +39,7 @@ rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
+simdjsonTest_CXXFLAGS		+= -I../../thirdparty/simdjson/include
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-unknown-warning-option -Wno-maybe-uninitialized -Wno-uninitialized 
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 

@@ -52,6 +52,11 @@ class TestBase
         virtual void SetUp(char const*)                                                               const {SetUp();}
         virtual void TearDown(char const*)                                                            const {TearDown();}
 
+        virtual bool ParseValidate(const char* json, std::size_t length)                              const
+        {
+            std::unique_ptr<ParseResultBase>    result{Parse(json, length)};
+            return result.get() != nullptr;
+        }
         virtual bool ParseDouble(const char* /*json*/, double* /*d*/)                                 const { return false; }
         virtual bool ParseString(const char* /*json*/, std::string& /*s*/)                            const { return false; }
         virtual ParseResultBase* Parse(const char* /*json*/, std::size_t /*length*/)                  const { return nullptr; }

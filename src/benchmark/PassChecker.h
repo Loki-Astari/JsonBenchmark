@@ -19,8 +19,9 @@ class PassChecker: public CommonReader
         }
         virtual State executeTest(TestBase const& parser, Test const& test) override
         {
-            std::unique_ptr<ParseResultBase> result(parser.Parse(test.input.c_str(), test.input.size()));
-            return result != nullptr ? Pass : Fail;
+            std::cerr << "Pass Checker\n";
+            bool result(parser.ParseValidate(test.input.c_str(), test.input.size()));
+            return result == true ? Pass : Fail;
         }
         virtual void generateConPerData(TestBase const& parser, Test const& test, State state) override
         {
