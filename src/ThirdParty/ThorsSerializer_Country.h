@@ -1,15 +1,11 @@
 #ifndef THORS_SERIALIZER_CANADA_H
 #define THORS_SERIALIZER_CANADA_H
 
+#include "test.h"
+#include "TypeSafeCountry.h"
 #include "ThorSerialize/Traits.h"
 #include "ThorSerialize/SerUtil.h"
-#include <vector>
-#include <string>
 
-struct Properties
-{
-    std::string     name;
-};
 ThorsAnvil_MakeTrait(Properties, name);
 inline void getStats(Stat* stat, Properties const& value)
 {
@@ -19,15 +15,6 @@ inline void getStats(Stat* stat, Properties const& value)
     stat->stringLength += (4 /*name*/ + value.name.size());
 }
 
-//using   Cord    = std::vector<double>;
-struct Cord
-{
-    using value_type = double;
-    std::vector<double> value;
-    Cord(): value(2) {}
-
-    std::size_t size() const {return value.size();}
-};
 inline void getStats(Stat* stat, Cord const& value)
 {
     getStats(stat, value.value);
@@ -79,14 +66,6 @@ class Traits<Cord>
     }
 }
 
-using   CordVec = std::vector<Cord>;
-using   CordMat = std::vector<CordVec>;
-
-struct Geometry
-{
-    std::string     type;
-    CordMat         coordinates;
-};
 ThorsAnvil_MakeTrait(Geometry, type, coordinates);
 inline void getStats(Stat* stat, Geometry const& value)
 {
@@ -97,12 +76,6 @@ inline void getStats(Stat* stat, Geometry const& value)
     getStats(stat, value.coordinates);
 }
 
-struct Feature
-{
-    std::string     type;
-    Properties      properties;
-    Geometry        geometry;
-};
 ThorsAnvil_MakeTrait(Feature, type, properties, geometry);
 inline void getStats(Stat* stat, Feature const& value)
 {
@@ -113,13 +86,7 @@ inline void getStats(Stat* stat, Feature const& value)
     getStats(stat, value.properties);
     getStats(stat, value.geometry);
 }
-using Features  = std::vector<Feature>;
 
-struct Country
-{
-    std::string     type;
-    Features        features;
-};
 ThorsAnvil_MakeTrait(Country, type, features);
 inline void getStats(Stat* stat, Country const& value)
 {

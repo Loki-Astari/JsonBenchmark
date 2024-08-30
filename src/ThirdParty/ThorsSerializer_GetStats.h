@@ -1,6 +1,7 @@
 #ifndef THORS_SERIALIZER_GET_STATS_H
 #define THORS_SERIALIZER_GET_STATS_H
 
+#include "test.h"
 #include <map>
 #include <vector>
 #include <string>
