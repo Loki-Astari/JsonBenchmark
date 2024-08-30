@@ -3,7 +3,7 @@ run-name:   ${{ github.actor }} Building
 on:
     push:
         branches:
-            - master
+            - AddGlaze
 jobs:
         #  windows-latest
         #  windows-2022
