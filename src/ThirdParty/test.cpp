@@ -61,8 +61,8 @@ REGISTER_TEST_OBJECT(SimdJsonOndemandTest);
 #ifndef __linux__
 // Github Ubuntu latest only has boost 1.74 this does not include Boost JSON
 REGISTER_TEST_OBJECT(BoostJsonTest);
-#endif
 REGISTER_TEST_OBJECT(GlazeTest);
+#endif
 REGISTER_TEST_OBJECT(ArduinojsonTest);
 REGISTER_TEST_OBJECT(ConfiguruTest);
 REGISTER_TEST_OBJECT(JsonconsTest);

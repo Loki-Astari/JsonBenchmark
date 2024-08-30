@@ -1,3 +1,5 @@
+#ifndef __linux__
+
 #include "test.h"
 #include <sstream>
 
@@ -41,3 +43,4 @@ class GlazeTest: public TestBase
 
 REGISTER_TEST(GlazeTest);
 
+#endif
