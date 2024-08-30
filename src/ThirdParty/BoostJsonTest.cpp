@@ -1,3 +1,5 @@
+#ifndef __linux__
+
 #include "test.h"
 #include <sstream>
 #include <boost/json.hpp>
@@ -186,3 +188,4 @@ class BoostJsonTest: public TestBase
 
 REGISTER_TEST(BoostJsonTest);
 
+#endif

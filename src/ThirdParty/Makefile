@@ -14,7 +14,8 @@ LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 LDLIBS						+= ../../thirdparty/simdjson/build/libsimdjson.a
 LDLIBS                      += -lThorSerialize -lThorsLogging
-LDLIBS						+= -lboost_json
+LDLIBS						+= $(BOOSTLIB_NEEDED_$(PLATFORM))
+BOOSTLIB_NEEDED_Darwin		= -lboost_json
 
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/ -Wno-deprecated-declarations
