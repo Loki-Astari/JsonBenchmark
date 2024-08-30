@@ -44,6 +44,7 @@ rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 simdjsonDomTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
 simdjsonOndemandTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
 BoostJsonTest_CXXFLAGS		+= -Wno-deprecated
+GlazeTest_CXXFLAGS			+= -I../../thirdparty/glaze/include/ -Wno-missing-braces -Wno-deprecated
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-unknown-warning-option -Wno-maybe-uninitialized -Wno-uninitialized 
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 

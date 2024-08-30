@@ -10,7 +10,7 @@ AC_CONFIG_MACRO_DIR([build/autotools/m4])
 AC_CONFIG_AUX_DIR([build/autotools/build])
 
 AX_THOR_FUNC_BUILD_FIX_GIT_SYMLINKS_WINDOWS
-AX_THOR_FUNC_INIT_BUILD([JsonBenchmark], [], [20])
+AX_THOR_FUNC_INIT_BUILD([JsonBenchmark], [], [23])
 
 AC_SUBST([VERATOOL], [off])
 # AX_CHECK_COMPILE_FLAG([-ansi], [AC_SUBST([CXXFLAGS], ["$CXXFLAGS -ansi"])])
