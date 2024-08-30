@@ -39,7 +39,8 @@ rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
-simdjsonTest_CXXFLAGS		+= -I../../thirdparty/simdjson/include
+simdjsonDomTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
+simdjsonOndemandTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-unknown-warning-option -Wno-maybe-uninitialized -Wno-uninitialized 
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 

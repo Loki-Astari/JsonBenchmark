@@ -3,37 +3,27 @@
 #include "simdjson.h"
 using namespace simdjson;
 
-struct SimdResult: public ParseResultBase
+struct SimdOndemandResult: public ParseResultBase
 {
     simdjson::padded_string     json;
     ondemand::parser            parser;
     ondemand::document          doc;
-    SimdResult(char const* j, size_t length)
+    SimdOndemandResult(char const* j, size_t length)
         : json(j, length)
     {}
 };
 
-struct SimdStringResult: public StringResultBase
-{
-    std::string value;
-    virtual const char* c_str() const
-    {
-        return value.c_str();
-    }
-};
-
-class SimdJsonTest: public TestBase
+class SimdJsonOndemandTest: public TestBase
 {
     public:
-    SimdJsonTest()
-    {
-    }
+    SimdJsonOndemandTest()
+    {}
     virtual void SetUp(char const* /*fullPath*/) const override
     {}
     virtual void TearDown(char const* /*fullPath*/) const override
     {}
 
-    virtual const char* GetName() const override        { return "simdjson"; }
+    virtual const char* GetName() const override        { return "simdjsonOndemand"; }
     virtual const char* Type()    const override        { return "C++";}
     virtual const char* GetFilename() const override    { return __FILE__; }
 
@@ -90,7 +80,7 @@ class SimdJsonTest: public TestBase
     }
     virtual bool ParseValidate(const char* json, std::size_t length) const override
     {
-        std::unique_ptr<SimdResult>  result{dynamic_cast<SimdResult*>(Parse(json, length))};
+        std::unique_ptr<SimdOndemandResult>  result{dynamic_cast<SimdOndemandResult*>(Parse(json, length))};
         if (result.get() == nullptr) {
             return false;
         }
@@ -109,7 +99,7 @@ class SimdJsonTest: public TestBase
     }
     virtual ParseResultBase* Parse(const char* json, size_t length) const override
     {
-        SimdResult*             result = new SimdResult(json, length);
+        SimdOndemandResult*             result = new SimdOndemandResult(json, length);
         auto error = result->parser.iterate(result->json).get(result->doc);
         if (error) {
             delete result;
@@ -149,49 +139,14 @@ class SimdJsonTest: public TestBase
         return true;
     }
 
-    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const override
-    {
-        ondemand::parser        parser;
-        ondemand::document      doc;
-        simdjson::padded_string jsonStr(json, length);
-        if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-            return nullptr;
-        }
-        std::stringstream output;
-        output << doc.current_location();
-
-        SimdStringResult*   result = new SimdStringResult;
-        result->value = output.str();
-        return result;
-    }
-
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const override
-    {
-        SimdResult const*     simdParseResult = dynamic_cast<SimdResult const*>(parseResult);
-        std::stringstream output;
-        auto pos = simdParseResult->doc.current_location();
-        output << pos;
-
-        SimdStringResult*   result = new SimdStringResult;
-        result->value = output.str();
-        return result;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const override
-    {
-        SimdResult const*     simdParseResult = dynamic_cast<SimdResult const*>(parseResult);
-        std::stringstream output;
-        output << simdParseResult->doc.current_location();
-
-        SimdStringResult*   result = new SimdStringResult;
-        result->value = output.str();
-        return result;
-    }
+    // virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const override
+    // virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const override
+    // virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const override
 
     // virtual bool Statistics(const ParseResultBase* /*parseResult*/, Stat* /*stat*/) const override
     // virtual bool SaxStatistics(const char* /*json*/, size_t /*length*/, Stat* /*stat*/) const override
     // virtual bool SaxStatisticsUTF16(const char* /*json*/, size_t /*length*/, Stat* /*stat*/) const override
 };
 
-REGISTER_TEST(SimdJsonTest);
+REGISTER_TEST(SimdJsonOndemandTest);
 

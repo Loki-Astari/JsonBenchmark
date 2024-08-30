@@ -56,7 +56,8 @@ class TestRunner: public TestBase
 #define REGISTER_TEST_OBJECT(cls)       std::unique_ptr<TestBase> get ## cls();TestRunner gRegister ## cls(get ## cls())
 
 REGISTER_TEST_OBJECT(ThorsSerializerTest);
-REGISTER_TEST_OBJECT(SimdJsonTest);
+REGISTER_TEST_OBJECT(SimdJsonDomTest);
+REGISTER_TEST_OBJECT(SimdJsonOndemandTest);
 REGISTER_TEST_OBJECT(ArduinojsonTest);
 REGISTER_TEST_OBJECT(ConfiguruTest);
 REGISTER_TEST_OBJECT(JsonconsTest);
