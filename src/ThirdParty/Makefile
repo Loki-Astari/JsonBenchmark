@@ -14,6 +14,7 @@ LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 LDLIBS						+= ../../thirdparty/simdjson/build/libsimdjson.a
 LDLIBS                      += -lThorSerialize -lThorsLogging
+LDLIBS						+= -lboost_json
 
 
 JzonTest_CXXFLAGS           += -I../../thirdparty/Jzon/ -Wno-deprecated-declarations
@@ -41,6 +42,7 @@ rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 simdjsonDomTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
 simdjsonOndemandTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
+BoostJsonTest_CXXFLAGS		+= -Wno-deprecated
 ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-unknown-warning-option -Wno-maybe-uninitialized -Wno-uninitialized 
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 

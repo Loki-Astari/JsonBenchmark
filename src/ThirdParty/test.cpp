@@ -58,6 +58,7 @@ class TestRunner: public TestBase
 REGISTER_TEST_OBJECT(ThorsSerializerTest);
 REGISTER_TEST_OBJECT(SimdJsonDomTest);
 REGISTER_TEST_OBJECT(SimdJsonOndemandTest);
+REGISTER_TEST_OBJECT(BoostJsonTest);
 REGISTER_TEST_OBJECT(ArduinojsonTest);
 REGISTER_TEST_OBJECT(ConfiguruTest);
 REGISTER_TEST_OBJECT(JsonconsTest);
