@@ -34,23 +34,23 @@ class TestRunner: public TestBase
         {
             TestManager::instance().addTest(this);
         }
-        virtual const char* GetName()                                                   const override {return pimpl->GetName();}
-        virtual const char* Type()                                                      const override {return pimpl->Type();}
-        virtual const char* GetFilename()                                               const override {return pimpl->GetFilename();}
+        virtual const char* GetName()                                                                           const override {return pimpl->GetName();}
+        virtual const char* Type()                                                                              const override {return pimpl->Type();}
+        virtual const char* GetFilename()                                                                       const override {return pimpl->GetFilename();}
 
-        virtual void SetUp(char const* test)                                            const override {return pimpl->SetUp(test);}
-        virtual void TearDown(char const* test)                                         const override {return pimpl->TearDown(test);}
+        virtual void SetUp(char const* test)                                                                    const override {return pimpl->SetUp(test);}
+        virtual void TearDown(char const* test)                                                                 const override {return pimpl->TearDown(test);}
 
-        virtual bool ParseValidate(const char* json, std::size_t length)                const override {return pimpl->ParseValidate(json, length);}
-        virtual bool ParseDouble(const char* json, double* d)                           const override {return pimpl->ParseDouble(json, d);}
-        virtual bool ParseString(const char* json, std::string& s)                      const override {return pimpl->ParseString(json, s);}
-        virtual ParseResultBase* Parse(const char* json, size_t length)                 const override {return pimpl->Parse(json, length);}
-        virtual StringResultBase* Stringify(const ParseResultBase* parseResult)         const override {return pimpl->Stringify(parseResult);}
-        virtual StringResultBase* Prettify(const ParseResultBase* parseResult)          const override {return pimpl->Prettify(parseResult);}
-        virtual StringResultBase* SaxRoundtrip(const char* json, size_t length)         const override {return pimpl->SaxRoundtrip(json, length);}
-        virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat)         const override {return pimpl->Statistics(parseResult, stat);}
-        virtual bool SaxStatistics(const char* json, size_t length, Stat* stat)         const override {return pimpl->SaxStatistics(json, length, stat);}
-        virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat* stat)    const override {return pimpl->SaxStatisticsUTF16(json, length, stat);}
+        virtual bool ParseValidate(const char* json, std::size_t length, bool& reply)                           const override {return pimpl->ParseValidate(json, length, reply);}
+        virtual bool ParseDouble(const char* json, long double& d)                                              const override {return pimpl->ParseDouble(json, d);}
+        virtual bool ParseString(const char* json, std::string& s)                                              const override {return pimpl->ParseString(json, s);}
+        virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply)            const override {return pimpl->Parse(json, length, reply);}
+        virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply)    const override {return pimpl->Stringify(parseResult, reply);}
+        virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply)     const override {return pimpl->Prettify(parseResult, reply);}
+        virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply)    const override {return pimpl->SaxRoundtrip(json, length, reply);}
+        virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat)                                 const override {return pimpl->Statistics(parseResult, stat);}
+        virtual bool SaxStatistics(const char* json, size_t length, Stat& stat)                                 const override {return pimpl->SaxStatistics(json, length, stat);}
+        virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat& stat)                            const override {return pimpl->SaxStatisticsUTF16(json, length, stat);}
 };
 
 #define REGISTER_TEST_OBJECT(cls)       std::unique_ptr<TestBase> get ## cls();TestRunner gRegister ## cls(get ## cls())

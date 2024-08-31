@@ -62,66 +62,69 @@ public:
 
 class JzonTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "Jzon"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "Jzon"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        JzonParseResult* pr = new JzonParseResult;
+        std::unique_ptr<JzonParseResult> pr = std::make_unique<JzonParseResult>();
         Parser parser;
         pr->root = parser.parseString(json);
-        if (!parser.getError().empty()) {
-            delete pr;
-            return 0;
+        if (parser.getError().empty()) {
+            reply = std::move(pr);
         }
-    	return pr;
-    }
-
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const JzonParseResult* pr = static_cast<const JzonParseResult*>(parseResult);
-        JzonStringResult* sr = new JzonStringResult;
-        Writer writer;
-        writer.writeString(pr->root, sr->s);
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const JzonParseResult* pr = static_cast<const JzonParseResult*>(parseResult);
-        JzonStringResult* sr = new JzonStringResult;
-        const Format format = { true, true, true, 4 };
-        Writer writer(format);
-        writer.writeString(pr->root, sr->s);
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const JzonParseResult* pr = static_cast<const JzonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->root);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JzonParseResult& pr = static_cast<const JzonParseResult&>(parseResult);
+        std::unique_ptr<JzonStringResult> sr = std::make_unique<JzonStringResult>();
+        Writer writer;
+        writer.writeString(pr.root, sr->s);
+        reply = std::move(sr);
+        return true;
+    }
+
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JzonParseResult& pr = static_cast<const JzonParseResult&>(parseResult);
+        std::unique_ptr<JzonStringResult> sr = std::make_unique<JzonStringResult>();
+        const Format format = { true, true, true, 4 };
+        Writer writer(format);
+        writer.writeString(pr.root, sr->s);
+        reply = std::move(sr);
+        return true;
+    }
+
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const JzonParseResult& pr = static_cast<const JzonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         Parser parser;
         Node root = parser.parseString(json);
         if (parser.getError().empty() && root.isArray() && root.getCount() == 1 && root.get(0).isNumber()) {
-            *d = root.get(0).toDouble();
-            return true;
+            d = root.get(0).toDouble();
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         Parser parser;
         Node root = parser.parseString(json);
         if (parser.getError().empty() && root.isArray() && root.getCount() == 1 && root.get(0).isString()) {
             s = root.get(0).toString();
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

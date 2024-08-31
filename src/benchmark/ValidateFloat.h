@@ -34,10 +34,10 @@ class ValidateFloat: public TestSuite
         }
         virtual State executeTest(TestBase const& parser, Test const& test) override
         {
-            double output;
+            long double output = std::numeric_limits<long double>::quiet_NaN();
             char *end;
-            double expected = std::strtod(test.output.c_str(), &end);
-            bool result = parser.ParseDouble(test.input.c_str(), &output);
+            long double expected = std::strtod(test.output.c_str(), &end);
+            bool result = parser.ParseDouble(test.input.c_str(), output);
             return !result ? NotImplemented : output == expected ? Pass: Fail;
         }
         virtual void generateConPerData(TestBase const& parser, Test const& test, State state) override

@@ -19,7 +19,8 @@ class FailChecker: public CommonReader
         }
         virtual State executeTest(TestBase const& parser, Test const& test) override
         {
-            bool result(parser.ParseValidate(test.input.c_str(), test.input.size()));
+            bool result;
+            parser.ParseValidate(test.input.c_str(), test.input.size(), result);
             return result == false ? Pass : Fail;
         }
         virtual void generateConPerData(TestBase const& parser, Test const& test, State state) override

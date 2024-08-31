@@ -60,8 +60,10 @@ int main(int argc, char* argv[])
     preloadData(test);
     TestSetUp   testSetUp(parser, testName, true);
     {
-        std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
-        std::unique_ptr<StringResultBase> json(parser.Prettify(dom.get()));
+        std::unique_ptr<ParseResultBase> dom;
+        /*bool implementedParse =*/  parser.Parse(test.input.c_str(), test.input.size(), dom);
+        std::unique_ptr<StringResultBase> json;
+        /*bool implementedPretty =*/ parser.Prettify(*dom, json);
     }
 
     std::size_t currentSize = 0;
@@ -71,7 +73,8 @@ int main(int argc, char* argv[])
         {
             MemoryInfo::active = true;
             {
-                std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+                std::unique_ptr<ParseResultBase> dom;
+                /*bool implemented =*/ parser.Parse(test.input.c_str(), test.input.size(), dom);
                 currentSize = MemoryInfo::getInstance().currentSize;
             }
             MemoryInfo::active = false;
@@ -79,10 +82,12 @@ int main(int argc, char* argv[])
         }
         case 2:
         {
-            std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+            std::unique_ptr<ParseResultBase> dom;
+            /* bool implemented =*/ parser.Parse(test.input.c_str(), test.input.size(), dom);
             MemoryInfo::active = true;
             {
-                std::unique_ptr<StringResultBase> json(parser.Stringify(dom.get()));
+                std::unique_ptr<StringResultBase> json;
+                /*bool implemented =*/ parser.Stringify(*dom, json);
                 currentSize = MemoryInfo::getInstance().currentSize;
             }
             MemoryInfo::active = false;
@@ -90,10 +95,12 @@ int main(int argc, char* argv[])
         }
         case 3:
         {
-            std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+            std::unique_ptr<ParseResultBase> dom;
+            /* bool implemented =*/ parser.Parse(test.input.c_str(), test.input.size(), dom);
             MemoryInfo::active = true;
             {
-                std::unique_ptr<StringResultBase> json(parser.Prettify(dom.get()));
+                std::unique_ptr<StringResultBase> json;
+                /* bool implemented =*/ parser.Prettify(*dom, json);
                 currentSize = MemoryInfo::getInstance().currentSize;
             }
             MemoryInfo::active = false;
@@ -101,11 +108,12 @@ int main(int argc, char* argv[])
         }
         case 4:
         {
-            std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+            std::unique_ptr<ParseResultBase> dom;
+            /*bool implemented =*/ parser.Parse(test.input.c_str(), test.input.size(), dom);
             Stat stats;
             MemoryInfo::active = true;
             {
-                parser.Statistics(dom.get(), &stats);
+                parser.Statistics(*dom, stats);
                 currentSize = MemoryInfo::getInstance().currentSize;
             }
             MemoryInfo::active = false;
@@ -115,7 +123,8 @@ int main(int argc, char* argv[])
         {
             MemoryInfo::active = true;
             {
-                std::unique_ptr<StringResultBase> json(parser.SaxRoundtrip(test.input.c_str(), test.input.size()));
+                std::unique_ptr<StringResultBase> json;
+                /* bool implemented =*/ parser.SaxRoundtrip(test.input.c_str(), test.input.size(), json);
                 currentSize = MemoryInfo::getInstance().currentSize;
             }
             MemoryInfo::active = false;
@@ -126,7 +135,7 @@ int main(int argc, char* argv[])
             Stat stats;
             MemoryInfo::active = true;
             {
-                parser.SaxStatistics(test.input.c_str(), test.input.size(), &stats);
+                parser.SaxStatistics(test.input.c_str(), test.input.size(), stats);
                 currentSize = MemoryInfo::getInstance().currentSize;
             }
             MemoryInfo::active = false;

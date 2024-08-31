@@ -64,45 +64,46 @@ public:
 };
 class JsoncppTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "jsoncpp"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "jsoncpp"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        JsoncppParseResult* pr = new JsoncppParseResult;
+        std::unique_ptr<JsoncppParseResult> pr = std::make_unique<JsoncppParseResult>();
         Json::CharReaderBuilder rbuilder;
         Json::Value settings;
         rbuilder.strictMode(&rbuilder.settings_);
         std::unique_ptr<CharReader> const reader(rbuilder.newCharReader());
         std::string errs;
-        if (!reader->parse(json, json + length, &pr->root, &errs)) {
-            delete pr;
-            return 0;
+        if (reader->parse(json, json + length, &pr->root, &errs)) {
+            reply = std::move(pr);
         }
-    	return pr;
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const JsoncppParseResult* pr = static_cast<const JsoncppParseResult*>(parseResult);
-        //FastWriter writer;
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JsoncppParseResult& pr = static_cast<const JsoncppParseResult&>(parseResult);
         Json::StreamWriterBuilder wbuilder;
         wbuilder.settings_["indentation"] = "";
-        //std::unique_ptr<Json::StreamWriter> const writer(wbuilder.newStreamWriter());
-        //writer->omitEndingLineFeed();
-        JsoncppStringResult* sr = new JsoncppStringResult;
-        sr->s = Json::writeString(wbuilder, pr->root);
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const JsoncppParseResult* pr = static_cast<const JsoncppParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->root);
+        std::unique_ptr<JsoncppStringResult> sr = std::make_unique<JsoncppStringResult>();
+        sr->s = Json::writeString(wbuilder, pr.root);
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const JsoncppParseResult& pr = static_cast<const JsoncppParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         CharReaderBuilder rbuilder;
         std::unique_ptr<Json::CharReader> const reader(rbuilder.newCharReader());
         std::size_t size = strlen(json);
@@ -112,14 +113,13 @@ public:
             root.size() == 1 &&
             root[0].isDouble())
         {
-            *d = root[0].asDouble();
-            return true;
+            d = root[0].asDouble();
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         CharReaderBuilder rbuilder;
         std::unique_ptr<Json::CharReader> const reader(rbuilder.newCharReader());
         std::size_t size = strlen(json);
@@ -130,10 +130,8 @@ public:
             root[0].isString())
         {
             s = root[0].asString();
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

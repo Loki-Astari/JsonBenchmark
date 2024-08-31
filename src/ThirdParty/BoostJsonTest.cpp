@@ -35,30 +35,28 @@ class BoostJsonTest: public TestBase
     virtual const char* GetFilename() const override    { return __FILE__; }
 
     // virtual bool ParseValidate(const char* json, std::size_t length) const override
-    virtual ParseResultBase* Parse(const char* json, size_t /*length*/) const override
+    virtual bool Parse(const char* json, size_t /*length*/, std::unique_ptr<ParseResultBase>& reply) const override
     {
-        BoostJsonResult*  result = new BoostJsonResult;
+        std::unique_ptr<BoostJsonResult>  result = std::make_unique<BoostJsonResult>();
 
         boost::system::error_code ec;
         result->value = boost::json::parse(json, ec);
-        if (ec) {
-            delete result;
-            return nullptr;
+        if (!ec) {
+            reply = std::move(result);
         }
-        return result;
+        return true;
     }
-    virtual bool ParseDouble(const char* json, double* d) const override
+    virtual bool ParseDouble(const char* json, long double& d) const override
     {
         boost::system::error_code   ec;
         boost::json::value          value;
 
         value = boost::json::parse(json, ec);
-        if (ec) {
-            return false;
+        if (!ec) {
+            boost::json::array&  array = value.get_array();
+            boost::json::value   number= array[0];
+            d = number.get_double();
         }
-        boost::json::array&  array = value.get_array();
-        boost::json::value   number= array[0];
-        *d = number.get_double();
         return true;
     }
     virtual bool ParseString(const char* json, std::string& s) const override
@@ -67,37 +65,40 @@ class BoostJsonTest: public TestBase
         boost::json::value          value;
 
         value = boost::json::parse(json, ec);
-        if (ec) {
-            return false;
+        if (!ec) {
+            boost::json::array&  array = value.get_array();
+            boost::json::value   number= array[0];
+            s = number.get_string();
         }
-        boost::json::array&  array = value.get_array();
-        boost::json::value   number= array[0];
-        s = number.get_string();
         return true;
     }
-    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const override
+    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
     {
-        std::unique_ptr<ParseResultBase> boostParserResult{this->Parse(json, length)};
-        return Stringify(boostParserResult.get());
+        std::unique_ptr<ParseResultBase>    boostParserResult;
+        Parse(json, length, boostParserResult);
+        Stringify(*boostParserResult, reply);
+        return true;
     }
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const override
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
-        BoostJsonResult const* boostParserResult = dynamic_cast<BoostJsonResult const*>(parseResult);
-        BoosJsonStringResult* result = new BoosJsonStringResult;
+        BoostJsonResult const& boostParserResult = dynamic_cast<BoostJsonResult const&>(parseResult);
+        std::unique_ptr<BoosJsonStringResult> result = std::make_unique<BoosJsonStringResult>();
 
-        result->value = boost::json::serialize(boostParserResult->value);
-        return result;
+        result->value = boost::json::serialize(boostParserResult.value);
+        reply = std::move(result);
+        return true;
     }
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const override
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
-        BoostJsonResult const* boostParserResult = dynamic_cast<BoostJsonResult const*>(parseResult);
-        BoosJsonStringResult* result = new BoosJsonStringResult;
+        BoostJsonResult const& boostParserResult = dynamic_cast<BoostJsonResult const&>(parseResult);
+        std::unique_ptr<BoosJsonStringResult> result = std::unique_ptr<BoosJsonStringResult>();
 
         std::stringstream ss;
-        pretty_print(ss, boostParserResult->value);
+        pretty_print(ss, boostParserResult.value);
 
         result->value = ss.str();
-        return result;
+        reply = std::move(result);
+        return true;
     }
 
     void pretty_print(std::ostream& os, boost::json::value const& jv, std::string* indent = nullptr ) const

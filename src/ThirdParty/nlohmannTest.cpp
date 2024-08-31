@@ -62,64 +62,66 @@ public:
 };
 class NlohmannTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "nlohmann"; }
-    virtual const char* Type()    const { return "C++11";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "nlohmann"; }
+    virtual const char* Type()        const override { return "C++11";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* j, size_t length) const {
+    virtual bool Parse(const char* j, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        NlohmannParseResult* pr = new NlohmannParseResult;
+        std::unique_ptr<NlohmannParseResult> pr = std::make_unique<NlohmannParseResult>();
         try {
             pr->root = json::parse(j);
+            reply = std::move(pr);
         }
-        catch (...) {
-            delete pr;
-            return 0;
-        }
-    	return pr;
+        catch (...) {}
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const NlohmannParseResult* pr = static_cast<const NlohmannParseResult*>(parseResult);
-        NlohmannStringResult* sr = new NlohmannStringResult;
-        sr->s = pr->root.dump();
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const NlohmannParseResult* pr = static_cast<const NlohmannParseResult*>(parseResult);
-        NlohmannStringResult* sr = new NlohmannStringResult;
-        sr->s = pr->root.dump(4);
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const NlohmannParseResult* pr = static_cast<const NlohmannParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->root);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const NlohmannParseResult& pr = static_cast<const NlohmannParseResult&>(parseResult);
+        std::unique_ptr<NlohmannStringResult> sr = std::make_unique<NlohmannStringResult>();
+        sr->s = pr.root.dump();
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* j, double* d) const {
-        try {
-            json root = json::parse(j);
-            *d = root[0].get<double>();
-            return true;
-        }
-        catch (...) {
-        }
-        return false;
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const NlohmannParseResult& pr = static_cast<const NlohmannParseResult&>(parseResult);
+        std::unique_ptr<NlohmannStringResult> sr = std::make_unique<NlohmannStringResult>();
+        sr->s = pr.root.dump(4);
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual bool ParseString(const char* j, std::string& s) const {
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const NlohmannParseResult& pr = static_cast<const NlohmannParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* j, long double& d) const override
+    {
+        try {
+            json root = json::parse(j);
+            d = root[0].get<long double>();
+        }
+        catch (...) {}
+        return true;
+    }
+
+    virtual bool ParseString(const char* j, std::string& s) const override
+    {
         try {
             json root = json::parse(j);
             s = root[0].get<std::string>();
-            return true;
         }
-        catch (...) {
-        }
-        return false;
+        catch (...) {}
+        return true;
     }
 };
 

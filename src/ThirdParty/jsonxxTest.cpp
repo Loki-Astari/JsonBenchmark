@@ -73,52 +73,53 @@ public:
 
 class JsonxxTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "jsonxx"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "jsonxx"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        JsonxxParseResult* pr = new JsonxxParseResult;
-        if (!pr->v.parse(json)) {
-            delete pr;
-            return 0;
+        std::unique_ptr<JsonxxParseResult> pr = std::make_unique<JsonxxParseResult>();
+        if (pr->v.parse(json)) {
+            reply = std::move(pr);
         }
-        return pr;
-    }
-
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const JsonxxParseResult* pr = static_cast<const JsonxxParseResult*>(parseResult);
-        JsonxxStringResult* sr = new JsonxxStringResult;
-        sr->s = pr->v.is<Object>() ? pr->v.get<Object>().json() : pr->v.get<Array>().json();
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const JsonxxParseResult* pr = static_cast<const JsonxxParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->v);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
-        Value v;
-        if (v.parse(json) && v.is<Array>() && v.get<Array>().size() == 1) {
-            *d = (double)v.get<Array>().get<Number>(0);
-            return true;
-        }
-        else
-            return false;
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JsonxxParseResult& pr = static_cast<const JsonxxParseResult&>(parseResult);
+        std::unique_ptr<JsonxxStringResult> sr = std::make_unique<JsonxxStringResult>();
+        sr->s = pr.v.is<Object>() ? pr.v.get<Object>().json() : pr.v.get<Array>().json();
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const JsonxxParseResult& pr = static_cast<const JsonxxParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.v);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
+        Value v;
+        if (v.parse(json) && v.is<Array>() && v.get<Array>().size() == 1) {
+            d = (long double)v.get<Array>().get<Number>(0);
+        }
+        return true;
+    }
+
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         Value v;
         if (v.parse(json) && v.is<Array>() && v.get<Array>().size() == 1) {
             s = v.get<Array>().get<String>(0);
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

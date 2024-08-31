@@ -19,34 +19,25 @@
 class TestAction
 {
     public:
-    virtual bool ParseValidate(const char* json, size_t size) const {
-        std::unique_ptr<ParseResultBase> result{this->Parse(json,size)};
-        return result.get() != nullptr;
+    virtual bool ParseValidate(const char* json, size_t size, bool& reply) const
+    {
+        std::unique_ptr<ParseResultBase> result;
+        bool implemented = Parse(json, size, result);
+        if (!implemented) {
+            return false;
+        }
+        reply = result.get() != nullptr;
+        return true;
     }
-    virtual ParseResultBase* Parse(const char*, size_t) const {
-        return nullptr;
-    }
-    virtual bool ParseDouble(const char*, double*) const {
-        return false;
-    }
-    virtual bool ParseString(const char*, std::string&) const {
-        return false;
-    }
-    virtual StringResultBase* SaxRoundtrip(const char*, size_t) const {
-        return nullptr;
-    }
-    virtual StringResultBase* Stringify(const ParseResultBase*) const {
-        return nullptr;
-    }
-    virtual StringResultBase* Prettify(const ParseResultBase*) const {
-        return nullptr;
-    }
-    virtual bool Statistics(const ParseResultBase*, Stat*) const {
-        return false;
-    }
-    virtual bool SaxStatistics(const char*, size_t, Stat*) const {
-        return false;
-    }
+    virtual bool Parse(const char*, size_t, std::unique_ptr<ParseResultBase>&)          const {return false;}
+    virtual bool ParseDouble(const char*, long double&)                                 const {return false;}
+    virtual bool ParseString(const char*, std::string&)                                 const {return false;}
+    virtual bool SaxRoundtrip(const char*, size_t, std::unique_ptr<StringResultBase>&)  const {return false;}
+    virtual bool Stringify(const ParseResultBase&, std::unique_ptr<StringResultBase>&)  const {return false;}
+    virtual bool Prettify(const ParseResultBase&, std::unique_ptr<StringResultBase>&)   const {return false;}
+    virtual bool Statistics(const ParseResultBase&, Stat&)                              const {return false;}
+    virtual bool SaxStatistics(const char*, size_t, Stat&)                              const {return false;}
+    virtual bool SaxStatisticsUTF16(const char*, size_t, Stat&)                         const {return false;}
 };
 
 /*
@@ -195,7 +186,7 @@ class TypeSafeTest: public TestBase
 
         currentRunner      = &testNotImplemented;
     }
-    virtual void SetUp(char const* fullPath) const
+    virtual void SetUp(char const* fullPath) const override
     {
         // std::cout << "Test: " << fullPath << " : " << fileName << "\n";
 
@@ -205,73 +196,85 @@ class TypeSafeTest: public TestBase
             currentRunner   = find->second;
         }
     }
-    virtual void TearDown(char const*) const
+    virtual void TearDown(char const*) const override
     {
         currentRunner = &testNotImplemented;
     }
 
-    virtual const char* GetName() const /*override*/        { return "ThorsSerializer"; }
-    virtual const char* Type()    const /*override*/        { return "C++20";}
-    virtual const char* GetFilename() const /*override*/    { return __FILE__; }
+    virtual const char* GetName()     const override    { return "ThorsSerializer"; }
+    virtual const char* Type()        const override    { return "C++20";}
+    virtual const char* GetFilename() const override    { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        return currentRunner->Parse(json, length);
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override {
+        return currentRunner->Parse(json, length, reply);
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool ParseDouble(const char* json, long double& d) const override {
         return currentRunner->ParseDouble(json, d);
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override {
         return currentRunner->ParseString(json, s);
     }
 
-    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const {
-        return currentRunner->SaxRoundtrip(json, length);
+    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override {
+        return currentRunner->SaxRoundtrip(json, length, reply);
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        return currentRunner->Stringify(parseResult);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override {
+        return currentRunner->Stringify(parseResult, reply);
     }
 
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        return currentRunner->Prettify(parseResult);
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override {
+        return currentRunner->Prettify(parseResult, reply);
     }
 
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        stat->objectCount   = 0;
-        stat->arrayCount    = 0;
-        stat->numberCount   = 0;
-        stat->stringCount   = 0;
-        stat->trueCount     = 0;
-        stat->falseCount    = 0;
-        stat->nullCount     = 0;
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override {
+        stat.objectCount   = 0;
+        stat.arrayCount    = 0;
+        stat.numberCount   = 0;
+        stat.stringCount   = 0;
+        stat.trueCount     = 0;
+        stat.falseCount    = 0;
+        stat.nullCount     = 0;
 
-        stat->memberCount   = 0;
-        stat->elementCount  = 0;
-        stat->stringLength  = 0;
+        stat.memberCount   = 0;
+        stat.elementCount  = 0;
+        stat.stringLength  = 0;
 
         return currentRunner->Statistics(parseResult, stat);
     }
 
-    virtual bool SaxStatistics(const char* json, size_t length, Stat* stat) const {
-        stat->objectCount   = 0;
-        stat->arrayCount    = 0;
-        stat->numberCount   = 0;
-        stat->stringCount   = 0;
-        stat->trueCount     = 0;
-        stat->falseCount    = 0;
-        stat->nullCount     = 0;
+    virtual bool SaxStatistics(const char* json, size_t length, Stat& stat) const override {
+        stat.objectCount   = 0;
+        stat.arrayCount    = 0;
+        stat.numberCount   = 0;
+        stat.stringCount   = 0;
+        stat.trueCount     = 0;
+        stat.falseCount    = 0;
+        stat.nullCount     = 0;
 
-        stat->memberCount   = 0;
-        stat->elementCount  = 0;
-        stat->stringLength  = 0;
+        stat.memberCount   = 0;
+        stat.elementCount  = 0;
+        stat.stringLength  = 0;
 
         return currentRunner->SaxStatistics(json, length, stat);
     }
 
-    virtual bool SaxStatisticsUTF16(const char*, size_t, Stat*) const {
-        return false;
+    virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat& stat) const override {
+        stat.objectCount   = 0;
+        stat.arrayCount    = 0;
+        stat.numberCount   = 0;
+        stat.stringCount   = 0;
+        stat.trueCount     = 0;
+        stat.falseCount    = 0;
+        stat.nullCount     = 0;
+
+        stat.memberCount   = 0;
+        stat.elementCount  = 0;
+        stat.stringLength  = 0;
+
+        return currentRunner->SaxStatisticsUTF16(json, length, stat);
     }
 };
 
