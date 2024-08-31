@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <string>
+#include <sstream>
 #include <memory>
 
 class ParseResultBase
@@ -16,6 +17,28 @@ class StringResultBase
     public:
         virtual ~StringResultBase() {}
         virtual const char* c_str() const = 0;
+};
+
+class StringResultUsingString: public StringResultBase
+{
+    public:
+        std::string result;
+        virtual const char* c_str() const
+        {
+            return result.c_str();
+        }
+};
+
+class StringResultUsingStream: public StringResultBase
+{
+    public:
+        std::stringstream stream;
+        mutable std::string       result;
+        virtual const char* c_str() const
+        {
+            result = stream.str();
+            return result.c_str();
+        }
 };
 
 struct Stat
