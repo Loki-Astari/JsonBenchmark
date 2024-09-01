@@ -1,7 +1,8 @@
 #include "test.h"
+#include "simdjson.h"
+#include <iostream>
 #include <sstream>
 
-#include "simdjson.h"
 using namespace simdjson;
 
 struct SimdDOMResult: public ParseResultBase
@@ -28,7 +29,6 @@ class SimdJsonDomTest: public TestBase
     virtual const char* Type()    const override        { return "C++";}
     virtual const char* GetFilename() const override    { return __FILE__; }
 
-    // virtual bool ParseValidate(const char* json, std::size_t length) const override
     virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
     {
         std::unique_ptr<SimdDOMResult> result = std::make_unique<SimdDOMResult>(json, length);

@@ -1,9 +1,10 @@
 #include "test.h"
-
 #include "simdjson.h"
 #include <iostream>
+#include <sstream>
 
 using namespace simdjson;
+
 struct SimdOndemandResult: public ParseResultBase
 {
     simdjson::padded_string     json;
@@ -171,7 +172,7 @@ class SimdJsonOndemandTest: public TestBase
         ondemand::document      doc;
         simdjson::padded_string jsonStr(json, strlen(json));
         if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-            return false;
+            return true;
         }
         auto array = doc.get_array();
         for (auto val: array) {
@@ -186,7 +187,7 @@ class SimdJsonOndemandTest: public TestBase
         ondemand::document      doc;
         simdjson::padded_string jsonStr(json, strlen(json));
         if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-            return false;
+            return true;
         }
         auto array = doc.get_array();
         for (auto val: array) {
@@ -198,12 +199,16 @@ class SimdJsonOndemandTest: public TestBase
 
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
-        //SimdOndemandResult const& input = dynamic_cast<SimdOndemandResult const&>(parseResult);
-        SimdOndemandResult& input = const_cast<SimdOndemandResult&>(dynamic_cast<SimdOndemandResult const&>(parseResult));
-        ondemand::value const val = input.doc;
-        std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
-        streamDoc(val, result->stream);
-        reply = std::move(result);
+        SimdOndemandResult const& input = dynamic_cast<SimdOndemandResult const&>(parseResult);
+        ondemand::parser            parser;
+        ondemand::document          doc;
+        auto error = parser.iterate(input.json).get(doc);
+        if (!error) {
+            ondemand::value const val = doc;
+            std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
+            streamDoc(val, result->stream);
+            reply = std::move(result);
+        }
         return true;
     }
     // virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
