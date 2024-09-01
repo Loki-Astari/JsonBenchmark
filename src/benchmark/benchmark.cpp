@@ -10,6 +10,8 @@
 #include <list>
 #include <regex>
 
+bool debugJSONBenchmark = false;
+
 namespace BM = ThorsAnvil::Benchmark;
 
 using DirIter   = ThorsAnvil::FileSystem::DirectoryIterator;
@@ -110,7 +112,11 @@ BM::Options getOptions(int argc, char* argv[])
     int loop = 1;
     for (; loop < argc; ++loop)
     {
-        if (strncmp(argv[loop], "--filter=", 9) == 0)
+        if (strncmp(argv[loop], "--debug", 7) == 0)
+        {
+            debugJSONBenchmark = true;
+        }
+        else if (strncmp(argv[loop], "--filter=", 9) == 0)
         {
             result.testFilter = argv[loop] + 9;
         }
@@ -211,7 +217,7 @@ benchmark [--filter=<filter>] [--parser=<parser>] [--help] [--titleOnly] [--appe
     --listTests:    Lists the set of tests that can be run.
                     These values can be used with the --filter= flag.
 
-    -- filter=<type>/<test>
+    --filter=<type>/<test>
                     Default value all types and tests.
                     If this flag is used only the test specified by filter will be run.
 

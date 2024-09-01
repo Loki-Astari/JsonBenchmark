@@ -14,15 +14,6 @@ struct SimdDOMResult: public ParseResultBase
     {}
 };
 
-struct SimdDomStringResult: public StringResultBase
-{
-    std::string value;
-    virtual const char* c_str() const
-    {
-        return value.c_str();
-    }
-};
-
 class SimdJsonDomTest: public TestBase
 {
     public:
@@ -38,32 +29,29 @@ class SimdJsonDomTest: public TestBase
     virtual const char* GetFilename() const override    { return __FILE__; }
 
     // virtual bool ParseValidate(const char* json, std::size_t length) const override
-    virtual ParseResultBase* Parse(const char* json, size_t length) const override
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
     {
-        SimdDOMResult*             result = new SimdDOMResult(json, length);
+        std::unique_ptr<SimdDOMResult> result = std::make_unique<SimdDOMResult>(json, length);
         try
         {
             result->doc = result->parser.parse(result->json);
+            reply = std::move(result);
         }
-        catch(...)
-        {
-            delete result;
-            return nullptr;
-        }
-        return result;
+        catch(...) {}
+        return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const override
+    virtual bool ParseDouble(const char* json, long double& d) const override
     {
         ondemand::parser        parser;
         ondemand::document      doc;
         simdjson::padded_string jsonStr(json, strlen(json));
         if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-            return false;
+            return true;
         }
         auto array = doc.get_array();
         for (auto val: array) {
-            *d = val.get_double();
+            d = val.get_double();
         }
         return true;
     }
@@ -74,7 +62,7 @@ class SimdJsonDomTest: public TestBase
         ondemand::document      doc;
         simdjson::padded_string jsonStr(json, strlen(json));
         if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-            return false;
+            return true;
         }
         auto array = doc.get_array();
         for (auto val: array) {
@@ -84,45 +72,42 @@ class SimdJsonDomTest: public TestBase
         return true;
     }
 
-    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const override
+    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
     {
         ondemand::parser        parser;
         ondemand::document      doc;
         simdjson::padded_string jsonStr(json, length);
         if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-            return nullptr;
+            return true;
         }
 
-        std::stringstream   output;
-        output << doc;
-        SimdDomStringResult*   result = new SimdDomStringResult;
-        result->value = output.str();
+        std::unique_ptr<StringResultUsingStream>   result = std::make_unique<StringResultUsingStream>();
+        result->stream << doc;
+        reply = std::move(result);
 
-        return result;
+        return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const override
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
-        SimdDOMResult const*     simdParseResult = dynamic_cast<SimdDOMResult const*>(parseResult);
-        std::stringstream output;
+        SimdDOMResult const&     simdParseResult = dynamic_cast<SimdDOMResult const&>(parseResult);
 
-        output << simdParseResult->doc;
-        SimdDomStringResult*   result = new SimdDomStringResult;
-        result->value = output.str();
+        std::unique_ptr<StringResultUsingStream>   result = std::make_unique<StringResultUsingStream>();
+        result->stream << simdParseResult.doc;
+        reply = std::move(result);
 
-        return result;
+        return true;
     }
 
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const override
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
-        SimdDOMResult const*     simdParseResult = dynamic_cast<SimdDOMResult const*>(parseResult);
-        std::stringstream output;
+        SimdDOMResult const&     simdParseResult = dynamic_cast<SimdDOMResult const&>(parseResult);
 
-        output << prettify(simdParseResult->doc);
+        std::unique_ptr<StringResultUsingStream>   result = std::make_unique<StringResultUsingStream>();
+        result->stream << prettify(simdParseResult.doc);
 
-        SimdDomStringResult*   result = new SimdDomStringResult;
-        result->value = output.str();
-        return result;
+        reply = std::move(result);
+        return true;
     }
 
     // virtual bool Statistics(const ParseResultBase* /*parseResult*/, Stat* /*stat*/) const override

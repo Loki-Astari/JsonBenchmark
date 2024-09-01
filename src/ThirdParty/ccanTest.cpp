@@ -77,62 +77,65 @@ public:
 
 class CcanTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "ccan"; }
-    virtual const char* Type()    const { return "C";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "ccan"; }
+    virtual const char* Type()        const override { return "C";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 	
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        CcanParseResult* pr = new CcanParseResult;
+        std::unique_ptr<CcanParseResult> pr = std::make_unique<CcanParseResult>();
         pr->root = json_decode(json);
-        if (!pr->root) {
-            delete pr;
-            return 0;
+        if (pr->root) {
+            reply = std::move(pr);
         }
-    	return pr;
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const CcanParseResult* pr = static_cast<const CcanParseResult*>(parseResult);
-        CcanStringResult* sr = new CcanStringResult;
-        sr->s = json_encode(pr->root);
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const CcanParseResult* pr = static_cast<const CcanParseResult*>(parseResult);
-        CcanStringResult* sr = new CcanStringResult;
-        sr->s = json_stringify(pr->root, "    ");
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const CcanParseResult* pr = static_cast<const CcanParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(stat, pr->root);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const CcanParseResult& pr = static_cast<const CcanParseResult&>(parseResult);
+        std::unique_ptr<CcanStringResult> sr = std::make_unique<CcanStringResult>();
+        sr->s = json_encode(pr.root);
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const CcanParseResult& pr = static_cast<const CcanParseResult&>(parseResult);
+        std::unique_ptr<CcanStringResult> sr = std::make_unique<CcanStringResult>();
+        sr->s = json_stringify(pr.root, "    ");
+        reply = std::move(sr);
+        return true;
+    }
+
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const CcanParseResult& pr = static_cast<const CcanParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(&stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         CcanParseResult pr;
         pr.root = json_decode(json);
         if (pr.root && pr.root->tag == JSON_ARRAY && pr.root->children.head->tag == JSON_NUMBER) {
-            *d = pr.root->children.head->number_;
-            return true;
+            d = pr.root->children.head->number_;
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         CcanParseResult pr;
         pr.root = json_decode(json);
         if (pr.root && pr.root->tag == JSON_ARRAY && pr.root->children.head->tag == JSON_STRING) {
             s = pr.root->children.head->string_;
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

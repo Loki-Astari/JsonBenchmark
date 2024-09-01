@@ -57,73 +57,68 @@ public:
     json root;
 };
 
-class JsonconsStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class JsonconsTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "jsoncons"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "jsoncons"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        JsonconsParseResult* pr = new JsonconsParseResult;
+        std::unique_ptr<JsonconsParseResult> pr = std::make_unique<JsonconsParseResult>();
         try {
             pr->root = json::parse(json);
+            reply = std::move(pr);
         }
-        catch (...) {
-            delete pr;
-            return 0;
-        }
-    	return pr;
+        catch (...) {}
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const JsonconsParseResult* pr = static_cast<const JsonconsParseResult*>(parseResult);
-        JsonconsStringResult* sr = new JsonconsStringResult;
-        sr->s = pr->root.to_string();
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const JsonconsParseResult* pr = static_cast<const JsonconsParseResult*>(parseResult);
-        JsonconsStringResult* sr = new JsonconsStringResult;
-        pr->root.dump(sr->s);
-        //sr->s = pr->root.to_string(json_options());
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const JsonconsParseResult* pr = static_cast<const JsonconsParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->root);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JsonconsParseResult& pr = static_cast<const JsonconsParseResult&>(parseResult);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = pr.root.to_string();
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json_, double* d) const {
-        try {
-            json root = json::parse(json_);
-            *d = root.at(0).as_double();
-            return true;
-        }
-        catch (...) {
-        }
-        return false;
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JsonconsParseResult& pr = static_cast<const JsonconsParseResult&>(parseResult);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        pr.root.dump(sr->result);
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual bool ParseString(const char* json_, std::string& s) const {
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const JsonconsParseResult& pr = static_cast<const JsonconsParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json_, long double& d) const override
+    {
+        try {
+            json root = json::parse(json_);
+            d = root.at(0).as_double();
+        }
+        catch (...) {}
+        return true;
+    }
+
+    virtual bool ParseString(const char* json_, std::string& s) const override
+    {
         try {
             json root = json::parse(json_);
             s = root.at(0).as_string();
-            return true;
         }
-        catch (...) {
-        }
-        return false;
+        catch (...) {}
+        return true;
     }
 };
 

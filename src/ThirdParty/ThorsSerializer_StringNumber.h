@@ -7,6 +7,8 @@
 #include <string>
 #include <cctype>
 
+namespace ThorsSerializer
+{
 class StringNumber
 {
     std::string     data;
@@ -19,10 +21,12 @@ class StringNumber
         return std::getline(str, val.data);
     }
 };
-ThorsAnvil_MakeTraitCustom(StringNumber);
+
 inline void getStats(Stat* stat, StringNumber const&)
 {
     stat->numberCount++;
 }
+}
 
+ThorsAnvil_MakeTraitCustom(ThorsSerializer::StringNumber);
 #endif

@@ -106,57 +106,63 @@ public:
 
 class TEST_CLASS : public TestBase {
 public:
-    virtual const char* GetName() const { return TEST_NAME; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return TEST_NAME; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        RapidjsonParseResult* pr = new RapidjsonParseResult(json, length);
+        std::unique_ptr<RapidjsonParseResult> pr = std::make_unique<RapidjsonParseResult>(json, length);
 #ifdef TEST_INSITU
         pr->document.ParseInsitu<TEST_PARSE_FLAG>(pr->buffer);
 #else
         pr->document.Parse<TEST_PARSE_FLAG>(json);
 #endif
-        if (pr->document.HasParseError()) {
-            delete pr;
-            return 0;
+        if (!pr->document.HasParseError()) {
+            reply = std::move(pr);
         }
-        return pr;
+        return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const RapidjsonParseResult* pr = static_cast<const RapidjsonParseResult*>(parseResult);
-        RapidjsonStringResult* sr = new RapidjsonStringResult;
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const RapidjsonParseResult& pr = static_cast<const RapidjsonParseResult&>(parseResult);
+        std::unique_ptr<RapidjsonStringResult> sr = std::make_unique<RapidjsonStringResult>();
         Writer<StringBuffer> writer(sr->sb);
-        pr->document.Accept(writer);
-        return sr;
+        pr.document.Accept(writer);
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const RapidjsonParseResult* pr = static_cast<const RapidjsonParseResult*>(parseResult);
-        RapidjsonStringResult* sr = new RapidjsonStringResult;
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const RapidjsonParseResult& pr = static_cast<const RapidjsonParseResult&>(parseResult);
+        std::unique_ptr<RapidjsonStringResult> sr = std::make_unique<RapidjsonStringResult>();
         PrettyWriter<StringBuffer> writer(sr->sb);
-        pr->document.Accept(writer);
-        return sr;
+        pr.document.Accept(writer);
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const RapidjsonParseResult* pr = static_cast<const RapidjsonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const RapidjsonParseResult& pr = static_cast<const RapidjsonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
 #if SLOWER_STAT
-        StatHandler<> h(*stat);
+        StatHandler<> h(stat);
         doc->Accept(h);
 #else
-        GenStat(*stat, pr->document);
+        GenStat(stat, pr.document);
 #endif
         return true;
     }
 
-    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const {
+    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
+    {
         (void)length;
         Reader reader;
-        RapidjsonStringResult* sr = new RapidjsonStringResult;
+        std::unique_ptr<RapidjsonStringResult> sr = std::make_unique<RapidjsonStringResult>();
         Writer<StringBuffer> writer(sr->sb);
 
 #ifdef TEST_INSITU
@@ -166,16 +172,16 @@ public:
         StringStream is(json);
 #endif
 
-        if (!reader.Parse<TEST_PARSE_FLAG>(is, writer)) {
-            delete sr;
-            return 0;
+        if (reader.Parse<TEST_PARSE_FLAG>(is, writer)) {
+            reply = std::move(sr);
         }
-        return sr;
+        return true;
     }
 
-    virtual bool SaxStatistics(const char* json, size_t length, Stat* stat) const {
+    virtual bool SaxStatistics(const char* json, size_t length, Stat& stat) const override
+    {
         (void)length;
-        memset(stat, 0, sizeof(Stat));
+        memset(&stat, 0, sizeof(Stat));
         Reader reader;
 
 #ifdef TEST_INSITU
@@ -185,13 +191,14 @@ public:
         StringStream is(json);
 #endif
 
-        StatHandler<> handler(*stat);
+        StatHandler<> handler(stat);
         return reader.Parse<TEST_PARSE_FLAG>(is, handler);
     }
 
-    virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat* stat) const {
+    virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat& stat) const override
+    {
         (void)length;
-        memset(stat, 0, sizeof(Stat));
+        memset(&stat, 0, sizeof(Stat));
         GenericReader<UTF8<>, UTF16<> > reader;
 
 #ifdef TEST_INSITU
@@ -200,11 +207,12 @@ public:
 #else
         StringStream is(json);
 #endif
-        StatHandler<UTF16<> > handler(*stat);
+        StatHandler<UTF16<> > handler(stat);
         return reader.Parse<TEST_PARSE_FLAG>(is, handler);
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         Document doc;
 #ifdef TEST_INSITU
         RapidjsonParseResult pr(json, strlen(json));
@@ -213,13 +221,13 @@ public:
         doc.Parse<TEST_PARSE_FLAG>(json);
 #endif
         if (!doc.HasParseError() && doc.IsArray() && doc.Size() == 1 && doc[0].IsNumber()) {
-            *d = doc[0].GetDouble();
-            return true;
+            d = doc[0].GetDouble();
         }
-        return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         Document doc;
 #ifdef TEST_INSITU
         RapidjsonParseResult pr(json, strlen(json));
@@ -229,9 +237,8 @@ public:
 #endif
         if (!doc.HasParseError() && doc.IsArray() && doc.Size() == 1 && doc[0].IsString()) {
             s = std::string(doc[0].GetString(), doc[0].GetStringLength());
-            return true;
         }
-        return false;
+        return true;
     }
 };
 

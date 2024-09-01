@@ -61,50 +61,44 @@ public:
     document d;
 };
 
-class SajsonStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class SajsonTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "sajson"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "sajson"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        SajsonParseResult* pr = new SajsonParseResult(parse(dynamic_allocation(), string(json, length)));
-        if (!pr->d.is_valid()) {
-            //std::cout << "Error (" << pr->d.get_error_line() << ":" << pr->d.get_error_column() << "): " << pr->d.get_error_message() << std::endl;
-            delete pr;
-            return 0;
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
+        std::unique_ptr<SajsonParseResult> pr = std::make_unique<SajsonParseResult>(parse(dynamic_allocation(), string(json, length)));
+        if (pr->d.is_valid()) {
+            reply = std::move(pr);
         }
-    	return pr;
+    	return true;
     }
 
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const SajsonParseResult* pr = static_cast<const SajsonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->d.get_root());
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const SajsonParseResult& pr = static_cast<const SajsonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.d.get_root());
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         document doc = parse(dynamic_allocation(), string(json, strlen(json)));
         if (doc.is_valid() &&
             doc.get_root().get_type() == TYPE_ARRAY &&
             doc.get_root().get_length() == 1 &&
             doc.get_root().get_array_element(0).get_type() == TYPE_DOUBLE)
         {
-            *d = doc.get_root().get_array_element(0).get_double_value();
-            return true;
+            d = doc.get_root().get_array_element(0).get_double_value();
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         document doc = parse(dynamic_allocation(), string(json, strlen(json)));
         if (doc.is_valid() &&
             doc.get_root().get_type() == TYPE_ARRAY &&
@@ -112,10 +106,8 @@ public:
             doc.get_root().get_array_element(0).get_type() == TYPE_STRING)
         {
             s = doc.get_root().get_array_element(0).as_string();
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

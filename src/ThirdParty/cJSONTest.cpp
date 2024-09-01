@@ -54,62 +54,65 @@ public:
 
 class CjsonTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "cJSON"; }
-    virtual const char* Type()    const { return "C";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "cJSON"; }
+    virtual const char* Type()        const override { return "C";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        CjsonParseResult* pr = new CjsonParseResult;
+        std::unique_ptr<CjsonParseResult> pr = std::make_unique<CjsonParseResult>();
         pr->root = cJSON_ParseWithOpts(json, nullptr, static_cast<cJSON_bool>(true));
-        if (pr->root == nullptr) {
-            delete pr;
-            return nullptr;
+        if (pr->root != nullptr) {
+            reply = std::move(pr);
         }
-    	return pr;
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const CjsonParseResult* pr = static_cast<const CjsonParseResult*>(parseResult);
-        CjsonStringResult* sr = new CjsonStringResult;
-        sr->s = cJSON_PrintBuffered(pr->root, 4096, static_cast<cJSON_bool>(false));
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const CjsonParseResult* pr = static_cast<const CjsonParseResult*>(parseResult);
-        CjsonStringResult* sr = new CjsonStringResult;
-        sr->s = cJSON_PrintBuffered(pr->root, 4096, static_cast<cJSON_bool>(true));
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const CjsonParseResult* pr = static_cast<const CjsonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(stat, pr->root);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const CjsonParseResult& pr = static_cast<const CjsonParseResult&>(parseResult);
+        std::unique_ptr<CjsonStringResult> sr = std::make_unique<CjsonStringResult>();
+        sr->s = cJSON_PrintBuffered(pr.root, 4096, static_cast<cJSON_bool>(false));
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const CjsonParseResult& pr = static_cast<const CjsonParseResult&>(parseResult);
+        std::unique_ptr<CjsonStringResult> sr = std::make_unique<CjsonStringResult>();
+        sr->s = cJSON_PrintBuffered(pr.root, 4096, static_cast<cJSON_bool>(true));
+        reply = std::move(sr);
+        return true;
+    }
+
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const CjsonParseResult& pr = static_cast<const CjsonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(&stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         CjsonParseResult pr;
         pr.root = cJSON_Parse(json);
         if ((pr.root != nullptr) && cJSON_IsArray(pr.root) && cJSON_IsNumber(pr.root->child)) {
-            *d = pr.root->child->valuedouble;
-            return true;
+            d = pr.root->child->valuedouble;
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         CjsonParseResult pr;
         pr.root = cJSON_Parse(json);
         if ((pr.root != nullptr) && cJSON_IsArray(pr.root) && cJSON_IsString(pr.root->child)) {
             s = pr.root->child->valuestring;
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

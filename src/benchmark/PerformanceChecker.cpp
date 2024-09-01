@@ -111,40 +111,47 @@ void PerformanceChecker::validatePerformance(TestBase const& parser)
     {
         std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
         TestSetUp   testSetUp(parser, setupName(test), true);
-        std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+        std::unique_ptr<ParseResultBase> dom;
 
-        Stat    stats {};
-        bool    result = parser.Statistics(dom.get(), &stats);
         std::cerr << "\t\t" << std::setw(15) << std::left << "Validate:"
                   << std::setw(20) << std::left << fileName
                   << std::right << std::flush;
-        if (!result)
-        {
+
+        bool implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
+
+        if (!implemented) {
             std::cerr << " Not Implemented\n";
+            continue;
         }
-        else
+
+        Stat    stats {};
+
+        implemented = parser.Statistics(*dom, stats);
+        if (implemented) {
+            std::cerr << " Not Implemented\n";
+            continue;
+        }
+
+        auto find = validator.find(fileName);
+        if (find == validator.end())
         {
-            auto find = validator.find(fileName);
-            if (find == validator.end())
-            {
-                std::cerr << " New Test! No comparison\n";
-                continue;
-            }
-            bool ok = stats == *find->second;
-            std::cerr << (ok ? " Pass" : " Fail") << "\n";
-            if (!ok)
-            {
-                std::cerr << "\t\t\tobjectCount  " << std::setw(8) << find->second->objectCount  << " : " << std::setw(8) << stats.objectCount  << (find->second->objectCount  == stats.objectCount ? "" : "  BAD") << "\n"
-                          << "\t\t\tarrayCount   " << std::setw(8) << find->second->arrayCount   << " : " << std::setw(8) << stats.arrayCount   << (find->second->arrayCount   == stats.arrayCount  ? "" : "  BAD") << "\n"
-                          << "\t\t\tnumberCount  " << std::setw(8) << find->second->numberCount  << " : " << std::setw(8) << stats.numberCount  << (find->second->numberCount  == stats.numberCount ? "" : "  BAD") << "\n"
-                          << "\t\t\tstringCount  " << std::setw(8) << find->second->stringCount  << " : " << std::setw(8) << stats.stringCount  << (find->second->stringCount  == stats.stringCount ? "" : "  BAD") << "\n"
-                          << "\t\t\ttrueCount    " << std::setw(8) << find->second->trueCount    << " : " << std::setw(8) << stats.trueCount    << (find->second->trueCount    == stats.trueCount   ? "" : "  BAD") << "\n"
-                          << "\t\t\tfalseCount   " << std::setw(8) << find->second->falseCount   << " : " << std::setw(8) << stats.falseCount   << (find->second->falseCount   == stats.falseCount  ? "" : "  BAD") << "\n"
-                          << "\t\t\tnullCount    " << std::setw(8) << find->second->nullCount    << " : " << std::setw(8) << stats.nullCount    << (find->second->nullCount    == stats.nullCount   ? "" : "  BAD") << "\n"
-                          << "\t\t\tmemberCount  " << std::setw(8) << find->second->memberCount  << " : " << std::setw(8) << stats.memberCount  << (find->second->memberCount  == stats.memberCount ? "" : "  BAD") << "\n"
-                          << "\t\t\telementCount " << std::setw(8) << find->second->elementCount << " : " << std::setw(8) << stats.elementCount << (find->second->elementCount == stats.elementCount? "" : "  BAD") << "\n"
-                          << "\t\t\tstringLength " << std::setw(8) << find->second->stringLength << " : " << std::setw(8) << stats.stringLength << (find->second->stringLength == stats.stringLength? "" : "  BAD") << "\n";
-            }
+            std::cerr << " New Test! No comparison\n";
+            continue;
+        }
+        bool ok = stats == *find->second;
+        std::cerr << (ok ? " Pass" : " Fail") << "\n";
+        if (!ok)
+        {
+            std::cerr << "\t\t\tobjectCount  " << std::setw(8) << find->second->objectCount  << " : " << std::setw(8) << stats.objectCount  << (find->second->objectCount  == stats.objectCount ? "" : "  BAD") << "\n"
+                      << "\t\t\tarrayCount   " << std::setw(8) << find->second->arrayCount   << " : " << std::setw(8) << stats.arrayCount   << (find->second->arrayCount   == stats.arrayCount  ? "" : "  BAD") << "\n"
+                      << "\t\t\tnumberCount  " << std::setw(8) << find->second->numberCount  << " : " << std::setw(8) << stats.numberCount  << (find->second->numberCount  == stats.numberCount ? "" : "  BAD") << "\n"
+                      << "\t\t\tstringCount  " << std::setw(8) << find->second->stringCount  << " : " << std::setw(8) << stats.stringCount  << (find->second->stringCount  == stats.stringCount ? "" : "  BAD") << "\n"
+                      << "\t\t\ttrueCount    " << std::setw(8) << find->second->trueCount    << " : " << std::setw(8) << stats.trueCount    << (find->second->trueCount    == stats.trueCount   ? "" : "  BAD") << "\n"
+                      << "\t\t\tfalseCount   " << std::setw(8) << find->second->falseCount   << " : " << std::setw(8) << stats.falseCount   << (find->second->falseCount   == stats.falseCount  ? "" : "  BAD") << "\n"
+                      << "\t\t\tnullCount    " << std::setw(8) << find->second->nullCount    << " : " << std::setw(8) << stats.nullCount    << (find->second->nullCount    == stats.nullCount   ? "" : "  BAD") << "\n"
+                      << "\t\t\tmemberCount  " << std::setw(8) << find->second->memberCount  << " : " << std::setw(8) << stats.memberCount  << (find->second->memberCount  == stats.memberCount ? "" : "  BAD") << "\n"
+                      << "\t\t\telementCount " << std::setw(8) << find->second->elementCount << " : " << std::setw(8) << stats.elementCount << (find->second->elementCount == stats.elementCount? "" : "  BAD") << "\n"
+                      << "\t\t\tstringLength " << std::setw(8) << find->second->stringLength << " : " << std::setw(8) << stats.stringLength << (find->second->stringLength == stats.stringLength? "" : "  BAD") << "\n";
         }
     }
 }
@@ -158,10 +165,13 @@ void PerformanceChecker::executeParse(TestBase const& parser, Test const& test)
     {
         TestSetUp   testSetUp(parser, setupName(test), true);
         std::unique_ptr<ParseResultBase> result;
-        double duration = timeExecution([&parser, &test, &result]()
-            { result.reset(parser.Parse(test.input.c_str(), test.input.size()));});
-        if (!result)
-        {
+        bool                             implemented;
+        double duration = timeExecution([&parser, &test, &result, &implemented]()
+            {
+                implemented = parser.Parse(test.input.c_str(), test.input.size(), result);
+            }
+        );
+        if (!implemented) {
             return;
         }
         minDuration = std::min(minDuration, duration);
@@ -175,14 +185,21 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
     Output generator(options, parser, test, "Stringify", "2", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
-    std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+    std::unique_ptr<ParseResultBase> dom;
+    bool implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (!implemented) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
-        double duration = timeExecution([&parser, &result, &dom]()
-            { result.reset(parser.Stringify(dom.get()));});
-        if (!result)
-        {
+        bool                              implemented;
+        double duration = timeExecution([&parser, &result, &implemented, &dom]()
+            {
+                implemented = parser.Stringify(*dom, result);
+            }
+        );
+        if (!implemented) {
             return;
         }
         minDuration = std::min(minDuration, duration);
@@ -196,14 +213,21 @@ void PerformanceChecker::executePrettify(TestBase const& parser, Test const& tes
     Output generator(options, parser, test, "Prettify", "3", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
-    std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+    std::unique_ptr<ParseResultBase> dom;
+    bool implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (!implemented) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
-        double duration = timeExecution([&parser, &result, &dom]()
-            { result.reset(parser.Prettify(dom.get()));});
-        if (!result)
-        {
+        bool                              implemented;
+        double duration = timeExecution([&parser, &result, &implemented, &dom]()
+            {
+                implemented = parser.Prettify(*dom, result);
+            }
+        );
+        if (!implemented) {
             return;
         }
         minDuration = std::min(minDuration, duration);
@@ -217,15 +241,21 @@ void PerformanceChecker::executeStatistics(TestBase const& parser, Test const& t
     Output generator(options, parser, test, "Statistics", "4", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
-    std::unique_ptr<ParseResultBase> dom(parser.Parse(test.input.c_str(), test.input.size()));
+    std::unique_ptr<ParseResultBase> dom;
+    bool    implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (!implemented) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         Stat    stats {};
-        bool    result;
-        double duration = timeExecution([&parser, &result, &stats, &dom]()
-            { result = parser.Statistics(dom.get(), &stats);});
-        if (!result)
-        {
+        bool    implemented;
+        double duration = timeExecution([&parser, &implemented, &stats, &dom]()
+            {
+                implemented = parser.Statistics(*dom, stats);
+            }
+        );
+        if (!implemented) {
             return;
         }
         minDuration = std::min(minDuration, duration);
@@ -242,10 +272,13 @@ void PerformanceChecker::executeSaxRoundtrip(TestBase const& parser, Test const&
     {
         TestSetUp   testSetUp(parser, setupName(test), true);
         std::unique_ptr<StringResultBase> result;
-        double duration = timeExecution([&parser, &test, &result]()
-            { result.reset(parser.SaxRoundtrip(test.input.c_str(), test.input.size()));});
-        if (!result)
-        {
+        bool                              implemented;
+        double duration = timeExecution([&parser, &test, &result, &implemented]()
+            {
+                implemented = parser.SaxRoundtrip(test.input.c_str(), test.input.size(), result);
+            }
+        );
+        if (!implemented) {
             return;
         }
         minDuration = std::min(minDuration, duration);
@@ -262,11 +295,13 @@ void PerformanceChecker::executeSaxStatistics(TestBase const& parser, Test const
     {
         TestSetUp   testSetUp(parser, setupName(test), true);
         Stat        stats {};
-        bool        result;
-        double duration = timeExecution([&parser, &test, &result, &stats]()
-            { result = parser.SaxStatistics(test.input.c_str(), test.input.size(), &stats);});
-        if (!result)
-        {
+        bool        implemented;
+        double duration = timeExecution([&parser, &test, &implemented, &stats]()
+            {
+                implemented = parser.SaxStatistics(test.input.c_str(), test.input.size(), stats);
+            }
+        );
+        if (!implemented) {
             return;
         }
         minDuration = std::min(minDuration, duration);

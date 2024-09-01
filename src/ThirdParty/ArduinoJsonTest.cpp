@@ -48,32 +48,29 @@ static void GenStat(Stat& stat, const JsonVariant& v) {
 
 class ArduinojsonParseResult : public ParseResultBase {
 public:
-    ArduinojsonParseResult() : buffer() {}
-    ~ArduinojsonParseResult() { free(buffer); }
+    ArduinojsonParseResult(char const* json, size_t length)
+    {
+        buffer = (char*)malloc(length);
+        memcpy(buffer, json, length);
+    }
+    ~ArduinojsonParseResult()
+    {
+        free(buffer);
+    }
 
     char* buffer;
     DynamicJsonBuffer jsonBuffer;
     JsonVariant root;
 };
 
-class ArduinojsonStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
-
 class ArduinojsonTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "ArduinoJson"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "ArduinoJson"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        (void)length;
-        ArduinojsonParseResult* pr = new ArduinojsonParseResult;
-        pr->buffer = (char*)malloc(length);
-        memcpy(pr->buffer, json, length);
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& result) const override{
+        std::unique_ptr<ArduinojsonParseResult> pr = std::make_unique<ArduinojsonParseResult>(json, length);
 
         // Determine object or array
         for (size_t i = 0; i < length; i++) {
@@ -82,22 +79,22 @@ public:
                     {
                         JsonObject& o = pr->jsonBuffer.parseObject(pr->buffer);
                         if (!o.success()) {
-                            delete pr;
-                            return 0;
+                            return true;
                         }
                         pr->root = o;
                     }
-                    return pr;
+                    result = std::move(pr);
+                    return true;
                 case '[':
                     {
                         JsonArray& a = pr->jsonBuffer.parseArray(pr->buffer);
                         if (!a.success()) {
-                            delete pr;
-                            return 0;
+                            return true;
                         }
                         pr->root = a;
                     }
-                    return pr;
+                    result = std::move(pr);
+                    return true;
                 case ' ':
                 case '\t':
                 case '\n':
@@ -107,59 +104,55 @@ public:
             // Unknown first non-whitespace character
             break;
         }
-        delete pr;
-        return 0;
-    }
-
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const ArduinojsonParseResult* pr = static_cast<const ArduinojsonParseResult*>(parseResult);
-        ArduinojsonStringResult* sr = new ArduinojsonStringResult;
-        std::ostringstream os;
-        StreamPrintAdapter adapter(os);
-        pr->root.printTo(adapter);
-        sr->s = os.str();
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const ArduinojsonParseResult* pr = static_cast<const ArduinojsonParseResult*>(parseResult);
-        ArduinojsonStringResult* sr = new ArduinojsonStringResult;
-        std::ostringstream os;
-        StreamPrintAdapter adapter(os);
-        pr->root.prettyPrintTo(adapter);
-        sr->s = os.str();
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const ArduinojsonParseResult* pr = static_cast<const ArduinojsonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->root);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
-        ArduinojsonParseResult pr;
-        pr.buffer = strdup(json);
-        JsonArray& a = pr.jsonBuffer.parseArray(pr.buffer);
-        if (a.success() && a.size() == 1) {
-            *d = (double)a[0];
-            return true;
-        }
-        else
-            return false;
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& result) const override
+    {
+        const ArduinojsonParseResult& pr = static_cast<const ArduinojsonParseResult&>(parseResult);
+        std::unique_ptr<StringResultUsingStream> sr = std::make_unique<StringResultUsingStream>();
+        StreamPrintAdapter adapter(sr->stream);
+        pr.root.printTo(adapter);
+        result = std::move(sr);
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
-        ArduinojsonParseResult pr;
-        pr.buffer = strdup(json);
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& result) const override
+    {
+        const ArduinojsonParseResult& pr = static_cast<const ArduinojsonParseResult&>(parseResult);
+        std::unique_ptr<StringResultUsingStream> sr = std::make_unique<StringResultUsingStream>();
+        StreamPrintAdapter adapter(sr->stream);
+        pr.root.printTo(adapter);
+        result = std::move(sr);
+        return true;
+    }
+
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const ArduinojsonParseResult& pr = static_cast<const ArduinojsonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
+        ArduinojsonParseResult pr(json, strlen(json));
+        JsonArray& a = pr.jsonBuffer.parseArray(pr.buffer);
+        if (a.success() && a.size() == 1) {
+            d = (double)a[0];
+        }
+        return true;
+    }
+
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
+        ArduinojsonParseResult pr(json, strlen(json));
         JsonArray& a = pr.jsonBuffer.parseArray(pr.buffer);
         if (a.success() && a.size() == 1) {
             s = a[0].as<char*>();
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

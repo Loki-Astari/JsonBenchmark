@@ -1,26 +1,11 @@
 #ifndef THORS_SERIALIZER_TWITTER_H
 #define THORS_SERIALIZER_TWITTER_H
 
+#include "test.h"
+#include "TypeSafeTwitter.h"
 #include "ThorSerialize/Traits.h"
 #include "ThorSerialize/SerUtil.h"
-#include <iostream>
-#include <map>
-#include <vector>
-#include <string>
-#include <memory>
 
-using IntVec = std::vector<int>;
-
-template<typename T>
-using Opt       = std::unique_ptr<T>;
-using Symbol    = std::map<std::string, std::string>;
-using Symbols   = std::vector<Symbol>;
-
-struct Metadata
-{
-    std::string         result_type;
-    std::string         iso_language_code;
-};
 ThorsAnvil_MakeTrait(Metadata, result_type, iso_language_code);
 inline void getStats(Stat* stat, Metadata const& value)
 {
@@ -30,13 +15,6 @@ inline void getStats(Stat* stat, Metadata const& value)
     stat->stringLength += (11 /*result_type*/ + 17 /*iso_language_code*/ + value.result_type.size() + value.iso_language_code.size());
 }
 
-struct URL
-{
-    std::string         url;
-    std::string         expanded_url;
-    std::string         display_url;
-    IntVec              indices;
-};
 ThorsAnvil_MakeTrait(URL, url, expanded_url, display_url, indices);
 inline void getStats(Stat* stat, URL const& value)
 {
@@ -47,12 +25,7 @@ inline void getStats(Stat* stat, URL const& value)
                         + value.url.size() + value.expanded_url.size() + value.display_url.size());
     getStats(stat, value.indices);
 }
-using URLS = std::vector<URL>;
 
-struct URLObject
-{
-    URLS                urls;
-};
 ThorsAnvil_MakeTrait(URLObject, urls);
 inline void getStats(Stat* stat, URLObject const& value)
 {
@@ -64,11 +37,6 @@ inline void getStats(Stat* stat, URLObject const& value)
     getStats(stat, value.urls);
 }
 
-struct Entities
-{
-    Opt<URLObject>      url;
-    URLObject           description;
-};
 ThorsAnvil_MakeTrait(Entities, url, description);
 inline void getStats(Stat* stat, Entities const& value)
 {
@@ -81,48 +49,6 @@ inline void getStats(Stat* stat, Entities const& value)
     getStatsMayNotExist(stat, value.url, 3 /*url*/);
 }
 
-struct User
-{
-    long                id;
-    std::string         id_str;
-    std::string         name;
-    std::string         screen_name;
-    std::string         location;
-    std::string         description;
-    Opt<std::string>    url;
-    Entities            entities;
-    int                 followers_count;
-    int                 friends_count;
-    int                 listed_count;
-    std::string         created_at;
-    int                 favourites_count;
-    Opt<int>            utc_offset;
-    Opt<std::string>    time_zone;
-    bool                geo_enabled;
-    bool                verified;
-    int                 statuses_count;
-    std::string         lang;
-    bool                contributors_enabled;
-    bool                is_translator;
-    bool                is_translation_enabled;
-    std::string         profile_background_color;
-    std::string         profile_background_image_url;
-    std::string         profile_background_image_url_https;
-    bool                profile_background_tile;
-    std::string         profile_image_url;
-    std::string         profile_image_url_https;
-    Opt<std::string>    profile_banner_url;
-    std::string         profile_link_color;
-    std::string         profile_sidebar_border_color;
-    std::string         profile_sidebar_fill_color;
-    std::string         profile_text_color;
-    bool                profile_use_background_image;
-    bool                default_profile;
-    bool                default_profile_image;
-    bool                following;
-    bool                follow_request_sent;
-    bool                notifications;
-};
 ThorsAnvil_MakeTrait(User, id, id_str, name, screen_name, location, description, url, entities, followers_count, friends_count, listed_count, created_at, favourites_count, utc_offset, time_zone, geo_enabled, verified, statuses_count, lang, contributors_enabled, is_translator, is_translation_enabled, profile_background_color, profile_background_image_url, profile_background_image_url_https, profile_background_tile, profile_image_url, profile_image_url_https, profile_banner_url, profile_link_color, profile_sidebar_border_color, profile_sidebar_fill_color, profile_text_color, profile_use_background_image, default_profile, default_profile_image, following, follow_request_sent, notifications);
 inline void getStats(Stat* stat, User const& value)
 {
@@ -182,13 +108,7 @@ inline void getStats(Stat* stat, User const& value)
     getStats(stat, value.follow_request_sent);
     getStats(stat, value.notifications);
 }
-using Users = std::vector<User>;
 
-struct Hashtag
-{
-    std::string         text;
-    IntVec              indices;
-};
 ThorsAnvil_MakeTrait(Hashtag, text, indices);
 inline void getStats(Stat* stat, Hashtag const& value)
 {
@@ -198,16 +118,7 @@ inline void getStats(Stat* stat, Hashtag const& value)
     stat->stringLength += (4 /*text*/ + 7 /*indices*/ + value.text.size());
     getStats(stat, value.indices);
 }
-using Hashtags = std::vector<Hashtag>;
 
-struct UserMention
-{
-    std::string         screen_name;
-    std::string         name;
-    long                id;
-    std::string         id_str;
-    IntVec              indices;
-};
 ThorsAnvil_MakeTrait(UserMention, screen_name, name, id, id_str, indices);
 inline void getStats(Stat* stat, UserMention const& value)
 {
@@ -219,14 +130,7 @@ inline void getStats(Stat* stat, UserMention const& value)
     stat->numberCount++;
     getStats(stat, value.indices);
 }
-using UserMentions = std::vector<UserMention>;
 
-struct Size
-{
-    int                 w;
-    int                 h;
-    std::string         resize;
-};
 ThorsAnvil_MakeTrait(Size, w, h, resize);
 inline void getStats(Stat* stat, Size const& value)
 {
@@ -238,13 +142,6 @@ inline void getStats(Stat* stat, Size const& value)
     stat->numberCount += 2;
 }
 
-struct Sizes
-{
-    Size                medium;
-    Size                small;
-    Size                thumb;
-    Size                large;
-};
 ThorsAnvil_MakeTrait(Sizes, medium, small, thumb, large);
 inline void getStats(Stat* stat, Sizes const& value)
 {
@@ -258,21 +155,6 @@ inline void getStats(Stat* stat, Sizes const& value)
     getStats(stat, value.large);
 }
 
-struct Media
-{
-    long                id;
-    std::string         id_str;
-    IntVec              indices;
-    std::string         media_url;
-    std::string         media_url_https;
-    std::string         url;
-    std::string         display_url;
-    std::string         expanded_url;
-    std::string         type;
-    Sizes               sizes;
-    Opt<long>           source_status_id;
-    Opt<std::string>    source_status_id_str;
-};
 ThorsAnvil_MakeTrait(Media, id, id_str, indices, media_url, media_url_https, url, display_url, expanded_url, type, sizes, source_status_id, source_status_id_str);
 inline void getStats(Stat* stat, Media const& value)
 {
@@ -295,16 +177,7 @@ inline void getStats(Stat* stat, Media const& value)
     getStatsMayNotExist(stat, value.source_status_id, 16 /*source_status_id*/);
     getStatsMayNotExist(stat, value.source_status_id_str, 20 /*source_status_id_str*/);
 }
-using Medias = std::vector<Media>;
 
-struct TwitEntities
-{
-    Hashtags            hashtags;
-    Symbols             symbols;
-    URLS                urls;
-    UserMentions        user_mentions;
-    Opt<Medias>         media;
-};
 ThorsAnvil_MakeTrait(TwitEntities, hashtags, symbols, urls, user_mentions, media);
 inline void getStats(Stat* stat, TwitEntities const& value)
 {
@@ -319,33 +192,6 @@ inline void getStats(Stat* stat, TwitEntities const& value)
     getStatsMayNotExist(stat, value.media, 5 /*media*/);
 }
 
-struct BaseStatus
-{
-    Metadata            metadata;
-    std::string         created_at;
-    long                id;
-    std::string         id_str;
-    std::string         text;
-    std::string         source;
-    bool                truncated;
-    Opt<long>           in_reply_to_status_id;
-    Opt<std::string>    in_reply_to_status_id_str;
-    Opt<long>           in_reply_to_user_id;
-    Opt<std::string>    in_reply_to_user_id_str;
-    Opt<std::string>    in_reply_to_screen_name;
-    User                user;
-    Opt<int>            geo;
-    Opt<int>            coordinates;
-    Opt<int>            place;
-    Opt<int>            contributors;
-    int                 retweet_count;
-    int                 favorite_count;
-    TwitEntities        entities;
-    bool                favorited;
-    bool                retweeted;
-    Opt<bool>           possibly_sensitive;
-    std::string         lang;
-};
 ThorsAnvil_MakeTrait(BaseStatus, metadata, created_at, id, id_str, text, source, truncated, in_reply_to_status_id, in_reply_to_status_id_str, in_reply_to_user_id, in_reply_to_user_id_str, in_reply_to_screen_name, user, geo, coordinates, place, contributors, retweet_count, favorite_count, entities, favorited, retweeted, possibly_sensitive, lang);
 inline void getStats(Stat* stat, BaseStatus const& value)
 {
@@ -385,30 +231,13 @@ inline void getStats(Stat* stat, BaseStatus const& value)
     getStats(stat, value.lang);
 }
 
-struct MainStatus: public BaseStatus
-{
-    Opt<BaseStatus>     retweeted_status;
-};
 ThorsAnvil_ExpandTrait(BaseStatus, MainStatus, retweeted_status);
 inline void getStats(Stat* stat, MainStatus const& value)
 {
     getStats(stat, static_cast<BaseStatus const&>(value));
     getStatsMayNotExist(stat, value.retweeted_status, 16 /*retweeted_status*/);
 }
-using Statuses = std::vector<MainStatus>;
 
-struct SearchMetadata
-{
-    double              completed_in;
-    long                max_id;
-    std::string         max_id_str;
-    std::string         next_results;
-    std::string         query;
-    std::string         refresh_url;
-    int                 count;
-    long                since_id;
-    std::string         since_id_str;
-};
 ThorsAnvil_MakeTrait(SearchMetadata, completed_in, max_id, max_id_str, next_results, query, refresh_url, count, since_id, since_id_str);
 inline void getStats(Stat* stat, SearchMetadata const& value)
 {
@@ -422,11 +251,6 @@ inline void getStats(Stat* stat, SearchMetadata const& value)
     stat->numberCount += 4;
 }
 
-struct Twitter
-{
-    Statuses            statuses;
-    SearchMetadata      search_metadata;
-};
 ThorsAnvil_MakeTrait(Twitter, statuses, search_metadata);
 inline void getStats(Stat* stat, Twitter const& value)
 {

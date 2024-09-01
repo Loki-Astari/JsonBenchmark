@@ -44,45 +44,42 @@ public:
     value v;
 };
 
-class PicojsonStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
-
 class PicojsonTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "picojson"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "picojson"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 	
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        PicojsonParseResult* pr = new PicojsonParseResult;
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
+        std::unique_ptr<PicojsonParseResult> pr = std::make_unique<PicojsonParseResult>();
         std::string err;
         parse(pr->v, json, json + length, &err);
-    	if (!err.empty()) {
-    		delete pr;
-    		return 0;
+    	if (err.empty()) {
+            reply = std::move(pr);
     	}
-    	return pr;
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const PicojsonParseResult* pr = static_cast<const PicojsonParseResult*>(parseResult);
-        PicojsonStringResult* sr = new PicojsonStringResult;
-        sr->s = pr->v.serialize();
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const PicojsonParseResult* pr = static_cast<const PicojsonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(*stat, pr->v);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const PicojsonParseResult& pr = static_cast<const PicojsonParseResult&>(parseResult);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = pr.v.serialize();
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const PicojsonParseResult& pr = static_cast<const PicojsonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(stat, pr.v);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         value v;
         std::string err;
         parse(v, json, json + strlen(json), &err);
@@ -91,14 +88,13 @@ public:
             v.get<array>().size() == 1 &&
             v.get<array>()[0].is<double>())
         {
-            *d = v.get<array>()[0].get<double>();
-            return true;
+            d = v.get<array>()[0].get<double>();
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         value v;
         std::string err;
         parse(v, json, json + strlen(json), &err);
@@ -108,10 +104,8 @@ public:
             v.get<array>()[0].is<std::string>())
         {
             s = v.get<array>()[0].get<std::string>();
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

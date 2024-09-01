@@ -4159,11 +4159,11 @@ fi
 
 
 
-    if test "x20" == "x"
+    if test "x23" == "x"
 then :
   askedLangFeature=20
 else case e in #(
-  e) askedLangFeature=20
+  e) askedLangFeature=23
      ;;
 esac
 fi

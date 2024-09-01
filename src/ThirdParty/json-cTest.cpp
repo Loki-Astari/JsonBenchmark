@@ -54,7 +54,7 @@ static void GenStat(Stat* s, json_object* v) {
 class JsoncParseResult : public ParseResultBase {
 public:
     JsoncParseResult() : root() {}
-    ~JsoncParseResult() { json_object_put(root); }
+    virtual ~JsoncParseResult() { json_object_put(root); }
 
     json_object *root;
 };
@@ -71,43 +71,49 @@ public:
 
 class JsoncTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "json-c"; }
-    virtual const char* Type()    const { return "C";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "json-c"; }
+    virtual const char* Type()        const override { return "C";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 	
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
         (void)length;
-        JsoncParseResult* pr = new JsoncParseResult;
+        std::unique_ptr<JsoncParseResult> pr = std::make_unique<JsoncParseResult>();
         pr->root = json_tokener_parse(json);
-        if (!pr->root) {
-            delete pr;
-            return 0;
+        if (pr->root) {
+            reply = std::move(pr);
         }
-    	return pr;
+    	return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const JsoncParseResult* pr = static_cast<const JsoncParseResult*>(parseResult);
-        JsoncStringResult* sr = new JsoncStringResult;
-        sr->s = strdup(json_object_to_json_string_ext(pr->root, JSON_C_TO_STRING_PLAIN));
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const JsoncParseResult* pr = static_cast<const JsoncParseResult*>(parseResult);
-        JsoncStringResult* sr = new JsoncStringResult;
-        sr->s = strdup(json_object_to_json_string_ext(pr->root, JSON_C_TO_STRING_PRETTY));
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const JsoncParseResult* pr = static_cast<const JsoncParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(stat, (json_object*)pr->root);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JsoncParseResult& pr = static_cast<const JsoncParseResult&>(parseResult);
+        std::unique_ptr<JsoncStringResult> sr = std::make_unique<JsoncStringResult>();
+        sr->s = strdup(json_object_to_json_string_ext(pr.root, JSON_C_TO_STRING_PLAIN));
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const JsoncParseResult& pr = static_cast<const JsoncParseResult&>(parseResult);
+        std::unique_ptr<JsoncStringResult> sr = std::make_unique<JsoncStringResult>();
+        sr->s = strdup(json_object_to_json_string_ext(pr.root, JSON_C_TO_STRING_PRETTY));
+        reply = std::move(sr);
+        return true;
+    }
+
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const JsoncParseResult& pr = static_cast<const JsoncParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(&stat, (json_object*)pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         JsoncParseResult pr;
         pr.root = json_tokener_parse(json);
         if (pr.root && 
@@ -115,14 +121,13 @@ public:
             json_object_array_length(pr.root) == 1 &&
             json_object_get_type(json_object_array_get_idx(pr.root, 0)) == json_type_double) 
         {
-            *d = json_object_get_double(json_object_array_get_idx(pr.root, 0));
-            return true;
+            d = json_object_get_double(json_object_array_get_idx(pr.root, 0));
         }
-        else
-            return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         JsoncParseResult pr;
         pr.root = json_tokener_parse(json);
         if (pr.root && 
@@ -133,10 +138,8 @@ public:
             s = std::string(
                 json_object_get_string(json_object_array_get_idx(pr.root, 0)),
                 json_object_get_string_len(json_object_array_get_idx(pr.root, 0)));
-            return true;
         }
-        else
-            return false;
+        return true;
     }
 };
 

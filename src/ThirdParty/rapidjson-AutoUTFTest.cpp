@@ -101,109 +101,119 @@ public:
 
 class RapidjsonAutoUTFTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "rapidjsonAutoUTF"; }
-    virtual const char* Type()    const { return "C++";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "rapidjsonAutoUTF"; }
+    virtual const char* Type()        const override { return "C++";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        RapidjsonAutoUTFParseResult* pr = new RapidjsonAutoUTFParseResult;
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
+        std::unique_ptr<RapidjsonAutoUTFParseResult> pr = std::make_unique<RapidjsonAutoUTFParseResult>();
         MemoryStream ms(json, length);
         AutoUTFInputStream<unsigned, MemoryStream> is(ms);
-        if (pr->document.ParseStream<TEST_PARSE_FLAG, AutoUTF<unsigned> >(is).HasParseError()) {
-            delete pr;
-            return 0;
+        if (!pr->document.ParseStream<TEST_PARSE_FLAG, AutoUTF<unsigned> >(is).HasParseError()) {
+            pr->type = is.GetType();
+            pr->hasBOM = is.HasBOM();
+            reply = std::move(pr);
         }
-        pr->type = is.GetType();
-        pr->hasBOM = is.HasBOM();
-        return pr;
+        return true;
     }
 
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const RapidjsonAutoUTFParseResult* pr = static_cast<const RapidjsonAutoUTFParseResult*>(parseResult);
-        RapidjsonAutoUTFStringResult* sr = new RapidjsonAutoUTFStringResult;
-        AutoUTFOutputStream<unsigned, MemoryBuffer> os(sr->mb, pr->type, pr->hasBOM);
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const RapidjsonAutoUTFParseResult& pr = static_cast<const RapidjsonAutoUTFParseResult&>(parseResult);
+        std::unique_ptr<RapidjsonAutoUTFStringResult> sr = std::make_unique<RapidjsonAutoUTFStringResult>();
+        AutoUTFOutputStream<unsigned, MemoryBuffer> os(sr->mb, pr.type, pr.hasBOM);
         Writer<AutoUTFOutputStream<unsigned, MemoryBuffer> > writer(os);
-        pr->document.Accept(writer);
+        pr.document.Accept(writer);
         os.Put('\0');
-        return sr;
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const RapidjsonAutoUTFParseResult* pr = static_cast<const RapidjsonAutoUTFParseResult*>(parseResult);
-        RapidjsonAutoUTFStringResult* sr = new RapidjsonAutoUTFStringResult;
-        AutoUTFOutputStream<unsigned, MemoryBuffer> os(sr->mb, pr->type, pr->hasBOM);
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const RapidjsonAutoUTFParseResult& pr = static_cast<const RapidjsonAutoUTFParseResult&>(parseResult);
+        std::unique_ptr<RapidjsonAutoUTFStringResult> sr = std::make_unique<RapidjsonAutoUTFStringResult>();
+        AutoUTFOutputStream<unsigned, MemoryBuffer> os(sr->mb, pr.type, pr.hasBOM);
         PrettyWriter<AutoUTFOutputStream<unsigned, MemoryBuffer> > writer(os);
-        pr->document.Accept(writer);
+        pr.document.Accept(writer);
         os.Put('\0');
-        return sr;
+        reply = std::move(sr);
+        return true;
     }
 
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const RapidjsonAutoUTFParseResult* pr = static_cast<const RapidjsonAutoUTFParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const RapidjsonAutoUTFParseResult& pr = static_cast<const RapidjsonAutoUTFParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
 #if SLOWER_STAT
-        StatHandler<> h(*stat);
+        StatHandler<> h(stat);
         doc->Accept(h);
 #else
-        GenStat(*stat, pr->document);
+        GenStat(stat, pr.document);
 #endif
         return true;
     }
 
-    virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const {
+    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
+    {
         (void)length;
         GenericReader<AutoUTF<unsigned>, UTF8<> > reader;
-        RapidjsonAutoUTFStringResult* sr = new RapidjsonAutoUTFStringResult;
+        std::unique_ptr<RapidjsonAutoUTFStringResult> sr = std::make_unique<RapidjsonAutoUTFStringResult>();
         MemoryStream ms(json, length);
         AutoUTFInputStream<unsigned, MemoryStream> is(ms);
         MemoryBuffer mb;
         AutoUTFOutputStream<unsigned, MemoryBuffer> os(mb, is.GetType(), is.HasBOM());
         Writer<AutoUTFOutputStream<unsigned, MemoryBuffer> > writer(os);
 
-        if (!reader.Parse<TEST_PARSE_FLAG>(is, writer)) {
-            delete sr;
-            return 0;
+        if (reader.Parse<TEST_PARSE_FLAG>(is, writer)) {
+            os.Put('\0');
+            reply = std::move(sr);
         }
-        os.Put('\0');
-        return sr;
-    }
-
-    virtual bool SaxStatistics(const char* json, size_t length, Stat* stat) const {
-        (void)length;
-        memset(stat, 0, sizeof(Stat));
-        GenericReader<AutoUTF<unsigned>, UTF8<> > reader;
-        MemoryStream ms(json, length);
-        AutoUTFInputStream<unsigned, MemoryStream> is(ms);
-        StatHandler<UTF8<> > handler(*stat);
-        return reader.Parse<TEST_PARSE_FLAG>(is, handler);
-    }
-
-    virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat* stat) const {
-        (void)length;
-        memset(stat, 0, sizeof(Stat));
-        GenericReader<UTF8<>, UTF16<> > reader;
-        StringStream is(json);
-        StatHandler<UTF16<> > handler(*stat);
-        return reader.Parse(is, handler);
-    }
-
-    virtual bool ParseDouble(const char* json, double* d) const {
-        MemoryStream ms(json, strlen(json));
-        AutoUTFInputStream<unsigned, MemoryStream> is(ms);
-        Document doc;
-        if (doc.ParseStream<kParseDefaultFlags, AutoUTF<unsigned> >(is).HasParseError() || !doc.IsArray() || doc.Size() != 1 || !doc[0].IsNumber())
-            return false;
-        *d = doc[0].GetDouble();
         return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool SaxStatistics(const char* json, size_t length, Stat& stat) const override
+    {
+        (void)length;
+        memset(&stat, 0, sizeof(Stat));
+        GenericReader<AutoUTF<unsigned>, UTF8<> > reader;
+        MemoryStream ms(json, length);
+        AutoUTFInputStream<unsigned, MemoryStream> is(ms);
+        StatHandler<UTF8<> > handler(stat);
+        return reader.Parse<TEST_PARSE_FLAG>(is, handler);
+    }
+
+    virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat& stat) const override
+    {
+        (void)length;
+        memset(&stat, 0, sizeof(Stat));
+        GenericReader<UTF8<>, UTF16<> > reader;
+        StringStream is(json);
+        StatHandler<UTF16<> > handler(stat);
+        reader.Parse(is, handler);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         MemoryStream ms(json, strlen(json));
         AutoUTFInputStream<unsigned, MemoryStream> is(ms);
         Document doc;
-        if (doc.ParseStream<kParseDefaultFlags, AutoUTF<unsigned> >(is).HasParseError() || !doc.IsArray() || doc.Size() != 1 || !doc[0].IsString())
-            return false;
-        s = std::string(doc[0].GetString(), doc[0].GetStringLength());
+        if (!(doc.ParseStream<kParseDefaultFlags, AutoUTF<unsigned> >(is).HasParseError() || !doc.IsArray() || doc.Size() != 1 || !doc[0].IsNumber())) {
+            d = doc[0].GetDouble();
+        }
+        return true;
+    }
+
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
+        MemoryStream ms(json, strlen(json));
+        AutoUTFInputStream<unsigned, MemoryStream> is(ms);
+        Document doc;
+        if (!(doc.ParseStream<kParseDefaultFlags, AutoUTF<unsigned> >(is).HasParseError() || !doc.IsArray() || doc.Size() != 1 || !doc[0].IsString())) {
+            s = std::string(doc[0].GetString(), doc[0].GetStringLength());
+        }
         return true;
     }
 };

@@ -60,28 +60,25 @@ public:
 
 class JsmnTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "jsmn"; }
-    virtual const char* Type()    const { return "C";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "jsmn"; }
+    virtual const char* Type()        const override { return "C";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 	
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        JsmnParseResult* pr = new JsmnParseResult;
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
+        std::unique_ptr<JsmnParseResult> pr = std::make_unique<JsmnParseResult>();
         jsmn_parser parser;
         jsmn_init(&parser);
         pr->count = jsmn_parse(&parser, json, length, NULL, 0);
         if (pr->count < 0) {
-            printf("Error %d\n", pr->count);
-            delete pr;
-            return 0;
+            return true;
         }
 
         jsmn_init(&parser);
         pr->tokens = (jsmntok_t*)malloc(pr->count * sizeof(jsmntok_t));
         int error = jsmn_parse(&parser, json, length, pr->tokens, pr->count);
         if (error < 0) {
-            printf("Error %d\n", error);
-            delete pr;
-            return 0;
+            return true;
         }
 
         // need a copy of JSON in order to determine the types
@@ -89,38 +86,41 @@ public:
 
         // Since jsmn does not parse numbers, emulate here in order to compare with other parsers.
         ParseNumbers(json, pr->tokens, pr->count);
-    	return pr;
+        reply = std::move(pr);
+    	return true;
     }
 
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const JsmnParseResult* pr = static_cast<const JsmnParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(stat, pr->json, pr->tokens, pr->count);
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const JsmnParseResult& pr = static_cast<const JsmnParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(&stat, pr.json, pr.tokens, pr.count);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         jsmn_parser parser;
         jsmn_init(&parser);
         jsmntok_t tokens[2];
         int count = jsmn_parse(&parser, json, strlen(json), tokens, 2);
         if (count == 2 && tokens[0].type == JSMN_ARRAY && tokens[0].size == 1 && tokens[1].type == JSMN_PRIMITIVE) {
-            *d = atof(json + tokens[1].start);
-            return true;
+            char*   strend = nullptr;
+            d = strtold(json + tokens[1].start, &strend);
         }
-        return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         jsmn_parser parser;
         jsmn_init(&parser);
         jsmntok_t tokens[2];
         int count = jsmn_parse(&parser, json, strlen(json), tokens, 2);
         if (count == 2 && tokens[0].type == JSMN_ARRAY && tokens[0].size == 1 && tokens[1].type == JSMN_STRING) {
             s = std::string(json + tokens[1].start, json + tokens[1].end);
-            return true;
         }
-        return false;
+        return true;
     }
 };
 

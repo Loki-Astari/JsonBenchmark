@@ -71,50 +71,56 @@ public:
 
 class UdbTest : public TestBase {
 public:
-    virtual const char* GetName() const { return "udb-jsason-parser";}
-    virtual const char* Type()    const { return "C";}
-    virtual const char* GetFilename() const { return __FILE__; }
+    virtual const char* GetName()     const override { return "udb-jsason-parser";}
+    virtual const char* Type()        const override { return "C";}
+    virtual const char* GetFilename() const override { return __FILE__; }
 
-    virtual ParseResultBase* Parse(const char* json, size_t length) const {
-        UdpjsonParseResult* pr = new UdpjsonParseResult;
+    virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override
+    {
+        std::unique_ptr<UdpjsonParseResult> pr = std::make_unique<UdpjsonParseResult>();
         json_settings settings = json_settings();
         settings.value_extra = json_builder_extra;  /* space for json-builder state */
         char error[128];
         pr->root = json_parse_ex(&settings, json, length, error);
-        if (!pr->root) {
-            delete pr;
-            return 0;
+        if (pr->root) {
+            reply = std::move(pr);
         }
-    	return pr;
+    	return true;
     }
 
     // Very slow in the current version.
-    virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const {
-        const UdpjsonParseResult* pr = static_cast<const UdpjsonParseResult*>(parseResult);
-        UdpjsonStringResult* sr = new UdpjsonStringResult;
+    virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const UdpjsonParseResult& pr = static_cast<const UdpjsonParseResult&>(parseResult);
+        std::unique_ptr<UdpjsonStringResult> sr = std::make_unique<UdpjsonStringResult>();
         json_serialize_opts opts = { json_serialize_mode_packed, 0, 0 };
-        sr->s = (char*)malloc(json_measure_ex(pr->root, opts));
-        json_serialize_ex(sr->s, pr->root, opts);
-        return sr;
-    }
-
-    virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const {
-        const UdpjsonParseResult* pr = static_cast<const UdpjsonParseResult*>(parseResult);
-        UdpjsonStringResult* sr = new UdpjsonStringResult;
-        json_serialize_opts opts = { json_serialize_mode_multiline, 0, 4 };
-        sr->s = (char*)malloc(json_measure_ex(pr->root, opts));
-        json_serialize_ex(sr->s, pr->root, opts);
-        return sr;
-    }
-
-    virtual bool Statistics(const ParseResultBase* parseResult, Stat* stat) const {
-        const UdpjsonParseResult* pr = static_cast<const UdpjsonParseResult*>(parseResult);
-        memset(stat, 0, sizeof(Stat));
-        GenStat(stat, pr->root);
+        sr->s = (char*)malloc(json_measure_ex(pr.root, opts));
+        json_serialize_ex(sr->s, pr.root, opts);
+        reply = std::move(sr);
         return true;
     }
 
-    virtual bool ParseDouble(const char* json, double* d) const {
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        const UdpjsonParseResult& pr = static_cast<const UdpjsonParseResult&>(parseResult);
+        std::unique_ptr<UdpjsonStringResult> sr = std::make_unique<UdpjsonStringResult>();
+        json_serialize_opts opts = { json_serialize_mode_multiline, 0, 4 };
+        sr->s = (char*)malloc(json_measure_ex(pr.root, opts));
+        json_serialize_ex(sr->s, pr.root, opts);
+        reply = std::move(sr);
+        return true;
+    }
+
+    virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
+    {
+        const UdpjsonParseResult& pr = static_cast<const UdpjsonParseResult&>(parseResult);
+        memset(&stat, 0, sizeof(Stat));
+        GenStat(&stat, pr.root);
+        return true;
+    }
+
+    virtual bool ParseDouble(const char* json, long double& d) const override
+    {
         UdpjsonParseResult pr;
         json_settings settings = json_settings();
         settings.value_extra = json_builder_extra;  /* space for json-builder state */
@@ -125,13 +131,13 @@ public:
             pr.root->u.array.length == 1 &&
             pr.root->u.array.values[0]->type == json_double)
         {
-            *d = pr.root->u.array.values[0]->u.dbl;
-            return true;
+            d = pr.root->u.array.values[0]->u.dbl;
         }
-        return false;
+        return true;
     }
 
-    virtual bool ParseString(const char* json, std::string& s) const {
+    virtual bool ParseString(const char* json, std::string& s) const override
+    {
         UdpjsonParseResult pr;
         json_settings settings = json_settings();
         settings.value_extra = json_builder_extra;  /* space for json-builder state */
@@ -145,9 +151,8 @@ public:
             s = std::string(
                 pr.root->u.array.values[0]->u.string.ptr,
                 pr.root->u.array.values[0]->u.string.length);
-            return true;
         }
-        return false;
+        return true;
     }
 };
 
