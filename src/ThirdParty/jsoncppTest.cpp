@@ -56,12 +56,6 @@ public:
     Value root;
 };
 
-class JsoncppStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class JsoncppTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "jsoncpp"; }
@@ -88,8 +82,8 @@ public:
         const JsoncppParseResult& pr = static_cast<const JsoncppParseResult&>(parseResult);
         Json::StreamWriterBuilder wbuilder;
         wbuilder.settings_["indentation"] = "";
-        std::unique_ptr<JsoncppStringResult> sr = std::make_unique<JsoncppStringResult>();
-        sr->s = Json::writeString(wbuilder, pr.root);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = Json::writeString(wbuilder, pr.root);
         reply = std::move(sr);
         return true;
     }
