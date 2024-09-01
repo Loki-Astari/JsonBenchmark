@@ -7,15 +7,33 @@
 #include "ThorSerialize/JsonThor.h"
 #include "ThorSerialize/SerUtil.h"
 
+#include <iostream>
 #include <sstream>
+#include <string>
+#include <cctype>
+
+
+
+namespace ThorsSerializer
+{
 
 using ThorsAnvil::Serialize::jsonExporter;
 using ThorsAnvil::Serialize::jsonImporter;
 using ThorsAnvil::Serialize::ParseType;
 using ThorsAnvil::Serialize::OutputType;
 
-namespace ThorsSerializer
+class StringNumber
 {
+    std::string     data;
+    friend std::ostream& operator<<(std::ostream& str, StringNumber const& val)
+    {
+        return str << val.data;
+    }
+    friend std::istream& operator>>(std::istream& str, StringNumber& val)
+    {
+        return std::getline(str, val.data);
+    }
+};
 
 class VectorDouble: public TestAction
 {
@@ -88,33 +106,10 @@ class GetValue: public TestAction
         reply = std::move(result);
         return true;
     }
-    virtual bool Statistics(const ParseResultBase& value, Stat& stat) const override
-    {
-        GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
-        getStats(&stat, inputValue.data);
-        return true;
-    }
-    virtual bool SaxStatistics(const char* json, size_t length, Stat& stat) const override
-    {
-        std::unique_ptr<ParseResultBase> dom;
-        Parse(json, length, dom);
-        if (dom.get() != nullptr) {
-            return Statistics(*dom, stat);
-        }
-        return true;
-    }
 };
 
-inline void getStats(Stat* stat, std::map<std::string, M01> const& value)
-{
-    stat->objectCount++;
-    stat->memberCount += value.size();
-    for(auto const& da: value) {
-        stat->stringLength += da.first.size();
-        getStats(stat, da.second);
-    }
 }
 
-}
+ThorsAnvil_MakeTraitCustom(ThorsSerializer::StringNumber);
 
 #endif
