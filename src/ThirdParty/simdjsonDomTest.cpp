@@ -14,15 +14,6 @@ struct SimdDOMResult: public ParseResultBase
     {}
 };
 
-struct SimdDomStringResult: public StringResultBase
-{
-    std::string value;
-    virtual const char* c_str() const
-    {
-        return value.c_str();
-    }
-};
-
 class SimdJsonDomTest: public TestBase
 {
     public:
@@ -90,10 +81,8 @@ class SimdJsonDomTest: public TestBase
             return true;
         }
 
-        std::stringstream   output;
-        output << doc;
-        std::unique_ptr<SimdDomStringResult>   result = std::make_unique<SimdDomStringResult>();
-        result->value = output.str();
+        std::unique_ptr<StringResultUsingStream>   result = std::make_unique<StringResultUsingStream>();
+        result->stream << doc;
         reply = std::move(result);
 
         return true;
@@ -102,11 +91,9 @@ class SimdJsonDomTest: public TestBase
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         SimdDOMResult const&     simdParseResult = dynamic_cast<SimdDOMResult const&>(parseResult);
-        std::stringstream output;
 
-        output << simdParseResult.doc;
-        std::unique_ptr<SimdDomStringResult>   result = std::make_unique<SimdDomStringResult>();
-        result->value = output.str();
+        std::unique_ptr<StringResultUsingStream>   result = std::make_unique<StringResultUsingStream>();
+        result->stream << simdParseResult.doc;
         reply = std::move(result);
 
         return true;
@@ -115,12 +102,10 @@ class SimdJsonDomTest: public TestBase
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         SimdDOMResult const&     simdParseResult = dynamic_cast<SimdDOMResult const&>(parseResult);
-        std::stringstream output;
 
-        output << prettify(simdParseResult.doc);
+        std::unique_ptr<StringResultUsingStream>   result = std::make_unique<StringResultUsingStream>();
+        result->stream << prettify(simdParseResult.doc);
 
-        std::unique_ptr<SimdDomStringResult>   result = std::make_unique<SimdDomStringResult>();
-        result->value = output.str();
         reply = std::move(result);
         return true;
     }

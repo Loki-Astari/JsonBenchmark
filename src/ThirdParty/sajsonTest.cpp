@@ -61,12 +61,6 @@ public:
     document d;
 };
 
-class SajsonStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class SajsonTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "sajson"; }
