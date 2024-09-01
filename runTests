@@ -1,5 +1,11 @@
 #!/bin/bash
 
+CWD=$(pwd)
+
+export PATH="${PATH}:$(pwd)/build/bin"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:${CWD}/thirdparty/ThorsSerializer/build/lib/:/opt/homebrew/lib/"
+export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:${CWD}/thirdparty/ThorsSerializer/build/lib/:/opt/homebrew/lib/"
+
 export OS=$1
 
 if [[ "${OS}" == "" ]]; then
@@ -16,12 +22,17 @@ fi
 rootDir=$(pwd)
 
 cd thirdparty
-ln -s ThorsMongo ThorsSerializer
+if [[ ! -e ThorsSerializer ]]; then
+    ln -s ThorsMongo ThorsSerializer
+fi
 cd ..
 
-
+echo "Running:"
 allparser=$(benchmark --listParser)
 parserList=${2:-${allparser}}
+echo "      Parsers: ${parserList}"
+echo
+echo
 echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language Type,Stars" > Stats.csv
 benchmark --titleOnly Conformance.csv Performance.csv
 for parser in ${parserList}; do
