@@ -57,12 +57,6 @@ public:
     json root;
 };
 
-class JsonconsStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class JsonconsTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "jsoncons"; }
@@ -84,8 +78,8 @@ public:
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const JsonconsParseResult& pr = static_cast<const JsonconsParseResult&>(parseResult);
-        std::unique_ptr<JsonconsStringResult> sr = std::make_unique<JsonconsStringResult>();
-        sr->s = pr.root.to_string();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = pr.root.to_string();
         reply = std::move(sr);
         return true;
     }
@@ -93,8 +87,8 @@ public:
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const JsonconsParseResult& pr = static_cast<const JsonconsParseResult&>(parseResult);
-        std::unique_ptr<JsonconsStringResult> sr = std::make_unique<JsonconsStringResult>();
-        pr.root.dump(sr->s);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        pr.root.dump(sr->result);
         reply = std::move(sr);
         return true;
     }
