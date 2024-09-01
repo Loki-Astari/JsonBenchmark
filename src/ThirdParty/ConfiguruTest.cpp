@@ -62,13 +62,6 @@ public:
     Config root;
 };
 
-class ConfiguruStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
-
 class ConfiguruTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "Configuru"; }
@@ -90,10 +83,10 @@ public:
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const ConfiguruParseResult& pr = static_cast<const ConfiguruParseResult&>(parseResult);
-        std::unique_ptr<ConfiguruStringResult> sr = std::make_unique<ConfiguruStringResult>();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
         auto format = configuru::JSON;
         format.indentation = "";
-        sr->s = configuru::dump_string(pr.root, format);
+        sr->result = configuru::dump_string(pr.root, format);
         reply = std::move(sr);
         return true;
     }
@@ -101,10 +94,10 @@ public:
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const ConfiguruParseResult& pr = static_cast<const ConfiguruParseResult&>(parseResult);
-        std::unique_ptr<ConfiguruStringResult> sr = std::make_unique<ConfiguruStringResult>();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
         auto format = configuru::JSON;
         format.indentation = "\t";
-        sr->s = configuru::dump_string(pr.root, format);
+        sr->result = configuru::dump_string(pr.root, format);
         reply = std::move(sr);
         return true;
     }
