@@ -37,9 +37,9 @@ echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language T
 benchmark --titleOnly Conformance.csv Performance.csv
 for parser in ${parserList}; do
     for filter in $(benchmark --listTests); do
-        runOneTest ${parser} ${filter}
+        ./runOneTest ${parser} ${filter}
         if [[ $? != 0 ]]; then
-            runOneTest ${parser} ${filter} --markFailed
+            ./runOneTest ${parser} ${filter} --markFailed
             r=$?
             if [[ $r != 0 ]]; then 
                 echo "Big Issue: $? ${parser} ${filter}"
