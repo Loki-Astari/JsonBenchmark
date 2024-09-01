@@ -76,25 +76,35 @@ class TestBase
         virtual void SetUp(char const*)                                                               const {SetUp();}
         virtual void TearDown(char const*)                                                            const {TearDown();}
 
+        virtual bool ParseDouble(const char* /*json*/, long double& /*d*/)                            const { return false; }
+        virtual bool ParseString(const char* /*json*/, std::string& /*s*/)                            const { return false; }
+        virtual bool Parse(const char* /*json*/, std::size_t /*length*/, std::unique_ptr<ParseResultBase>& /*result*/)          const { return false; }
+        virtual bool Stringify(const ParseResultBase& /*parseResult*/, std::unique_ptr<StringResultBase>& /*result*/)           const { return false; }
+        virtual bool Prettify(const ParseResultBase& /*parseResult*/, std::unique_ptr<StringResultBase>& /*result*/)            const { return false; }
+        virtual bool Statistics(const ParseResultBase& /*parseResult*/, Stat& /*stat*/)               const { return false; }
+        virtual bool SaxStatistics(const char* /*json*/, std::size_t /*length*/, Stat& /*stat*/)      const { return false; }
+        virtual bool SaxStatisticsUTF16(const char* /*json*/, std::size_t /*length*/, Stat& /*stat*/) const { return false; }
         virtual bool ParseValidate(const char* json, std::size_t length, bool& result)                const
         {
             std::unique_ptr<ParseResultBase>    reply;
             bool implemented = Parse(json, length, reply);
             if (implemented) {
                 result = reply.get() != nullptr;
-                return true;
             }
-            return false;
+            return implemented;
         }
-        virtual bool ParseDouble(const char* /*json*/, long double& /*d*/)                            const { return false; }
-        virtual bool ParseString(const char* /*json*/, std::string& /*s*/)                            const { return false; }
-        virtual bool Parse(const char* /*json*/, std::size_t /*length*/, std::unique_ptr<ParseResultBase>& /*result*/)          const { return false; }
-        virtual bool Stringify(const ParseResultBase& /*parseResult*/, std::unique_ptr<StringResultBase>& /*result*/)           const { return false; }
-        virtual bool Prettify(const ParseResultBase& /*parseResult*/, std::unique_ptr<StringResultBase>& /*result*/)            const { return false; }
-        virtual bool SaxRoundtrip(const char* /*json*/, std::size_t /*length*/, std::unique_ptr<StringResultBase>& /*result*/)  const { return false; }
-        virtual bool Statistics(const ParseResultBase& /*parseResult*/, Stat& /*stat*/)               const { return false; }
-        virtual bool SaxStatistics(const char* /*json*/, std::size_t /*length*/, Stat& /*stat*/)      const { return false; }
-        virtual bool SaxStatisticsUTF16(const char* /*json*/, std::size_t /*length*/, Stat& /*stat*/) const { return false; }
+        virtual bool SaxRoundtrip(const char* json, std::size_t length, std::unique_ptr<StringResultBase>& result)  const
+        {
+            std::unique_ptr<ParseResultBase>    parse;
+            bool implemented = this->Parse(json, length, parse);
+            if (implemented && parse.get())
+            {
+                implemented = this->Stringify(*parse, result);
+            }
+            return implemented;
+        }
+
+        // --
 };
 
 #define REGISTER_TEST(cls)  std::unique_ptr<TestBase> get ## cls() { return std::make_unique<cls>(); }static_assert(true, "Should Work")

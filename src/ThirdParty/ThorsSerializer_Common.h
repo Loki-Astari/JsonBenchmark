@@ -94,15 +94,6 @@ class GetValue: public TestAction
         getStats(&stat, inputValue.data);
         return true;
     }
-    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
-    {
-        std::unique_ptr<ParseResultBase> dom;
-        Parse(json, length, dom);
-        if (dom.get() != nullptr) {
-            Stringify(*dom, reply);
-        }
-        return true;
-    }
     virtual bool SaxStatistics(const char* json, size_t length, Stat& stat) const override
     {
         std::unique_ptr<ParseResultBase> dom;

@@ -63,13 +63,6 @@ class BoostJsonTest: public TestBase
         }
         return true;
     }
-    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
-    {
-        std::unique_ptr<ParseResultBase>    boostParserResult;
-        Parse(json, length, boostParserResult);
-        Stringify(*boostParserResult, reply);
-        return true;
-    }
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         BoostJsonResult const& boostParserResult = dynamic_cast<BoostJsonResult const&>(parseResult);
