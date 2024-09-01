@@ -44,13 +44,6 @@ public:
     value v;
 };
 
-class PicojsonStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
-
 class PicojsonTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "picojson"; }
@@ -71,8 +64,8 @@ public:
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const PicojsonParseResult& pr = static_cast<const PicojsonParseResult&>(parseResult);
-        std::unique_ptr<PicojsonStringResult> sr = std::make_unique<PicojsonStringResult>();
-        sr->s = pr.v.serialize();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = pr.v.serialize();
         reply = std::move(sr);
         return true;
     }
