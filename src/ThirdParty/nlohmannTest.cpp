@@ -54,12 +54,6 @@ public:
     json root;
 };
 
-class NlohmannStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class NlohmannTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "nlohmann"; }
@@ -81,8 +75,8 @@ public:
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const NlohmannParseResult& pr = static_cast<const NlohmannParseResult&>(parseResult);
-        std::unique_ptr<NlohmannStringResult> sr = std::make_unique<NlohmannStringResult>();
-        sr->s = pr.root.dump();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = pr.root.dump();
         reply = std::move(sr);
         return true;
     }
@@ -90,8 +84,8 @@ public:
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const NlohmannParseResult& pr = static_cast<const NlohmannParseResult&>(parseResult);
-        std::unique_ptr<NlohmannStringResult> sr = std::make_unique<NlohmannStringResult>();
-        sr->s = pr.root.dump(4);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = pr.root.dump(4);
         reply = std::move(sr);
         return true;
     }
