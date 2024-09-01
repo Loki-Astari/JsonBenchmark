@@ -26,9 +26,11 @@ ln -s ThorsMongo ThorsSerializer
 cd ..
 
 
+allparser=$(benchmark --listParser)
+parserList=${2:-${allparser}}
 echo "Library,First Commit,Last Commit,Tested Version, Latest Version,Language Type,Stars" > Stats.csv
 benchmark --titleOnly Conformance.csv Performance.csv
-for parser in $(benchmark --listParser); do
+for parser in ${parserList}; do
     for filter in $(benchmark --listTests); do
         benchmark --append --filter=${filter} --parser=${parser} Conformance.csv Performance.csv
         if [[ $? != 0 ]]; then

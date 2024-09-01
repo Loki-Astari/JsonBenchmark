@@ -11,15 +11,6 @@ struct BoostJsonResult: public ParseResultBase
     boost::json::value value;
 };
 
-struct BoosJsonStringResult: public StringResultBase
-{
-    std::string value;
-    virtual const char* c_str() const
-    {
-        return value.c_str();
-    }
-};
-
 class BoostJsonTest: public TestBase
 {
     public:
@@ -82,22 +73,21 @@ class BoostJsonTest: public TestBase
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         BoostJsonResult const& boostParserResult = dynamic_cast<BoostJsonResult const&>(parseResult);
-        std::unique_ptr<BoosJsonStringResult> result = std::make_unique<BoosJsonStringResult>();
+        std::unique_ptr<StringResultUsingString> result = std::make_unique<StringResultUsingString>();
 
-        result->value = boost::json::serialize(boostParserResult.value);
+        result->result = boost::json::serialize(boostParserResult.value);
         reply = std::move(result);
+
         return true;
     }
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         BoostJsonResult const& boostParserResult = dynamic_cast<BoostJsonResult const&>(parseResult);
-        std::unique_ptr<BoosJsonStringResult> result = std::unique_ptr<BoosJsonStringResult>();
+        std::unique_ptr<StringResultUsingStream> result = std::unique_ptr<StringResultUsingStream>();
 
-        std::stringstream ss;
-        pretty_print(ss, boostParserResult.value);
-
-        result->value = ss.str();
+        pretty_print(result->stream, boostParserResult.value);
         reply = std::move(result);
+
         return true;
     }
 
