@@ -1,70 +1,102 @@
 #ifndef __linux__
 
 #include "test.h"
-#include <sstream>
-
+#include "TypeSafe.h"
 #include "glaze/glaze.hpp"
 
-
-// data/jsonchecker_pass/pass01.json 
-//  Not Supported by Glaze
-
-// data/jsonchecker_pass/pass02.json
-using S                             = std::string;
-using VS                            = std::vector<S>;
-using VVS                           = std::vector<VS>;
-using VVVS                          = std::vector<VVS>;
-using VVVVS                         = std::vector<VVVS>;
-using VVVVVS                        = std::vector<VVVVS>;
-using VVVVVVS                       = std::vector<VVVVVS>;
-using VVVVVVVS                      = std::vector<VVVVVVS>;
-using VVVVVVVVS                     = std::vector<VVVVVVVS>;
-using VVVVVVVVVS                    = std::vector<VVVVVVVVS>;
-using VVVVVVVVVVS                   = std::vector<VVVVVVVVVS>;
-using VVVVVVVVVVVS                  = std::vector<VVVVVVVVVVS>;
-using VVVVVVVVVVVVS                 = std::vector<VVVVVVVVVVVS>;
-using VVVVVVVVVVVVVS                = std::vector<VVVVVVVVVVVVS>;
-using VVVVVVVVVVVVVVS               = std::vector<VVVVVVVVVVVVVS>;
-using VVVVVVVVVVVVVVVS              = std::vector<VVVVVVVVVVVVVVS>;
-using VVVVVVVVVVVVVVVVS             = std::vector<VVVVVVVVVVVVVVVS>;
-using VVVVVVVVVVVVVVVVVS            = std::vector<VVVVVVVVVVVVVVVVS>;
-using VVVVVVVVVVVVVVVVVVS           = std::vector<VVVVVVVVVVVVVVVVVS>;
-using VVVVVVVVVVVVVVVVVVVS          = std::vector<VVVVVVVVVVVVVVVVVVS>;
-
-struct GlazeResult: public ParseResultBase
+namespace Glaze
 {
-};
 
-struct GlazeStringResult: public StringResultBase
-{
-    //virtual const char* c_str() const
-};
-
-class GlazeTest: public TestBase
+class VectorDouble: public TestAction
 {
     public:
-    GlazeTest()
-    {}
-    virtual void SetUp(char const* /*fullPath*/) const override
-    {}
-    virtual void TearDown(char const* /*fullPath*/) const override
-    {}
+    virtual bool ParseDouble(const char* json, long double& reply) const
+    {
+        auto result = glz::read_json<std::vector<double>>(json);
+        if (result) {
+            std::vector<double> data;
+            data = std::move(result.value());
+            if (data.size() == 1) {
+                reply = data[0];
+            }
+        }
+        return true;
+    }
+};
 
-    virtual const char* GetName() const override        { return "Glaze"; }
-    virtual const char* Type()    const override        { return "C++";}
-    virtual const char* GetFilename() const override    { return __FILE__; }
+class VectorString: public TestAction
+{
+    public:
+    virtual bool ParseString(const char* json, std::string& reply) const
+    {
+        auto result = glz::read_json<std::vector<std::string>>(json);
+        if (result) {
+            std::vector<std::string> data;
+            data = std::move(result.value());
+            if (data.size() == 1) {
+                reply = data[0];
+            }
+        }
+        return true;
+    }
+};
 
-    // virtual bool ParseValidate(const char* json, std::size_t length) const override
-    // virtual ParseResultBase* Parse(const char* json, size_t length) const override
-    // virtual bool ParseDouble(const char* json, long double* d) const override
-    // virtual bool ParseString(const char* json, std::string& s) const override
-    // virtual StringResultBase* SaxRoundtrip(const char* json, size_t length) const override
-    // virtual StringResultBase* Stringify(const ParseResultBase* parseResult) const override
-    // virtual StringResultBase* Prettify(const ParseResultBase* parseResult) const override
+template<typename T>
+struct GetValueResult: public ParseResultBase
+{
+    T       data;
+};
 
-    // virtual bool Statistics(const ParseResultBase* /*parseResult*/, Stat* /*stat*/) const override
-    // virtual bool SaxStatistics(const char* /*json*/, size_t /*length*/, Stat* /*stat*/) const override
-    // virtual bool SaxStatisticsUTF16(const char* /*json*/, size_t /*length*/, Stat* /*stat*/) const override
+template<typename T>
+class GetValue: public TestAction
+{
+
+    public:
+    virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const
+    {
+        auto result = glz::read_json<T>(json);
+        if (result) {
+            std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
+            parsedData->data = std::move(result.value());
+            reply = std::move(parsedData);
+        }
+        return true;
+    }
+    virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
+    {
+        return Prettify(parsedData, reply);
+    }
+    virtual bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
+    {
+        GetValueResult<T> const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
+        std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
+
+        output->result = glz::write_json(parsedDataInput.data).value_or("error");
+        reply = std::move(output);
+        return true;
+    }
+};
+
+}
+
+class GlazeTest: public TypeSafeTest<Glaze::VectorDouble,
+                                     Glaze::VectorString,
+                                     Glaze::GetValue>
+{
+    // Not supported by glaze as these types are to complicated.
+    // I would love help if you can get these to compile.
+    //Glaze::GetValue<Country>                                             testGetValueCountry;
+    //Glaze::GetValue<Twitter>                                             testGetValueTwitter;
+    public:
+        GlazeTest()
+        {
+            //actionMap["performance/canada.json"]         = &testGetValueCountry;
+            //actionMap["performance/twitter.json"]        = &testGetValueTwitter;
+        }
+
+        virtual const char* GetName()     const override    { return "Glaze"; }
+        virtual const char* Type()        const override    { return "C++23";}
+        virtual const char* GetFilename() const override    { return __FILE__; }
 };
 
 REGISTER_TEST(GlazeTest);

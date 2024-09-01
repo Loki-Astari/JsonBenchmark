@@ -22,10 +22,15 @@ class ThorsSerializerTest: public TypeSafeTest<ThorsSerializer::VectorDouble,
                                                ThorsSerializer::GetValue>
 {
     ThorsSerializer::GetValue<std::vector<ThorsSerializer::StringNumber>>          testGetValueVec2StringNumber;
-   
+    ThorsSerializer::GetValue<Country>                                             testGetValueCountry;
+    ThorsSerializer::GetValue<Twitter>                                             testGetValueTwitter;
+
     public:
         ThorsSerializerTest()
         {
+            actionMap["performance/canada.json"]         = &testGetValueCountry;
+            actionMap["performance/twitter.json"]        = &testGetValueTwitter;
+
             actionMap["roundtrip/roundtrip21.json"] = &testGetValueVec2StringNumber;
             actionMap["roundtrip/roundtrip22.json"] = &testGetValueVec2StringNumber;
             actionMap["roundtrip/roundtrip23.json"] = &testGetValueVec2StringNumber;
@@ -34,6 +39,10 @@ class ThorsSerializerTest: public TypeSafeTest<ThorsSerializer::VectorDouble,
             actionMap["roundtrip/roundtrip26.json"] = &testGetValueVec2StringNumber;
             actionMap["roundtrip/roundtrip27.json"] = &testGetValueVec2StringNumber;
         }
+
+        virtual const char* GetName()     const override    { return "ThorsSerializer"; }
+        virtual const char* Type()        const override    { return "C++20";}
+        virtual const char* GetFilename() const override    { return __FILE__; }
 };
 
 REGISTER_TEST(ThorsSerializerTest);

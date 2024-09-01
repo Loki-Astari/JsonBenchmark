@@ -19,20 +19,9 @@
 class TestAction
 {
     public:
-    virtual bool ParseValidate(const char* json, size_t size, bool& reply) const
-    {
-        std::unique_ptr<ParseResultBase> result;
-        bool implemented = Parse(json, size, result);
-        if (!implemented) {
-            return false;
-        }
-        reply = result.get() != nullptr;
-        return true;
-    }
     virtual bool Parse(const char*, size_t, std::unique_ptr<ParseResultBase>&)          const {return false;}
     virtual bool ParseDouble(const char*, long double&)                                 const {return false;}
     virtual bool ParseString(const char*, std::string&)                                 const {return false;}
-    virtual bool SaxRoundtrip(const char*, size_t, std::unique_ptr<StringResultBase>&)  const {return false;}
     virtual bool Stringify(const ParseResultBase&, std::unique_ptr<StringResultBase>&)  const {return false;}
     virtual bool Prettify(const ParseResultBase&, std::unique_ptr<StringResultBase>&)   const {return false;}
     virtual bool Statistics(const ParseResultBase&, Stat&)                              const {return false;}
@@ -99,9 +88,7 @@ class TypeSafeTest: public TestBase
     GetValue<std::vector<double>>                testGetValueVec2Double;
     GetValue<Obj2>                               testGetValueObj2;
     GetValue<Obj3>                               testGetValueObj3;
-    GetValue<Country>                            testGetValueCountry;
     GetValue<Perform>                            testGetValuePerform;
-    GetValue<Twitter>                            testGetValueTwitter;
 
     mutable TestAction const*   currentRunner;
 
@@ -114,9 +101,7 @@ class TypeSafeTest: public TestBase
         actionMap["vector-double"]                   = &testVectorDouble;
         actionMap["vector-string"]                   = &testVectorString;
 
-        actionMap["performance/canada.json"]         = &testGetValueCountry;
         actionMap["performance/citm_catalog.json"]   = &testGetValuePerform;
-        actionMap["performance/twitter.json"]        = &testGetValueTwitter;
 
         actionMap["jsonchecker_fail/fail02.json"]    = &testGetValueVec2String;
         actionMap["jsonchecker_fail/fail03.json"]    = &testGetValueMap2String;
@@ -201,10 +186,6 @@ class TypeSafeTest: public TestBase
         currentRunner = &testNotImplemented;
     }
 
-    virtual const char* GetName()     const override    { return "ThorsSerializer"; }
-    virtual const char* Type()        const override    { return "C++20";}
-    virtual const char* GetFilename() const override    { return __FILE__; }
-
     virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const override {
         return currentRunner->Parse(json, length, reply);
     }
@@ -215,10 +196,6 @@ class TypeSafeTest: public TestBase
 
     virtual bool ParseString(const char* json, std::string& s) const override {
         return currentRunner->ParseString(json, s);
-    }
-
-    virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override {
-        return currentRunner->SaxRoundtrip(json, length, reply);
     }
 
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override {

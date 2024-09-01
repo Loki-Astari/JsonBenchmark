@@ -15,6 +15,10 @@ struct Cord
     using value_type = double;
     std::vector<double> value;
     Cord(): value(2) {}
+    Cord(Cord const&)               = default;
+    Cord(Cord&&)                    = default;
+    Cord& operator=(Cord const&)    = default;
+    Cord& operator=(Cord&&)         = default;
     std::size_t size() const {return value.size();}
 };
 
