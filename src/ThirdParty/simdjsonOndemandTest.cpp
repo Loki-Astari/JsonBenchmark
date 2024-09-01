@@ -14,15 +14,6 @@ struct SimdOndemandResult: public ParseResultBase
     {}
 };
 
-struct SimdOndemandStringResult: public StringResultBase
-{
-    std::string value;
-    virtual const char* c_str() const
-    {
-        return value.c_str();
-    }
-};
-
 class SimdJsonOndemandTest: public TestBase
 {
     public:
@@ -210,10 +201,8 @@ class SimdJsonOndemandTest: public TestBase
         //SimdOndemandResult const& input = dynamic_cast<SimdOndemandResult const&>(parseResult);
         SimdOndemandResult& input = const_cast<SimdOndemandResult&>(dynamic_cast<SimdOndemandResult const&>(parseResult));
         ondemand::value const val = input.doc;
-        std::stringstream ss;
-        streamDoc(val, ss);
-        std::unique_ptr<SimdOndemandStringResult> result = std::make_unique<SimdOndemandStringResult>();
-        result->value = ss.str();
+        std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
+        streamDoc(val, result->stream);
         reply = std::move(result);
         return true;
     }
