@@ -56,11 +56,6 @@ struct GetValueResult: public ParseResultBase
     {}
 };
 
-struct GetValueStream: public StringResultBase {
-    std::string         value;
-    virtual const char* c_str() const   override {return value.c_str();}
-};
-
 template<typename Value>
 class GetValue: public TestAction
 {
@@ -79,21 +74,17 @@ class GetValue: public TestAction
     }
     virtual bool Stringify(ParseResultBase const& value, std::unique_ptr<StringResultBase>& reply) const override
     {
-        std::unique_ptr<GetValueStream> result = std::make_unique<GetValueStream>();
+        std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
         GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
-        std::stringstream ss;
-        ss << jsonExporter(inputValue.data, OutputType::Stream);
-        result->value = ss.str();
+        result->stream << jsonExporter(inputValue.data, OutputType::Stream);
         reply = std::move(result);
         return true;
     }
     virtual bool Prettify(const ParseResultBase& value, std::unique_ptr<StringResultBase>& reply) const override
     {
-        std::unique_ptr<GetValueStream> result = std::make_unique<GetValueStream>();
         GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
-        std::stringstream ss;
-        ss << jsonExporter(inputValue.data, OutputType::Config);
-        result->value = ss.str();
+        std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
+        result->stream << jsonExporter(inputValue.data, OutputType::Config);
         reply = std::move(result);
         return true;
     }
