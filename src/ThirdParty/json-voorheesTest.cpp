@@ -58,12 +58,6 @@ public:
     value root;
 };
 
-class VoorheesStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-
-    std::string s;
-};
 class VoorheesTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "json-voorhees"; }
@@ -84,8 +78,8 @@ public:
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const VoorheesParseResult& pr = static_cast<const VoorheesParseResult&>(parseResult);
-        std::unique_ptr<VoorheesStringResult> sr = std::make_unique<VoorheesStringResult>();
-        sr->s = to_string(pr.root);
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
+        sr->result = to_string(pr.root);
         reply = std::move(sr);
         return true;
     }
@@ -93,11 +87,9 @@ public:
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const VoorheesParseResult& pr = static_cast<const VoorheesParseResult&>(parseResult);
-        std::unique_ptr<VoorheesStringResult> sr = std::make_unique<VoorheesStringResult>();
-        std::ostringstream os;
-        ostream_pretty_encoder e(os, 4);
+        std::unique_ptr<StringResultUsingStream> sr = std::make_unique<StringResultUsingStream>();
+        ostream_pretty_encoder e(sr->stream, 4);
         e.encode(pr.root);
-        sr->s = os.str();
         reply = std::move(sr);
         return true;
     }
