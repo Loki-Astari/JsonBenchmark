@@ -17,9 +17,12 @@ class PassChecker: public CommonReader
         {
             return "jsonchecker_pass";
         }
-        virtual State executeTest(TestBase const& parser, Test const& test) override
+        virtual void printTestSuitName() override
         {
-            std::cerr << "Pass Checker\n";
+            std::cerr << "Pass Checker: " << getDir() << "\n";
+        }
+        virtual State executeTest(TestBase const& parser, Options const&, Test const& test) override
+        {
             bool result;
             parser.ParseValidate(test.input.c_str(), test.input.size(), result);
             return result == true ? Pass : Fail;

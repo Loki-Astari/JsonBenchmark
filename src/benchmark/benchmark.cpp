@@ -10,8 +10,6 @@
 #include <list>
 #include <regex>
 
-bool debugJSONBenchmark = false;
-
 namespace BM = ThorsAnvil::Benchmark;
 
 using DirIter   = ThorsAnvil::FileSystem::DirectoryIterator;
@@ -114,7 +112,7 @@ BM::Options getOptions(int argc, char* argv[])
     {
         if (strncmp(argv[loop], "--debug", 7) == 0)
         {
-            debugJSONBenchmark = true;
+            result.debug = true;
         }
         else if (strncmp(argv[loop], "--filter=", 9) == 0)
         {

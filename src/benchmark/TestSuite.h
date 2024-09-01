@@ -27,6 +27,8 @@ struct Options
     bool            markFailed          = false;
     bool            parserType          = false;
     bool            useFiles            = true;
+    bool            debug               = false;
+    mutable bool    supported           = true;
 };
 
 class Test
@@ -62,7 +64,7 @@ class TestSuite
         TestSuite(Options& options);
         void executeTestOnAllParsers(ParsrList const& parsrList, Options const& options);
         virtual void executeTest(TestBase const& parser, Options const& options);
-        virtual State executeTest(TestBase const& parser, Test const& test) = 0;
+        virtual State executeTest(TestBase const& parser, Options const& options, Test const& test) = 0;
 
         /* Interface for the range based for() */
         using iterator          = Cont::iterator;
@@ -84,6 +86,7 @@ class TestSuite
 
         void preload();
         void clear();
+        virtual void printTestSuitName() = 0;
 
         /* Used by preload() */
         virtual void preloadData(Test&) = 0;

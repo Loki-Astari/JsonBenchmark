@@ -6,8 +6,6 @@
 #include <memory>
 #include <cctype>
 
-extern bool debugJSONBenchmark;
-
 namespace ThorsAnvil
 {
     namespace Benchmark
@@ -22,7 +20,7 @@ class RoundTripChecker: public CommonReader
             CommonReader::preloadData(test);
             test.output = standardize(test.input);
         }
-        virtual State executeTest(TestBase const& parser, Test const& test) override
+        virtual State executeTest(TestBase const& parser, Options const& options, Test const& test) override
         {
             std::unique_ptr<ParseResultBase> result;
             bool implemented = parser.Parse(test.input.c_str(), test.input.size(), result);
@@ -39,7 +37,7 @@ class RoundTripChecker: public CommonReader
             if (stringify) {
                 output = stringify->c_str();
             }
-            if (debugJSONBenchmark) {
+            if (options.debug) {
                 std::cerr << "Expected >" << test.output << "<\n";
                 std::cerr << "Stripped:>" << standardize(output) << "<\n";
             }
@@ -48,6 +46,10 @@ class RoundTripChecker: public CommonReader
         virtual std::string getDir() const override
         {
             return "roundtrip";
+        }
+        virtual void printTestSuitName() override
+        {
+            std::cerr << "RoundTrip  Checker: " << getDir() << "\n";
         }
     private:
         std::string standardize(std::string const from)

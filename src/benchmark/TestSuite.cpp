@@ -2,6 +2,8 @@
 
 using namespace ThorsAnvil::Benchmark;
 
+extern bool debugJSONBenchmark;
+
 Test::Test(FileSystem::Path const& path)
     : path(path)
 {}
@@ -60,6 +62,10 @@ void TestSuite::executeTestOnAllParsers(ParsrList const& parsrList, Options cons
 
 void TestSuite::executeTest(TestBase const& parser, Options const& options)
 {
+    if (options.debug) {
+        printTestSuitName();
+    }
+
     int count[3] = {0, 0, 0};
     std::vector<Test const*>  failed;
     std::vector<Test const*>  passed;
@@ -67,10 +73,17 @@ void TestSuite::executeTest(TestBase const& parser, Options const& options)
     for (auto const& test: tests)
     {
         State state = Fail;
-        if (!options.markFailed)
+        if (options.supported)
         {
-            TestSetUp   testSetUp(parser, setupName(test), useSetUp());
-            state = executeTest(parser, test);
+            if (!options.markFailed )
+            {
+                TestSetUp   testSetUp(parser, setupName(test), useSetUp());
+                state = executeTest(parser, options, test);
+            }
+        }
+        else
+        {
+            state = NotImplemented;
         }
         generateConPerData(parser, test, state);
         ++count[static_cast<int>(state)];

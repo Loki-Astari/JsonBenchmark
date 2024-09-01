@@ -23,6 +23,10 @@ class ValidateString: public TestSuite
         {
             return "validate_string";
         }
+        virtual void printTestSuitName() override
+        {
+            std::cerr << "Validate String: " << getDir() << "\n";
+        }
         virtual void preloadData(Test& test) override
         {
             std::ifstream   input(test.path.str());
@@ -31,7 +35,7 @@ class ValidateString: public TestSuite
             input.ignore(std::numeric_limits<std::streamsize>::max(), '>');
             std::getline(input, test.output, '<');
         }
-        virtual State executeTest(TestBase const& parser, Test const& test) override
+        virtual State executeTest(TestBase const& parser, Options const&, Test const& test) override
         {
             std::string output;
             bool result = parser.ParseString(test.input.c_str(), output);

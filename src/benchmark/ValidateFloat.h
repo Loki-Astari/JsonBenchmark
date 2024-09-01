@@ -24,6 +24,10 @@ class ValidateFloat: public TestSuite
         {
             return "validate_float";
         }
+        virtual void printTestSuitName() override
+        {
+            std::cerr << "Validate Float: " << getDir() << "\n";
+        }
         virtual void preloadData(Test& test) override
         {
             std::ifstream   input(test.path.str());
@@ -32,7 +36,7 @@ class ValidateFloat: public TestSuite
             input.ignore(std::numeric_limits<std::streamsize>::max(), '>');
             std::getline(input, test.output, '<');
         }
-        virtual State executeTest(TestBase const& parser, Test const& test) override
+        virtual State executeTest(TestBase const& parser, Options const&, Test const& test) override
         {
             long double output = std::numeric_limits<long double>::quiet_NaN();
             char *end;

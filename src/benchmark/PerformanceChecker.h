@@ -17,11 +17,15 @@ class PerformanceChecker: public CommonReader
     public:
         using CommonReader::CommonReader;
         virtual void executeTest(TestBase const& parser, Options const& options) override;
-        virtual State executeTest(TestBase const& parser, Test const& test) override;
+        virtual State executeTest(TestBase const& parser, Options const&, Test const& test) override;
 
         virtual std::string getDir() const override
         {
             return "performance";
+        }
+        virtual void printTestSuitName() override
+        {
+            std::cerr << "PerformanceChecker Checker: " << getDir() << "\n";
         }
     private:
         virtual bool useSetUp() const override {return false;}

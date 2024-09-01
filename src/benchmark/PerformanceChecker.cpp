@@ -68,7 +68,7 @@ void PerformanceChecker::executeTest(TestBase const& parser, Options const& opti
     CommonReader::executeTest(parser, options);
 }
 
-State PerformanceChecker::executeTest(TestBase const& parser, Test const& test)
+State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Test const& test)
 {
     if (test.path.str().find("size.json") == std::string::npos)
     {
