@@ -54,12 +54,6 @@ public:
     Node root;
 };
 
-class JzonStringResult : public StringResultBase {
-public:
-    virtual const char* c_str() const { return s.c_str(); }
-    std::string s;
-};
-
 class JzonTest : public TestBase {
 public:
     virtual const char* GetName()     const override { return "Jzon"; }
@@ -81,9 +75,9 @@ public:
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const JzonParseResult& pr = static_cast<const JzonParseResult&>(parseResult);
-        std::unique_ptr<JzonStringResult> sr = std::make_unique<JzonStringResult>();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
         Writer writer;
-        writer.writeString(pr.root, sr->s);
+        writer.writeString(pr.root, sr->result);
         reply = std::move(sr);
         return true;
     }
@@ -91,10 +85,10 @@ public:
     virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
         const JzonParseResult& pr = static_cast<const JzonParseResult&>(parseResult);
-        std::unique_ptr<JzonStringResult> sr = std::make_unique<JzonStringResult>();
+        std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
         const Format format = { true, true, true, 4 };
         Writer writer(format);
-        writer.writeString(pr.root, sr->s);
+        writer.writeString(pr.root, sr->result);
         reply = std::move(sr);
         return true;
     }
