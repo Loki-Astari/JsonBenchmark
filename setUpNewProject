@@ -1,0 +1,40 @@
+#!/bin/bash
+
+github=$1
+
+name=${github##*/}
+name=${name%.git}
+name=${name/-/}
+name=${name/#/}
+
+
+echo "From:     ${github}"
+echo "Name:     ${name}"
+
+echo "Good?"
+read alternativeName
+
+if [[ ${alternativeName} != "" ]]; then
+    name=${alternativeName}
+fi
+
+branch="Add${name}"
+
+get checkout NewProject
+git branch ${branch}
+git push origin ${branch}
+git branch -d ${branch}
+git checkout ${branch}
+
+git submodule add ${github}  thirdparty/${name}
+git mv init/NewProject  init/${name}
+git mv src/ThirdParty/NewProjectTest.cpp src/ThirdParty/${name}Test.cpp
+
+sed -i '' -e "s/NewProject/${name}/" src/ThirdParty/${name}Test.cpp
+sed -i '' -e "s/NewProject/${name}/" src/ThirdParty/Makefile
+sed -i '' -e "s/NewProject/${name}/" src/ThirdParty/test.cpp
+sed -i '' -e "s/NewProject/${name}/" runOneTest
+
+git add src/ThirdParty/${name}Test.cpp src/ThirdParty/Makefile src/ThirdParty/test.cpp runOneTest
+
+

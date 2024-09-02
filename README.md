@@ -29,14 +29,56 @@ We will allow readers of the tests to decide what the data means.
 
 ## Flexibility
 
-All updates to this project will be accepted via pull requests. Please check that the projects continue to build correctly. The easy way to do this is via a [travis-ci](https://travis-ci.org) account. This is free you simply need to link your github account and allow travis-ci accesses to the JsonBenchmark repository.
+All updates to this project will be accepted via pull requests. Please check that the projects continue to build correctly.
 
-Create a fork of this project. Then checkout your fork and build it locally.
+To make adding a new project simple there is a special branch for adding projects that does not include any other sub projects.
 
-````bash
-> git checkout git@github.com:<You>/JsonBenchmark.git
+Step 1: Fork the repository.
+
+
+
+```bash
+> git checkout https://github.com/<You>/JsonBenchmark.git
 > cd JsonBenchmark
-> git submodule update --init --recursive
+> ./setUpNewProject https://github.com/<You>/<Project>.git
+> git commit -a -m "Add base for project M"
+> git push
+> ./configure
+> make
+> ./runOneTest
+```
+
+This should:
+
+* Create a new branch "<AddProject>"
+* Add your project as a submodule inside the directory "thirdparty/<Project>".
+* Remove all the other projects to make sure your build and development is simple.
+
+You will need to:
+* Modify the file "init/<Project>" to handle the building of your project (so that when I integrate it into the main project it will be built). If yours is a header only library then you can leave this file empty.
+* Modify the file "src/ThirdParty/Makefile" Add any flags you need to build your project. Instructions in the file.
+* Modify the file "src/ThirdParty/<Project>Test.cpp" to implement the functions you need. Instructions in the file.
+
+
+When you are ready you can build with:
+
+```bash
+> make
+> ./runOneTest
+```
+
+
+## Building the whole project:
+
+It should be simple to checkout and build the project locally.
+
+**BUT** things are never simple with C++ and multiple platforms.
+
+I have tried to simplify things by adding scripts to set up all the dependant libraries. The following works on Mac and Linux.
+
+
+```bash
+> git checkout https://github.com/Loki-Astar/JsonBenchmark.git
 > ./configure
 > # To install standard packages that are used to run tests.
 > ./initPlatform
@@ -46,14 +88,6 @@ Create a fork of this project. Then checkout your fork and build it locally.
 > make
 > ./runTests
 ````
-
-### Adding a new Json Library
-
-Run the script `scripts/AddJsonLibrary`
-
-Running this script will generate the file `buildJsonLibrary`. Running this script will add the appropriate files to automatically generate the appropriate libraies.
-
-After running these two scripts you will simply need to fill out the C++ to use the the Json library.
 
 ### Tests
 
