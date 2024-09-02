@@ -1,6 +1,6 @@
 [submodule "build"]
 	path = build
-	url = git@github.com:Loki-Astari/ThorMaker.git
+	url = ../../Loki-Astari/ThorMaker.git
 [submodule "thirdparty/glaze"]
 	path = thirdparty/glaze
 	url = https://github.com/stephenberry/glaze
