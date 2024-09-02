@@ -1,6 +1,6 @@
 [submodule "build"]
 	path = build
-	url = ../ThorMaker.git
+	url = ../../Loki-Astari/ThorMaker.git
 [submodule "thirdparty/ArduinoJson"]
 	path = thirdparty/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson.git
@@ -54,7 +54,7 @@
 	url = https://github.com/udp/json-builder.git
 [submodule "thirdparty/ThorsMongo"]
 	path = thirdparty/ThorsMongo
-	url = ../ThorsMongo.git
+	url = ../../Loki-Astari/ThorsMongo.git
 [submodule "thirdparty/simdjson"]
 	path = thirdparty/simdjson
 	url = https://github.com/simdjson/simdjson
