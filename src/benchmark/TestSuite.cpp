@@ -127,7 +127,6 @@ void TestSuite::printResults(TestBase const& parser, int (&count)[3], std::vecto
             std::cerr << "\t\t\tFailed: " << *fail << "\n";
         }
     }
-    std::cerr << "\tParser: " << parser.GetName() << "DONE\n";
 }
 
 void TestSuite::preload()

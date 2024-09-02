@@ -199,6 +199,10 @@ class SimdJsonOndemandTest: public TestBase
 
     virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
     {
+        return Prettify(parseResult, reply);
+    }
+    virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
+    {
         SimdOndemandResult const& input = dynamic_cast<SimdOndemandResult const&>(parseResult);
         ondemand::parser            parser;
         ondemand::document          doc;
@@ -213,7 +217,6 @@ class SimdJsonOndemandTest: public TestBase
     }
     // virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
     // virtual bool Prettify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
-
     // virtual bool Statistics(const ParseResultBase& parseResult, Stat& stat) const override
     // virtual bool SaxStatistics(const char* json, size_t length, Stat& stat) const override
     // virtual bool SaxStatisticsUTF16(const char* json, size_t length, Stat& stat) const override
