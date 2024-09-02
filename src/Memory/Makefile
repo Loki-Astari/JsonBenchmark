@@ -1,5 +1,7 @@
 THORSANVIL_ROOT             = $(realpath ../../)
 
+buildtarget:				release-only
+
 FILE_WARNING_FLAGS          += -Wno-unknown-pragmas
 CXXFLAGS                    += -D DATA_DIR=$(realpath $(THORSANVIL_ROOT)/data)
 TARGET                      = Memory.slib

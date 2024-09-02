@@ -1,5 +1,7 @@
 THORSANVIL_ROOT             = $(realpath ../../)
 
+buildtarget:				release-only
+
 TARGET                      = ThirdParty.slib
 
 VERA                        = true
@@ -13,6 +15,7 @@ LDLIBS                      += ../../thirdparty/udb-jsason-parser/lib/libjsonbui
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 LDLIBS						+= ../../thirdparty/simdjson/build/libsimdjson.a
+LDFLAGS						+= -L$(THORSANVIL_ROOT)/thirdparty/ThorsMongo/build/lib/
 LDLIBS                      += -lThorSerialize -lThorsLogging
 LDLIBS						+= $(BOOSTLIB_NEEDED_$(PLATFORM))
 BOOSTLIB_NEEDED_Darwin		= -lboost_json
@@ -32,7 +35,7 @@ jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-param
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src -Wno-deprecated-dynamic-exception-spec
-ThorsSerializerTest_CXXFLAGS+= -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
+ThorsSerializerTest_CXXFLAGS+= -I$(THORSANVIL_ROOT)/thirdparty/ThorsMongo/build/include -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
 json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/ -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor
 jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/
