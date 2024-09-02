@@ -85,13 +85,13 @@ class GlazeTest: public TypeSafeTest<Glaze::VectorDouble,
 {
     // Not supported by glaze as these types are to complicated.
     // I would love help if you can get these to compile.
-    //Glaze::GetValue<Country>                                             testGetValueCountry;
-    //Glaze::GetValue<Twitter>                                             testGetValueTwitter;
+    Glaze::GetValue<Country>                                             testGetValueCountry;
+    Glaze::GetValue<Twitter>                                             testGetValueTwitter;
     public:
         GlazeTest()
         {
-            //actionMap["performance/canada.json"]         = &testGetValueCountry;
-            //actionMap["performance/twitter.json"]        = &testGetValueTwitter;
+            actionMap["performance/canada.json"]         = &testGetValueCountry;
+            actionMap["performance/twitter.json"]        = &testGetValueTwitter;
         }
 
         virtual const char* GetName()     const override    { return "Glaze"; }
