@@ -1,6 +1,6 @@
 [submodule "build"]
 	path = build
-	url = git@github.com:Loki-Astari/ThorMaker.git
-[submodule "univalue"]
-	path = univalue
-	url = https://github.com/cculianu/univalue
+	url = ../../Loki-Astari/ThorMaker.git
+[submodule "Json-Performance"]
+	path = Json-Performance
+	url = https://github.com/RealTimeChris/Json-Performance

@@ -55,8 +55,5 @@ class TestRunner: public TestBase
 
 #define REGISTER_TEST_OBJECT(cls)       std::unique_ptr<TestBase> get ## cls();TestRunner gRegister ## cls(get ## cls())
 
-#ifndef __linux__
-// Github Ubuntu latest only has boost 1.74 this does not include Boost JSON
-REGISTER_TEST_OBJECT(UnivalueTest);
-#endif
+REGISTER_TEST_OBJECT(JsonPerformanceTest);
 
