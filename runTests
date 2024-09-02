@@ -21,12 +21,6 @@ fi
 
 rootDir=$(pwd)
 
-cd thirdparty
-if [[ ! -e ThorsSerializer ]]; then
-    ln -s ThorsMongo ThorsSerializer
-fi
-cd ..
-
 echo "Running:"
 allparser=$(benchmark --listParser)
 parserList=${2:-${allparser}}

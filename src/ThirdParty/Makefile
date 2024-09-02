@@ -1,5 +1,7 @@
 THORSANVIL_ROOT             = $(realpath ../../)
 
+buildtarget:				release-only
+
 TARGET                      = ThirdParty.slib
 
 VERA                        = true
@@ -13,6 +15,7 @@ LDLIBS                      += ../../thirdparty/udb-jsason-parser/lib/libjsonbui
 LDLIBS                      += ../../thirdparty/jsonxx/libjsonxx.a
 LDLIBS                      += ../../thirdparty/Jzon/libJzon.a
 LDLIBS						+= ../../thirdparty/simdjson/build/libsimdjson.a
+LDFLAGS						+= -L$(THORSANVIL_ROOT)/thirdparty/ThorsMongo/build/lib/
 LDLIBS                      += -lThorSerialize -lThorsLogging
 LDLIBS						+= $(BOOSTLIB_NEEDED_$(PLATFORM))
 BOOSTLIB_NEEDED_Darwin		= -lboost_json
