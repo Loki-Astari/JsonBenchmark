@@ -57,6 +57,6 @@ class TestRunner: public TestBase
 
 #ifndef __linux__
 // Github Ubuntu latest only has boost 1.74 this does not include Boost JSON
-REGISTER_TEST_OBJECT(GlazeTest);
+REGISTER_TEST_OBJECT(UnivalueTest);
 #endif
 
