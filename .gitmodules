@@ -1,3 +1,6 @@
 [submodule "build"]
 	path = build
 	url = ../../Loki-Astari/ThorMaker.git
+[submodule "thirdparty/JsonPerformance"]
+	path = thirdparty/JsonPerformance
+	url = https://github.com/RealTimeChris/Json-Performance

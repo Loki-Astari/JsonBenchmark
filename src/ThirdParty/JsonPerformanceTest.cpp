@@ -1,14 +1,14 @@
 #include "test.h"
 
 
-class NewProjectResult : public ParseResultBase
+class JsonPerformanceResult : public ParseResultBase
 {
     public:
 };
 
-class NewProjectTest : public TestBase {
+class JsonPerformanceTest : public TestBase {
 public:
-    virtual const char* GetName()     const override { return "NewProject"; }
+    virtual const char* GetName()     const override { return "JsonPerformance"; }
     virtual const char* Type()        const override { return "C++";}
     virtual const char* GetFilename() const override { return __FILE__; }
 
@@ -85,4 +85,4 @@ public:
     }
 };
 
-REGISTER_TEST(NewProjectTest);
+REGISTER_TEST(JsonPerformanceTest);
