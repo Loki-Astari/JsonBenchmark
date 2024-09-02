@@ -1,3 +1,6 @@
 [submodule "build"]
 	path = build
 	url = ../../Loki-Astari/ThorMaker.git
+[submodule "thirdparty/univalue"]
+	path = thirdparty/univalue
+	url = https://github.com/cculianu/univalue

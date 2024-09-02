@@ -6,7 +6,7 @@ export PATH="${PATH}:$(pwd)/build/bin"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:${CWD}/thirdparty/ThorsSerializer/build/lib/:/opt/homebrew/lib/"
 export DYLD_LIBRARY_PATH="${DYLD_LIBRARY_PATH}:$(pwd)/build/lib:/usr/local/lib:${CWD}/thirdparty/ThorsSerializer/build/lib/:/opt/homebrew/lib/"
 
-export parser=NewProject
+export parser=univalue
 export filters=$1
 export flags=$2
 
