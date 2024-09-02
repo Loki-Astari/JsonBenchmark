@@ -1,8 +1,0 @@
-#
-# ccan
-#
-
-gcc -c -o json.o ccan/json/json.c -fPIC -O3
-ar rv libccan.a json.o
-ranlib libccan.a
-

@@ -1,8 +1,0 @@
-#
-# ccan
-#
-
-g++ -c -o Jzon.o Jzon.cpp -fPIC -O3
-ar rv libJzon.a Jzon.o
-ranlib libJzon.a
-
