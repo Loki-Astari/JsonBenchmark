@@ -10,61 +10,9 @@
 
 using namespace ThorsAnvil::Benchmark;
 
-#pragma vera-pushoff
-using namespace std::string_literals;
-#pragma vera-pop
-static Stat constexpr canada =
-{
-    /*objectCount:*/           4,
-    /*arrayCount:*/        56045,
-    /*numberCount:*/      111126,
-    /*stringCount:*/          12,
-    /*trueCount:*/             0,
-    /*falseCount:*/            0,
-    /*nullCount:*/             0,
-    /*memberCount:*/           8,
-    /*elementCount:*/     167170,
-    /*stringLength:*/         90
-};
-static Stat constexpr citm_catalog
-{
-    /*objectCount:*/       10937,
-    /*arrayCount:*/        10451,
-    /*numberCount:*/       14392,
-    /*stringCount:*/       26604,
-    /*trueCount:*/             0,
-    /*falseCount:*/            0,
-    /*nullCount:*/          1263,
-    /*memberCou:nt*/       25869,
-    /*elementCount:*/      11908,
-    /*stringLength:*/     221379
-};
-static Stat constexpr twitter =
-{
-    /*objectCount:*/        1264,
-    /*arrayCount:*/         1050,
-    /*numberCount:*/        2109,
-    /*stringCount:*/       18099,
-    /*trueCount:*/           345,
-    /*falseCount:*/         2446,
-    /*nullCount:*/          1946,
-    /*memberCou:nt*/       13345,
-    /*elementCount:*/        568,
-    /*stringLength:*/     367917
-};
-std::map<std::string, Stat const*> const PerformanceChecker::validator
-{
-    {"canada.json"s,         &canada},
-    {"citm_catalog.json"s,   &citm_catalog},
-    {"twitter.json"s,        &twitter}
-};
-
 void PerformanceChecker::executeTest(TestBase const& parser, Options const& options)
 {
-    if (!options.markFailed)
-    {
-        validatePerformance(parser);
-    }
+    options.supported = validatePerformance(parser);
     CommonReader::executeTest(parser, options);
 }
 
@@ -75,9 +23,7 @@ State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Te
         executeParse(parser, test);
         executeStringify(parser, test);
         executePrettify(parser, test);
-        executeStatistics(parser, test);
         executeSaxRoundtrip(parser, test);
-        executeSaxStatistics(parser, test);
     }
     else
     {
@@ -105,55 +51,23 @@ void PerformanceChecker::getCodeSize(TestBase const& parser)
     options.performance << "7. Code size," << parser.GetName() << ",XXX,0,0,0,0,0,0," << size << "\n";
 }
 
-void PerformanceChecker::validatePerformance(TestBase const& parser)
+bool PerformanceChecker::validatePerformance(TestBase const& parser)
 {
-    for (auto const& test: tests)
-    {
-        std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
-        TestSetUp   testSetUp(parser, setupName(test), true);
-        std::unique_ptr<ParseResultBase> dom;
+    auto const& test = *(std::begin(tests));
 
-        std::cerr << "\t\t" << std::setw(15) << std::left << "Validate:"
-                  << std::setw(20) << std::left << fileName
-                  << std::right << std::flush;
+    std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
+    TestSetUp   testSetUp(parser, setupName(test), true);
 
-        bool implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
+    std::unique_ptr<ParseResultBase>    dom;
+    std::unique_ptr<StringResultBase>   result;
+    bool implemented =  true;
 
-        if (!implemented) {
-            std::cerr << " Not Implemented\n";
-            continue;
-        }
+    implemented = implemented && parser.Parse(test.input.c_str(), test.input.size(), dom);
+    implemented = implemented && parser.Stringify(*dom, result);
+    implemented = implemented && parser.Prettify(*dom, result);
+    implemented = implemented && parser.SaxRoundtrip(test.input.c_str(), test.input.size(), result);
 
-        Stat    stats {};
-
-        implemented = parser.Statistics(*dom, stats);
-        if (implemented) {
-            std::cerr << " Not Implemented\n";
-            continue;
-        }
-
-        auto find = validator.find(fileName);
-        if (find == validator.end())
-        {
-            std::cerr << " New Test! No comparison\n";
-            continue;
-        }
-        bool ok = stats == *find->second;
-        std::cerr << (ok ? " Pass" : " Fail") << "\n";
-        if (!ok)
-        {
-            std::cerr << "\t\t\tobjectCount  " << std::setw(8) << find->second->objectCount  << " : " << std::setw(8) << stats.objectCount  << (find->second->objectCount  == stats.objectCount ? "" : "  BAD") << "\n"
-                      << "\t\t\tarrayCount   " << std::setw(8) << find->second->arrayCount   << " : " << std::setw(8) << stats.arrayCount   << (find->second->arrayCount   == stats.arrayCount  ? "" : "  BAD") << "\n"
-                      << "\t\t\tnumberCount  " << std::setw(8) << find->second->numberCount  << " : " << std::setw(8) << stats.numberCount  << (find->second->numberCount  == stats.numberCount ? "" : "  BAD") << "\n"
-                      << "\t\t\tstringCount  " << std::setw(8) << find->second->stringCount  << " : " << std::setw(8) << stats.stringCount  << (find->second->stringCount  == stats.stringCount ? "" : "  BAD") << "\n"
-                      << "\t\t\ttrueCount    " << std::setw(8) << find->second->trueCount    << " : " << std::setw(8) << stats.trueCount    << (find->second->trueCount    == stats.trueCount   ? "" : "  BAD") << "\n"
-                      << "\t\t\tfalseCount   " << std::setw(8) << find->second->falseCount   << " : " << std::setw(8) << stats.falseCount   << (find->second->falseCount   == stats.falseCount  ? "" : "  BAD") << "\n"
-                      << "\t\t\tnullCount    " << std::setw(8) << find->second->nullCount    << " : " << std::setw(8) << stats.nullCount    << (find->second->nullCount    == stats.nullCount   ? "" : "  BAD") << "\n"
-                      << "\t\t\tmemberCount  " << std::setw(8) << find->second->memberCount  << " : " << std::setw(8) << stats.memberCount  << (find->second->memberCount  == stats.memberCount ? "" : "  BAD") << "\n"
-                      << "\t\t\telementCount " << std::setw(8) << find->second->elementCount << " : " << std::setw(8) << stats.elementCount << (find->second->elementCount == stats.elementCount? "" : "  BAD") << "\n"
-                      << "\t\t\tstringLength " << std::setw(8) << find->second->stringLength << " : " << std::setw(8) << stats.stringLength << (find->second->stringLength == stats.stringLength? "" : "  BAD") << "\n";
-        }
-    }
+    return implemented;
 }
 
 void PerformanceChecker::executeParse(TestBase const& parser, Test const& test)
@@ -161,19 +75,15 @@ void PerformanceChecker::executeParse(TestBase const& parser, Test const& test)
     double minDuration = std::chrono::duration<double>::max().count();
     Output generator(options, parser, test, "Parse", "1", minDuration);
 
+    TestSetUp   testSetUp(parser, setupName(test), true);
     for (int loop = 0; loop < loopCount; ++loop)
     {
-        TestSetUp   testSetUp(parser, setupName(test), true);
-        std::unique_ptr<ParseResultBase> result;
-        bool                             implemented;
-        double duration = timeExecution([&parser, &test, &result, &implemented]()
+        bool    result;
+        double duration = timeExecution([&parser, &test, &result]()
             {
-                implemented = parser.Parse(test.input.c_str(), test.input.size(), result);
+                parser.ParseValidate(test.input.c_str(), test.input.size(), result);
             }
         );
-        if (!implemented) {
-            return;
-        }
         minDuration = std::min(minDuration, duration);
     }
     generator.setPass();
@@ -186,23 +96,19 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
 
     TestSetUp   testSetUp(parser, setupName(test), true);
     std::unique_ptr<ParseResultBase> dom;
-    bool implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
-    if (!implemented) {
-        return;
-    }
+    parser.Parse(test.input.c_str(), test.input.size(), dom);
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
-        bool                              implemented;
-        double duration = timeExecution([&parser, &result, &implemented, &dom]()
+        double duration = timeExecution([&parser, &result, &dom]()
             {
-                implemented = parser.Stringify(*dom, result);
+                parser.Stringify(*dom, result);
             }
         );
-        if (!implemented) {
-            return;
-        }
         minDuration = std::min(minDuration, duration);
+        if (options.debug) {
+            std::cerr << "Got >" << result->c_str() << "<\n";
+        }
     }
     generator.setPass();
 }
@@ -214,51 +120,19 @@ void PerformanceChecker::executePrettify(TestBase const& parser, Test const& tes
 
     TestSetUp   testSetUp(parser, setupName(test), true);
     std::unique_ptr<ParseResultBase> dom;
-    bool implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
-    if (!implemented) {
-        return;
-    }
+    parser.Parse(test.input.c_str(), test.input.size(), dom);
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
-        bool                              implemented;
-        double duration = timeExecution([&parser, &result, &implemented, &dom]()
+        double duration = timeExecution([&parser, &result, &dom]()
             {
-                implemented = parser.Prettify(*dom, result);
+                parser.Prettify(*dom, result);
             }
         );
-        if (!implemented) {
-            return;
-        }
         minDuration = std::min(minDuration, duration);
-    }
-    generator.setPass();
-}
-
-void PerformanceChecker::executeStatistics(TestBase const& parser, Test const& test)
-{
-    double minDuration = std::chrono::duration<double>::max().count();
-    Output generator(options, parser, test, "Statistics", "4", minDuration);
-
-    TestSetUp   testSetUp(parser, setupName(test), true);
-    std::unique_ptr<ParseResultBase> dom;
-    bool    implemented = parser.Parse(test.input.c_str(), test.input.size(), dom);
-    if (!implemented) {
-        return;
-    }
-    for (int loop = 0; loop < loopCount; ++loop)
-    {
-        Stat    stats {};
-        bool    implemented;
-        double duration = timeExecution([&parser, &implemented, &stats, &dom]()
-            {
-                implemented = parser.Statistics(*dom, stats);
-            }
-        );
-        if (!implemented) {
-            return;
+        if (options.debug) {
+            std::cerr << "Got >" << result->c_str() << "<\n";
         }
-        minDuration = std::min(minDuration, duration);
     }
     generator.setPass();
 }
@@ -268,9 +142,9 @@ void PerformanceChecker::executeSaxRoundtrip(TestBase const& parser, Test const&
     double minDuration = std::chrono::duration<double>::max().count();
     Output generator(options, parser, test, "SaxRoundtrip", "5", minDuration);
 
+    TestSetUp   testSetUp(parser, setupName(test), true);
     for (int loop = 0; loop < loopCount; ++loop)
     {
-        TestSetUp   testSetUp(parser, setupName(test), true);
         std::unique_ptr<StringResultBase> result;
         bool                              implemented;
         double duration = timeExecution([&parser, &test, &result, &implemented]()
@@ -282,29 +156,9 @@ void PerformanceChecker::executeSaxRoundtrip(TestBase const& parser, Test const&
             return;
         }
         minDuration = std::min(minDuration, duration);
-    }
-    generator.setPass();
-}
-
-void PerformanceChecker::executeSaxStatistics(TestBase const& parser, Test const& test)
-{
-    double minDuration = std::chrono::duration<double>::max().count();
-    Output generator(options, parser, test, "SaxStatistics", "6", minDuration);
-
-    for (int loop = 0; loop < loopCount; ++loop)
-    {
-        TestSetUp   testSetUp(parser, setupName(test), true);
-        Stat        stats {};
-        bool        implemented;
-        double duration = timeExecution([&parser, &test, &implemented, &stats]()
-            {
-                implemented = parser.SaxStatistics(test.input.c_str(), test.input.size(), stats);
-            }
-        );
-        if (!implemented) {
-            return;
+        if (options.debug) {
+            std::cerr << "Got >" << result->c_str() << "<\n";
         }
-        minDuration = std::min(minDuration, duration);
     }
     generator.setPass();
 }

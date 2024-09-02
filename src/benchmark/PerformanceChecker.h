@@ -34,7 +34,7 @@ class PerformanceChecker: public CommonReader
         virtual void printResults(TestBase const&, int (&)[3], std::vector<Test const*>&, std::vector<Test const*>&) override{}
     private:
         void getCodeSize(TestBase const& parser);
-        void validatePerformance(TestBase const& parser);
+        bool validatePerformance(TestBase const& parser);
 
         class Output
         {
@@ -59,9 +59,7 @@ class PerformanceChecker: public CommonReader
         void executeParse(TestBase const& parser, Test const& test);
         void executeStringify(TestBase const& parser, Test const& test);
         void executePrettify(TestBase const& parser, Test const& test);
-        void executeStatistics(TestBase const& parser, Test const& test);
         void executeSaxRoundtrip(TestBase const& parser, Test const& test);
-        void executeSaxStatistics(TestBase const& parser, Test const& test);
 };
 
 template<typename F>
