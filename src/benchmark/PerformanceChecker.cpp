@@ -72,7 +72,7 @@ bool PerformanceChecker::validatePerformance(TestBase const& parser)
 
 void PerformanceChecker::executeParse(TestBase const& parser, Test const& test)
 {
-    double minDuration = std::chrono::duration<double>::max().count();
+    double minDuration = 0;
     Output generator(options, parser, test, "Parse", "1", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
@@ -84,14 +84,15 @@ void PerformanceChecker::executeParse(TestBase const& parser, Test const& test)
                 parser.ParseValidate(test.input.c_str(), test.input.size(), result);
             }
         );
-        minDuration = std::min(minDuration, duration);
+        minDuration += duration;
     }
+    minDuration /= loopCount;
     generator.setPass();
 }
 
 void PerformanceChecker::executeStringify(TestBase const& parser, Test const& test)
 {
-    double minDuration = std::chrono::duration<double>::max().count();
+    double minDuration = 0;
     Output generator(options, parser, test, "Stringify", "2", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
@@ -105,17 +106,18 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
                 parser.Stringify(*dom, result);
             }
         );
-        minDuration = std::min(minDuration, duration);
+        minDuration += duration;
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
         }
     }
+    minDuration /= loopCount;
     generator.setPass();
 }
 
 void PerformanceChecker::executePrettify(TestBase const& parser, Test const& test)
 {
-    double minDuration = std::chrono::duration<double>::max().count();
+    double minDuration = 0;
     Output generator(options, parser, test, "Prettify", "3", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
@@ -129,17 +131,18 @@ void PerformanceChecker::executePrettify(TestBase const& parser, Test const& tes
                 parser.Prettify(*dom, result);
             }
         );
-        minDuration = std::min(minDuration, duration);
+        minDuration += duration;
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
         }
     }
+    minDuration /= loopCount;
     generator.setPass();
 }
 
 void PerformanceChecker::executeSaxRoundtrip(TestBase const& parser, Test const& test)
 {
-    double minDuration = std::chrono::duration<double>::max().count();
+    double minDuration = 0;
     Output generator(options, parser, test, "SaxRoundtrip", "5", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
@@ -155,11 +158,12 @@ void PerformanceChecker::executeSaxRoundtrip(TestBase const& parser, Test const&
         if (!implemented) {
             return;
         }
-        minDuration = std::min(minDuration, duration);
+        minDuration += duration;
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
         }
     }
+    minDuration /= loopCount;
     generator.setPass();
 }
 
