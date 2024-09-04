@@ -11,7 +11,8 @@
 #include <sstream>
 #include <string>
 #include <cctype>
-
+#include <chrono>
+using namespace std::chrono;
 
 
 namespace ThorsSerializer
@@ -82,7 +83,10 @@ class GetValue: public TestAction
     {
         std::unique_ptr<GetValueResult<Value>> result = std::make_unique<GetValueResult<Value>>();
         std::stringstream stream(json);
+auto s = high_resolution_clock::now();
         stream >> jsonImporter(result->data);
+auto e = high_resolution_clock::now();
+std::cerr << "GetValue: " << duration_cast<microseconds>(e - s).count() << "\n";
         char bad;
         if (!stream || stream >> bad) {
             result.release();

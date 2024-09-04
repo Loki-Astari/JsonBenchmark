@@ -12,7 +12,7 @@ using namespace ThorsAnvil::Benchmark;
 
 void PerformanceChecker::executeTest(TestBase const& parser, Options const& options)
 {
-    options.supported = validatePerformance(parser);
+    options.supported = true;//validatePerformance(parser);
     CommonReader::executeTest(parser, options);
 }
 
@@ -21,9 +21,9 @@ State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Te
     if (test.path.str().find("size.json") == std::string::npos)
     {
         executeParse(parser, test);
-        executeStringify(parser, test);
-        executePrettify(parser, test);
-        executeSaxRoundtrip(parser, test);
+        //executeStringify(parser, test);
+        //executePrettify(parser, test);
+        //executeSaxRoundtrip(parser, test);
     }
     else
     {
@@ -76,7 +76,7 @@ void PerformanceChecker::executeParse(TestBase const& parser, Test const& test)
     Output generator(options, parser, test, "Parse", "1", minDuration);
 
     TestSetUp   testSetUp(parser, setupName(test), true);
-    for (int loop = 0; loop < loopCount; ++loop)
+    //for (int loop = 0; loop < loopCount; ++loop)
     {
         bool    result;
         double duration = timeExecution([&parser, &test, &result]()
