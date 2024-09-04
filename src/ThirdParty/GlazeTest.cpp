@@ -54,10 +54,9 @@ class GetValue: public TestAction
     public:
     virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const
     {
-        auto result = glz::read_json<T>(json);
-        if (result) {
-            std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-            parsedData->data = std::move(result.value());
+        std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
+        auto error = glz::read<glz::opts{.format = glz::json, .validate_trailing_whitespace = true}>(parsedData->data, json);
+        if (!error) {
             reply = std::move(parsedData);
         }
         return true;
