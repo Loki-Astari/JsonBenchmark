@@ -784,6 +784,7 @@ am__quote'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
+enable_coverage
 enable_vera
 enable_colour
 enable_dark_mode
@@ -1439,6 +1440,8 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --disable-coverage      Disable coverage tool checks
+
   --disable-vera          Disable vera. Disable Static analysis of source.
 
   --disable-colour        Turns off text colouring in the makefile output
@@ -2906,6 +2909,7 @@ fi
 
 
 export enable_vera='no'
+export enable_coverage='no'
 
     sedStrip='s/-.*//'
     UNAME=`uname -s | sed "${sedStrip}"`
@@ -3619,25 +3623,34 @@ fi
 
 
 
-echo "STARTING COVERAGE CHECK"
-    if test "x${COV}x" = "xx"
+    # Check whether --enable-coverage was given.
+if test ${enable_coverage+y}
+then :
+  enableval=$enable_coverage;
+fi
+
+    if test "x$enable_coverage" != "xno"
 then :
 
-            CXXTOOL=${CXX% *}
-            if test "${CXXTOOL}" = "g++"
+echo "STARTING COVERAGE CHECK"
+        if test "x${COV}x" = "xx"
+then :
+
+                CXXTOOL=${CXX% *}
+                if test "${CXXTOOL}" = "g++"
 then :
   COV=gcov
 
 else case e in #(
   e)
 echo "STARTING COVERAGE CHECK: CHECKING CLANG"
-                    if test "${CXXTOOL}" = "clang++"
+                        if test "${CXXTOOL}" = "clang++"
 then :
   COV=llvm-cov
 
 else case e in #(
   e)
-                            as_fn_error $? "
+                                as_fn_error $? "
 
 Could not determine the coverage tool.
 
@@ -3654,27 +3667,30 @@ Another alternative is to explicitly specify the coverage tool to use.
 
     COV=gcov ./confgiure
 
-                            " "$LINENO" 5
+                                " "$LINENO" 5
 
-                     ;;
+                         ;;
 esac
 fi
 
-             ;;
+                 ;;
 esac
 fi
 
 
 fi
-    ${COV} --version 2>&1 | grep -Eo '([[:digit:]]+\.)+[[:digit:]]+' || ${COV} --version 2>&1 | grep -Po '(\d+\.)+\d+' > /dev/null
-    if test $? != 0
+        ${COV} --version 2>&1 | grep -Eo '([[:digit:]]+\.)+[[:digit:]]+' || ${COV} --version 2>&1 | grep -Po '(\d+\.)+\d+' > /dev/null
+        if test $? != 0
 then :
 
-            as_fn_error $? "
+                as_fn_error $? "
 
-The coverage tool \"${COV}\" does not seem to be working.
+    The coverage tool \"${COV}\" does not seem to be working.
 
-            " "$LINENO" 5
+                " "$LINENO" 5
+
+
+fi
 
 
 fi
