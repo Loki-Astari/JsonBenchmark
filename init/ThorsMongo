@@ -1,8 +1,4 @@
 
-echo "========"
-echo "========"
-echo
-echo
 echo
 echo
 git clone https://github.com/Neargye/magic_enum.git 
@@ -10,9 +6,8 @@ git clone https://github.com/Neargye/magic_enum.git
 CWD=$(pwd)
 
 
-echo "./configure --enable-dark-mode --with-magicenum-header-only-root=${CWD}/magic_enum/include/magic_enum --disable-test-with-mongo-query --disable-Mongo-Service --disable-vera"
-./configure --enable-dark-mode --with-magicenum-header-only-root=${CWD}/magic_enum/include/magic_enum --disable-test-with-mongo-query --disable-Mongo-Service --disable-vera
+./configure --prefix=${CWD}/../../build --enable-dark-mode --with-magicenum-header-only-root=${CWD}/magic_enum/include/magic_enum --disable-test-with-mongo-query --disable-Mongo-Service --disable-vera --disable-coverage
 rm -rf $(find third/*/src -name test)
 make
-sudo make install
+make install
 

@@ -8,7 +8,6 @@ FILE_WARNING_FLAGS			+= -Wno-unknown-pragmas
 
 TARGET						= benchmark.prog memory.prog
 
-LDFLAGS						+= -L$(THORSANVIL_ROOT)/thirdparty/ThorsMongo/build/lib/
 LDLIBS						+= -lThirdParty -lThorSerialize -lThorsLogging
 memory_LINK_LIBS			= Memory
 memory_LDLIBS				= -ldl
