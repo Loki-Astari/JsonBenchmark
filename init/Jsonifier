@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cmake -S ./ -B ./Build -DCMAKE_BUILD_TYPE=Release
+
+AVX_FLAG=$(grep 'AVX_FLAG:STRING=' ../../thirdparty/Jsonifier/Build/CMakeCache.txt | cut -d '=' -f 2)
+
+AVX_FLAG=$(echo "${AVX_FLAG}" | tr ';' ' ')
+
+echo "AVX_FLAGS = ${AVX_FLAG}" > avx_flags.txt
+
+echo "AVX_FLAGS written to avx_flags.txt"
