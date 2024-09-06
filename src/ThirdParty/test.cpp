@@ -58,6 +58,7 @@ class TestRunner: public TestBase
 REGISTER_TEST_OBJECT(ThorsSerializerTest);
 REGISTER_TEST_OBJECT(SimdJsonDomTest);
 REGISTER_TEST_OBJECT(SimdJsonOndemandTest);
+REGISTER_TEST_OBJECT(JsonifierTest);
 #ifndef __linux__
 // Github Ubuntu latest only has boost 1.74 this does not include Boost JSON
 REGISTER_TEST_OBJECT(BoostJsonTest);

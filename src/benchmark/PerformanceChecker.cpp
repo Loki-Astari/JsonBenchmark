@@ -12,12 +12,17 @@ using namespace ThorsAnvil::Benchmark;
 
 void PerformanceChecker::executeTest(TestBase const& parser, Options const& options)
 {
-    options.supported = validatePerformance(parser);
+    if (!options.markFailed) {
+        options.supported = validatePerformance(parser);
+    }
     CommonReader::executeTest(parser, options);
 }
 
 State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Test const& test)
 {
+    if (options.markFailed) {
+        return Fail;
+    }
     if (test.path.str().find("size.json") == std::string::npos)
     {
         executeParse(parser, test);
