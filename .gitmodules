@@ -64,3 +64,4 @@
 [submodule "thirdparty/Jsonifier"]
 	path = thirdparty/Jsonifier
 	url = https://github.com/RealTimeChris/Jsonifier
+	branch = dev
