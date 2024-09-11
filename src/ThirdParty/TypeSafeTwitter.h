@@ -8,12 +8,13 @@
 
 // Used by performance/twitter.json
 
-using IntVec = std::vector<int>;
+using IntVec = std::vector<std::uint32_t>;
 
 template<typename T>
-using Opt       = std::unique_ptr<T>;
-using Symbol    = std::map<std::string, std::string>;
-using Symbols   = std::vector<Symbol>;
+using Up        = std::unique_ptr<T>;
+using Symbols   = std::vector<std::int32_t>;
+template<typename T>
+using Opt      = std::optional<T>;
 
 struct Metadata
 {
@@ -44,24 +45,24 @@ struct Entities
 
 struct User
 {
-    long                id;
+    std::uint64_t       id;
     std::string         id_str;
     std::string         name;
     std::string         screen_name;
     std::string         location;
     std::string         description;
-    Opt<std::string>    url;
+    Up<std::string>     url;
     Entities            entities;
-    int                 followers_count;
-    int                 friends_count;
-    int                 listed_count;
+    std::uint32_t       followers_count;
+    std::uint32_t       friends_count;
+    std::uint32_t       listed_count;
     std::string         created_at;
-    int                 favourites_count;
-    Opt<int>            utc_offset;
-    Opt<std::string>    time_zone;
+    std::uint32_t       favourites_count;
+    Up<std::int32_t>    utc_offset;
+    Up<std::string>     time_zone;
     bool                geo_enabled;
     bool                verified;
-    int                 statuses_count;
+    std::uint32_t       statuses_count;
     std::string         lang;
     bool                contributors_enabled;
     bool                is_translator;
@@ -83,6 +84,9 @@ struct User
     bool                following;
     bool                follow_request_sent;
     bool                notifications;
+    bool                protectedField;                         // In the JSON this field is "proteted"
+                                                                // But that can not be used as a member name in
+                                                                // C++ so implementations need to compensate.
 };
 
 using Users = std::vector<User>;
@@ -99,7 +103,7 @@ struct UserMention
 {
     std::string         screen_name;
     std::string         name;
-    long                id;
+    std::uint64_t       id;
     std::string         id_str;
     IntVec              indices;
 };
@@ -108,22 +112,22 @@ using UserMentions = std::vector<UserMention>;
 
 struct Size
 {
-    int                 w;
-    int                 h;
+    std::uint32_t       w;
+    std::uint32_t       h;
     std::string         resize;
 };
 
 struct Sizes
 {
-    Size                medium;
     Size                small;
+    Size                medium;
     Size                thumb;
     Size                large;
 };
 
 struct Media
 {
-    long                id;
+    std::uint64_t       id;
     std::string         id_str;
     IntVec              indices;
     std::string         media_url;
@@ -133,7 +137,7 @@ struct Media
     std::string         expanded_url;
     std::string         type;
     Sizes               sizes;
-    Opt<long>           source_status_id;
+    Opt<std::uint64_t>  source_status_id;
     Opt<std::string>    source_status_id_str;
 };
 
@@ -148,51 +152,50 @@ struct TwitEntities
     Opt<Medias>         media;
 };
 
-struct BaseStatus
+struct Unknown
+{};
+
+struct Status
 {
     Metadata            metadata;
     std::string         created_at;
-    long                id;
+    std::uint64_t       id;
     std::string         id_str;
     std::string         text;
     std::string         source;
     bool                truncated;
-    Opt<long>           in_reply_to_status_id;
-    Opt<std::string>    in_reply_to_status_id_str;
-    Opt<long>           in_reply_to_user_id;
-    Opt<std::string>    in_reply_to_user_id_str;
-    Opt<std::string>    in_reply_to_screen_name;
+    Up<std::uint64_t>   in_reply_to_status_id;
+    Up<std::string>     in_reply_to_status_id_str;
+    Up<std::uint64_t>   in_reply_to_user_id;
+    Up<std::string>     in_reply_to_user_id_str;
+    Up<std::string>     in_reply_to_screen_name;
     User                user;
-    Opt<int>            geo;
-    Opt<int>            coordinates;
-    Opt<int>            place;
-    Opt<int>            contributors;
-    int                 retweet_count;
-    int                 favorite_count;
+    Up<Unknown>         geo;
+    Up<Unknown>         coordinates;
+    Up<Unknown>         place;
+    Up<Unknown>         contributors;
+    std::uint64_t       retweet_count;
+    std::uint64_t       favorite_count;
     TwitEntities        entities;
     bool                favorited;
     bool                retweeted;
+    Opt<Up<Status>>     retweeted_status;
     Opt<bool>           possibly_sensitive;
     std::string         lang;
 };
 
-struct MainStatus: public BaseStatus
-{
-    Opt<BaseStatus>     retweeted_status;
-};
-
-using Statuses = std::vector<MainStatus>;
+using Statuses = std::vector<Status>;
 
 struct SearchMetadata
 {
     double              completed_in;
-    long                max_id;
+    std::uint64_t       max_id;
     std::string         max_id_str;
     std::string         next_results;
     std::string         query;
     std::string         refresh_url;
-    int                 count;
-    long                since_id;
+    std::uint32_t       count;
+    std::uint64_t       since_id;
     std::string         since_id_str;
 };
 

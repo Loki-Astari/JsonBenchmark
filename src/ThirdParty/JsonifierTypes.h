@@ -29,11 +29,6 @@ template<> struct jsonifier::core<Properties> {
     static constexpr auto parseValue = createValue<&value_type::name>();
 };
 
-template<> struct jsonifier::core<Cord> {
-    using value_type = Cord;
-    static constexpr auto parseValue = createValue<&value_type::value>();
-};
-
 template<> struct jsonifier::core<Geometry> {
     using value_type = Geometry;
     static constexpr auto parseValue = createValue<&value_type::type, &value_type::coordinates>();
@@ -287,38 +282,8 @@ template<> struct jsonifier::core<TwitEntities> {
 	>();
 };
 
-template<> struct jsonifier::core<BaseStatus> {
-	using value_type = BaseStatus;
-	static constexpr auto parseValue = createValue <
-		&value_type::metadata,
-		&value_type::created_at,
-		&value_type::id,
-		&value_type::id_str,
-		&value_type::text,
-		&value_type::source,
-		&value_type::truncated,
-		&value_type::in_reply_to_status_id,
-		&value_type::in_reply_to_status_id_str,
-		&value_type::in_reply_to_user_id,
-		&value_type::in_reply_to_user_id_str,
-		&value_type::in_reply_to_screen_name,
-		&value_type::user,
-		&value_type::geo,
-		&value_type::coordinates,
-		&value_type::place,
-		&value_type::contributors,
-		&value_type::retweet_count,
-		&value_type::favorite_count,
-		&value_type::entities,
-		&value_type::favorited,
-		&value_type::retweeted,
-		&value_type::possibly_sensitive,
-		&value_type::lang
-	> ();
-};
-
-template<> struct jsonifier::core<MainStatus> {
-	using value_type = MainStatus;
+template<> struct jsonifier::core<Status> {
+	using value_type = Status;
 	static constexpr auto parseValue = createValue <
 		&value_type::metadata,
 		&value_type::created_at,

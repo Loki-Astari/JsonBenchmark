@@ -10,6 +10,7 @@ ThorsAnvil_MakeTrait(Properties, name);
 
 namespace ThorsAnvil
 {
+#if 0
     namespace Serialize
     {
 template<>
@@ -53,6 +54,7 @@ class Traits<Cord>
         }
 };
     }
+#endif
 }
 
 ThorsAnvil_MakeTrait(Geometry, type, coordinates);

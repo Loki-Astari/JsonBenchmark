@@ -7,34 +7,34 @@
 
 //used by performance/citm_catalog.json
 template<typename T>
-using Opt = std::unique_ptr<T>;
+using Up = std::unique_ptr<T>;
 
-using IntVec   = std::vector<int>;
+using IntVec   = std::vector<std::uint32_t>;
 
 struct Event
 {
-    Opt<int>            description;
+    Up<std::uint32_t>   description;
     long                id;
-    Opt<std::string>    logo;
+    Up<std::string>     logo;
     std::string         name;
     IntVec              subTopicIds;
-    Opt<int>            subjectCode;
-    Opt<int>            subtitle;
+    Up<std::uint32_t>   subjectCode;
+    Up<std::uint32_t>   subtitle;
     IntVec              topicIds;
 };
 
 struct Price
 {
-    int                 amount;
-    int                 audienceSubCategoryId;
-    int                 seatCategoryId;
+    std::uint32_t       amount;
+    std::uint32_t       audienceSubCategoryId;
+    std::uint32_t       seatCategoryId;
 };
 
 using Prices = std::vector<Price>;
 
 struct Area
 {
-    int                 areaId;
+    std::uint32_t       areaId;
     IntVec              blockIds;
 };
 
@@ -43,20 +43,20 @@ using Areas = std::vector<Area>;
 struct SeatCategorie
 {
     Areas               areas;
-    int                 seatCategoryId;
+    std::uint32_t       seatCategoryId;
 };
 
 using SeatCategories = std::vector<SeatCategorie>;
 
 struct Performance
 {
-    int                 eventId;
-    int                 id;
-    Opt<std::string>    logo;
-    Opt<std::string>    name;
+    std::uint64_t       eventId;
+    std::uint64_t       id;
+    Up<std::string>     logo;
+    Up<std::string>     name;
     Prices              prices;
     SeatCategories      seatCategories;
-    Opt<int>            seatMapImage;
+    Up<std::uint64_t>   seatMapImage;
     long                start;
     std::string         venueCode;
 };
