@@ -23,6 +23,12 @@ State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Te
     if (options.markFailed) {
         return Fail;
     }
+    if (options.validate)
+    {
+        std::cerr << std::setprecision(17);
+        executeStringify(parser, test);
+        return Pass;
+    }
     if (test.path.str().find("size.json") == std::string::npos)
     {
         executeParse(parser, test);
@@ -68,6 +74,7 @@ bool PerformanceChecker::validatePerformance(TestBase const& parser)
     bool implemented =  true;
 
     implemented = implemented && parser.Parse(test.input.c_str(), test.input.size(), dom);
+    implemented = implemented && (dom.get() != nullptr);
     implemented = implemented && parser.Stringify(*dom, result);
     implemented = implemented && parser.Prettify(*dom, result);
     implemented = implemented && parser.SaxRoundtrip(test.input.c_str(), test.input.size(), result);
@@ -103,6 +110,9 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
     TestSetUp   testSetUp(parser, setupName(test), true);
     std::unique_ptr<ParseResultBase> dom;
     parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (dom.get() == nullptr) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
@@ -114,6 +124,10 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
         minDuration += duration;
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
+        }
+        if (options.validate) {
+            std::cerr << result->c_str();
+            break;
         }
     }
     minDuration /= loopCount;
@@ -128,6 +142,9 @@ void PerformanceChecker::executePrettify(TestBase const& parser, Test const& tes
     TestSetUp   testSetUp(parser, setupName(test), true);
     std::unique_ptr<ParseResultBase> dom;
     parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (dom.get() == nullptr) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
@@ -181,6 +198,9 @@ PerformanceChecker::Output::Output(Options& options, TestBase const& parser_, Te
     , minDuration(minDuration_)
     , fail(true)
 {
+    if (options.validate) {
+        return;
+    }
     ((void)parser);
     std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
     std::cerr << "\t\t" << std::setw(15) << std::left << name
@@ -190,6 +210,9 @@ PerformanceChecker::Output::Output(Options& options, TestBase const& parser_, Te
 
 PerformanceChecker::Output::~Output()
 {
+    if (options.validate) {
+        return;
+    }
     if (!fail)
     {
         double throughput = test.input.size() / (1024.0 * 1024.0) / minDuration;

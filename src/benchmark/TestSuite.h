@@ -28,6 +28,7 @@ struct Options
     bool            parserType          = false;
     bool            useFiles            = true;
     bool            debug               = false;
+    bool            validate            = false;
     mutable bool    supported           = true;
 };
 

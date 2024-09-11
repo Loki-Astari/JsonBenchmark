@@ -1,10 +1,10 @@
 
 #include "test.h"
 #include "TypeSafe.h"
-#include "JsonifierCatalog.h"
-#include "JsonifierCountry.h"
-#include "JsonifierTwitter.h"
-#include "JsonifierTypes.h"
+#include "Jsonifier_Catalog.h"
+#include "Jsonifier_Country.h"
+#include "Jsonifier_Twitter.h"
+#include "Jsonifier_Common.h"
 
 
 // OK: The TypeSafeTest test is a template type that has a handler for each test case.
@@ -25,10 +25,9 @@ class JsonifierTest: public TypeSafeTest<JsonifierTypes::VectorDouble,      // T
                                                JsonifierTypes::GetValue>          // Template template class. This is templatezed with the type
                                                                                         // That needs to be read from the json string.
 {
-    JsonifierTypes::GetValue<std::vector<std::string>>          testGetValueVec2StringNumber;
-    JsonifierTypes::GetValue<canada_message>                                             testGetValueCountry;
-    JsonifierTypes::GetValue<twitter_message>                                             testGetValueTwitter;
-    JsonifierTypes::GetValue<citm_catalog_message>                                             testGetValueCatalog;
+    JsonifierTypes::GetValue<canada_message>                    testGetValueCountry;
+    JsonifierTypes::GetValue<twitter_message>                   testGetValueTwitter;
+    JsonifierTypes::GetValue<citm_catalog_message>              testGetValueCatalog;
   public:
       JsonifierTest()
       {

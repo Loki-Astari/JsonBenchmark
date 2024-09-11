@@ -10,18 +10,7 @@ struct Properties
     std::string     name;
 };
 
-struct Cord
-{
-    using value_type = double;
-    std::vector<double> value;
-    Cord(): value(2) {}
-    Cord(Cord const&)               = default;
-    Cord(Cord&&)                    = default;
-    Cord& operator=(Cord const&)    = default;
-    Cord& operator=(Cord&&)         = default;
-    std::size_t size() const {return value.size();}
-};
-
+using   Cord    = std::array<double, 2>; // vector double
 using   CordVec = std::vector<Cord>;
 using   CordMat = std::vector<CordVec>;
 
