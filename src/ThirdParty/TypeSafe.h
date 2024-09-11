@@ -88,7 +88,6 @@ class TypeSafeTest: public TestBase
     GetValue<std::vector<double>>                testGetValueVec2Double;
     GetValue<Obj2>                               testGetValueObj2;
     GetValue<Obj3>                               testGetValueObj3;
-    GetValue<Perform>                            testGetValuePerform;
 
     mutable TestAction const*   currentRunner;
 
@@ -100,8 +99,6 @@ class TypeSafeTest: public TestBase
     {
         actionMap["vector-double"]                   = &testVectorDouble;
         actionMap["vector-string"]                   = &testVectorString;
-
-        actionMap["performance/citm_catalog.json"]   = &testGetValuePerform;
 
         actionMap["jsonchecker_fail/fail02.json"]    = &testGetValueVec2String;
         actionMap["jsonchecker_fail/fail03.json"]    = &testGetValueMap2String;

@@ -71,12 +71,14 @@ class ThorsSerializerTest: public TypeSafeTest<ThorsSerializer::VectorDouble,
     ThorsSerializer::GetValue<std::vector<ThorsSerializer::StringNumber>>          testGetValueVec2StringNumber;
     ThorsSerializer::GetValue<Country>                                             testGetValueCountry;
     ThorsSerializer::GetValue<Twitter>                                             testGetValueTwitter;
+    ThorsSerializer::GetValue<Perform>                                             testGetValueCatalog;
 
     public:
         ThorsSerializerTest()
         {
             actionMap["performance/canada.json"]         = &testGetValueCountry;
             actionMap["performance/twitter.json"]        = &testGetValueTwitter;
+            actionMap["performance/citm_catalog.json"]   = &testGetValueCatalog;
 
             actionMap["roundtrip/roundtrip21.json"] = &testGetValueVec2StringNumber;
             actionMap["roundtrip/roundtrip22.json"] = &testGetValueVec2StringNumber;
