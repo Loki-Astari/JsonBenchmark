@@ -634,6 +634,10 @@ class GetValue: public TestAction
 			reply = std::move(parsedData);
 			return true;
 		}
+        auto errors = parser.getErrors();
+        for (const auto& error : errors) {
+            std::cout << "Jsonifier Error: " << error.reportError() << "\n";
+        }
 		return true;
 	}
 	virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const

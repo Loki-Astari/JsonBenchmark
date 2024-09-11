@@ -3,6 +3,7 @@
 #include "test.h"
 #include "TypeSafe.h"
 #include "glaze/glaze.hpp"
+#include <iostream>
 
 namespace Glaze
 {
@@ -55,8 +56,14 @@ class GetValue: public TestAction
     virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const
     {
         std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-        auto error = glz::read<glz::opts{.format = glz::json, .validate_trailing_whitespace = true}>(parsedData->data, json);
-        if (!error) {
+        auto error = glz::read<glz::opts{.validate_trailing_whitespace = true, .error_on_unknown_keys = false}>(parsedData->data, json);
+        if (error)
+        {
+            std::string descriptive_error = glz::format_error(error, json);
+            std::cerr << "Error: >" << descriptive_error << "\n";
+        }
+        else
+        {
             reply = std::move(parsedData);
         }
         return true;
