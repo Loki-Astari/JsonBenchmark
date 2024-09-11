@@ -23,6 +23,12 @@ State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Te
     if (options.markFailed) {
         return Fail;
     }
+    if (options.validate)
+    {
+        std::cerr << std::setprecision(17);
+        executeStringify(parser, test);
+        return Pass;
+    }
     if (test.path.str().find("size.json") == std::string::npos)
     {
         executeParse(parser, test);
@@ -119,6 +125,10 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
         }
+        if (options.validate) {
+            std::cerr << result->c_str();
+            break;
+        }
     }
     minDuration /= loopCount;
     generator.setPass();
@@ -188,6 +198,9 @@ PerformanceChecker::Output::Output(Options& options, TestBase const& parser_, Te
     , minDuration(minDuration_)
     , fail(true)
 {
+    if (options.validate) {
+        return;
+    }
     ((void)parser);
     std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
     std::cerr << "\t\t" << std::setw(15) << std::left << name
@@ -197,6 +210,9 @@ PerformanceChecker::Output::Output(Options& options, TestBase const& parser_, Te
 
 PerformanceChecker::Output::~Output()
 {
+    if (options.validate) {
+        return;
+    }
     if (!fail)
     {
         double throughput = test.input.size() / (1024.0 * 1024.0) / minDuration;

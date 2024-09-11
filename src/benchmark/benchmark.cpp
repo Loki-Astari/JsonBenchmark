@@ -114,6 +114,10 @@ BM::Options getOptions(int argc, char* argv[])
         {
             result.debug = true;
         }
+        else if (strncmp(argv[loop], "--validate", 10) == 0)
+        {
+            result.validate = true;
+        }
         else if (strncmp(argv[loop], "--filter=", 9) == 0)
         {
             result.testFilter = argv[loop] + 9;
