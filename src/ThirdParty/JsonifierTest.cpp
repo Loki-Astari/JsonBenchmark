@@ -1,7 +1,7 @@
 
 #include "test.h"
 #include "TypeSafe.h"
-#include "JsonifierCatalog.h"
+#include "Jsonifier_Catalog.h"
 #include "JsonifierCountry.h"
 #include "JsonifierTwitter.h"
 #include "JsonifierTypes.h"
