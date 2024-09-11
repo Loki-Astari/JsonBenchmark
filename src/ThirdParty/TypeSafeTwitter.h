@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <optional>
 
 // Used by performance/twitter.json
 
