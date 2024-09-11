@@ -25,28 +25,28 @@ template<> struct jsonifier::core<canada_message> {
 };
 
 template<> struct jsonifier::core<Properties> {
-    using value_type = Properties;
-    static constexpr auto parseValue = createValue<&value_type::name>();
+	using value_type = Properties;
+	static constexpr auto parseValue = createValue<&value_type::name>();
 };
 
 template<> struct jsonifier::core<Cord> {
-    using value_type = Cord;
-    static constexpr auto parseValue = createValue<&value_type::value>();
+	using value_type = Cord;
+	static constexpr auto parseValue = createValue<&value_type::value>();
 };
 
 template<> struct jsonifier::core<Geometry> {
-    using value_type = Geometry;
-    static constexpr auto parseValue = createValue<&value_type::type, &value_type::coordinates>();
+	using value_type = Geometry;
+	static constexpr auto parseValue = createValue<&value_type::type, &value_type::coordinates>();
 };
 
 template<> struct jsonifier::core<Feature> {
-    using value_type = Feature;
-    static constexpr auto parseValue = createValue<&value_type::type, &value_type::properties, &value_type::geometry>();
+	using value_type = Feature;
+	static constexpr auto parseValue = createValue<&value_type::type, &value_type::properties, &value_type::geometry>();
 };
 
 template<> struct jsonifier::core<Country> {
-    using value_type = Country;
-    static constexpr auto parseValue = createValue<&value_type::type, &value_type::features>();
+	using value_type = Country;
+	static constexpr auto parseValue = createValue<&value_type::type, &value_type::features>();
 };
 
 // Specialization for Event
@@ -575,7 +575,7 @@ template<> struct jsonifier::core<Empty> {
 
 namespace JsonifierTypes
 {
-	jsonifier::jsonifier_core<true> parser{};
+	inline static jsonifier::jsonifier_core<true> parser{};
 	class VectorDouble : public TestAction
 	{
 	public:
@@ -608,9 +608,9 @@ namespace JsonifierTypes
 }
 
 template<typename T>
-struct GetValueResult: public ParseResultBase
+struct GetValueResult : public ParseResultBase
 {
-    T       data;
+	T       data;
 };
 
 template<typename T> struct jsonifier::core<GetValueResult<T>> {
@@ -621,36 +621,34 @@ template<typename T> struct jsonifier::core<GetValueResult<T>> {
 
 namespace JsonifierTypes {
 
-template<typename T>
-class GetValue: public TestAction
-{
-
-  public:
-	virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const
+	template<typename T>
+	class GetValue : public TestAction
 	{
-		std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-		auto error = parser.parseJson(parsedData->data, json);
-		if (error) [[likely]] {
-			reply = std::move(parsedData);
+
+	public:
+		virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const
+		{
+			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
+			if (parser.parseJson(parsedData->data, jsonifier::string_view{ json, length })) [[likely]] {
+				reply = std::move(parsedData);
+				return true;
+			}
 			return true;
 		}
-		return true;
-	}
-	virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
-	{
-		return Prettify(parsedData, reply);
-	}
-	virtual bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
-	{
-		GetValueResult<T>const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
-		std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
-		auto error = parser.serializeJson < jsonifier::serialize_options{ .prettify = true } > (parsedDataInput.data, output->result);
-		if (error) [[likely]] {
-			reply = std::move(output);
+		virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
+		{
+			return Prettify(parsedData, reply);
 		}
-		return true;
-	}
-};
+		virtual bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
+		{
+			GetValueResult<T>const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
+			std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
+			if (parser.serializeJson < jsonifier::serialize_options{ .prettify = false } > (parsedDataInput.data, output->result)) [[likely]] {
+				reply = std::move(output);
+			}
+			return true;
+		}
+	};
 
 }
 

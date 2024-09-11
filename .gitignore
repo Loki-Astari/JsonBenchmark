@@ -29,3 +29,5 @@ config.h
 *Config.h
 config.h.in~
 
+Build/
+.vs/
