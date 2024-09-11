@@ -621,36 +621,34 @@ template<typename T> struct jsonifier::core<GetValueResult<T>> {
 
 namespace JsonifierTypes {
 
-template<typename T>
-class GetValue: public TestAction
-{
-
-  public:
-	virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const
+	template<typename T>
+	class GetValue : public TestAction
 	{
-		std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-		auto error = parser.parseJson(parsedData->data, json);
-		if (error) [[likely]] {
-			reply = std::move(parsedData);
+
+	public:
+		virtual bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const
+		{
+			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
+			if (parser.parseJson(parsedData->data, jsonifier::string_view{ json, length })) [[likely]] {
+				reply = std::move(parsedData);
+				return true;
+			}
 			return true;
 		}
-		return true;
-	}
-	virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
-	{
-		return Prettify(parsedData, reply);
-	}
-	virtual bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
-	{
-		GetValueResult<T>const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
-		std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
-		auto error = parser.serializeJson < jsonifier::serialize_options{ .prettify = true } > (parsedDataInput.data, output->result);
-		if (error) [[likely]] {
-			reply = std::move(output);
+		virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
+		{
+			return Prettify(parsedData, reply);
 		}
-		return true;
-	}
-};
+		virtual bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
+		{
+			GetValueResult<T>const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
+			std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
+			if (parser.serializeJson < jsonifier::serialize_options{ .prettify = true } > (parsedDataInput.data, output->result)) [[likely]] {
+				reply = std::move(output);
+			}
+			return true;
+		}
+	};
 
 }
 
