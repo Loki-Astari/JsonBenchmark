@@ -68,6 +68,7 @@ bool PerformanceChecker::validatePerformance(TestBase const& parser)
     bool implemented =  true;
 
     implemented = implemented && parser.Parse(test.input.c_str(), test.input.size(), dom);
+    implemented = implemented && (dom.get() != nullptr);
     implemented = implemented && parser.Stringify(*dom, result);
     implemented = implemented && parser.Prettify(*dom, result);
     implemented = implemented && parser.SaxRoundtrip(test.input.c_str(), test.input.size(), result);
@@ -103,6 +104,9 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
     TestSetUp   testSetUp(parser, setupName(test), true);
     std::unique_ptr<ParseResultBase> dom;
     parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (dom.get() == nullptr) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
@@ -128,6 +132,9 @@ void PerformanceChecker::executePrettify(TestBase const& parser, Test const& tes
     TestSetUp   testSetUp(parser, setupName(test), true);
     std::unique_ptr<ParseResultBase> dom;
     parser.Parse(test.input.c_str(), test.input.size(), dom);
+    if (dom.get() == nullptr) {
+        return;
+    }
     for (int loop = 0; loop < loopCount; ++loop)
     {
         std::unique_ptr<StringResultBase> result;
