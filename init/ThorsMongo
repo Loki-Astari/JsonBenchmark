@@ -1,13 +1,26 @@
 
 echo
 echo
-git clone https://github.com/Neargye/magic_enum.git 
 
 CWD=$(pwd)
 
+git clone https://github.com/Neargye/magic_enum.git 
 
 ./configure --prefix=${CWD}/../../build --enable-dark-mode --with-magicenum-header-only-root=${CWD}/magic_enum/include/magic_enum --disable-test-with-mongo-query --disable-Mongo-Service --disable-vera --disable-coverage
+
+rm -rf third/ThorsCrypto third/ThorsSocket third/ThorsStorage third/ThorsMongoAPI
 rm -rf $(find third/*/src -name test)
+cat - <<'MAKE' > src/Makefile
+
+THORSANVIL_ROOT				= $(realpath ../)
+
+TARGET						= ThorsLogging ThorsIOUtil Serialize
+
+include $(THORSANVIL_ROOT)/build/tools/Project.Makefile
+
+MAKE
+
+
 make
 make install
 

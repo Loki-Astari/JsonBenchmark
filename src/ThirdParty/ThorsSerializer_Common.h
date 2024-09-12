@@ -12,6 +12,7 @@
 #include <string>
 #include <cctype>
 #include <chrono>
+#include <string_view>
 using namespace std::chrono;
 
 
@@ -109,6 +110,38 @@ class GetValue: public TestAction
     }
 };
 
+/*
+ * Checking speed with new string reading feature.
+ * Will merge with GetValue above once a few more features added
+ */
+template<typename Value>
+class GetValuePerformance: public TestAction
+{
+    public:
+    virtual bool Parse(const char* json, size_t size, std::unique_ptr<ParseResultBase>& reply) const override
+    {
+        std::unique_ptr<GetValueResult<Value>> result = std::make_unique<GetValueResult<Value>>();
+        std::string_view(json, size) >> jsonImporter(result->data);
+        reply = std::move(result);
+        return true;
+    }
+    virtual bool Stringify(ParseResultBase const& value, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        std::unique_ptr<StringResultUsingString> result = std::make_unique<StringResultUsingString>();
+        GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
+        result->result << jsonExporter(inputValue.data, OutputType::Stream);
+        reply = std::move(result);
+        return true;
+    }
+    virtual bool Prettify(const ParseResultBase& value, std::unique_ptr<StringResultBase>& reply) const override
+    {
+        GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
+        std::unique_ptr<StringResultUsingString> result = std::make_unique<StringResultUsingString>();
+        result->result << jsonExporter(inputValue.data, OutputType::Config);
+        reply = std::move(result);
+        return true;
+    }
+};
 }
 
 ThorsAnvil_MakeTraitCustom(ThorsSerializer::StringNumber);
