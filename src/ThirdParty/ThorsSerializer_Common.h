@@ -21,6 +21,7 @@ namespace ThorsSerializer
 
 using ThorsAnvil::Serialize::jsonExporter;
 using ThorsAnvil::Serialize::jsonImporter;
+using ThorsAnvil::Serialize::ParserConfig;
 using ThorsAnvil::Serialize::ParseType;
 using ThorsAnvil::Serialize::OutputType;
 
@@ -80,65 +81,33 @@ template<typename Value>
 class GetValue: public TestAction
 {
     public:
-    virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const override
-    {
-        std::unique_ptr<GetValueResult<Value>> result = std::make_unique<GetValueResult<Value>>();
-        std::stringstream stream(json);
-        stream >> jsonImporter(result->data);
-        char bad;
-        if (!stream || stream >> bad) {
-            result.release();
-        }
-        reply = std::move(result);
-        return true;
-    }
-    virtual bool Stringify(ParseResultBase const& value, std::unique_ptr<StringResultBase>& reply) const override
-    {
-        std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
-        GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
-        result->stream << jsonExporter(inputValue.data, OutputType::Stream);
-        reply = std::move(result);
-        return true;
-    }
-    virtual bool Prettify(const ParseResultBase& value, std::unique_ptr<StringResultBase>& reply) const override
-    {
-        GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
-        std::unique_ptr<StringResultUsingStream> result = std::make_unique<StringResultUsingStream>();
-        result->stream << jsonExporter(inputValue.data, OutputType::Config);
-        reply = std::move(result);
-        return true;
-    }
-};
-
-/*
- * Checking speed with new string reading feature.
- * Will merge with GetValue above once a few more features added
- */
-template<typename Value>
-class GetValuePerformance: public TestAction
-{
-    public:
     virtual bool Parse(const char* json, size_t size, std::unique_ptr<ParseResultBase>& reply) const override
     {
         std::unique_ptr<GetValueResult<Value>> result = std::make_unique<GetValueResult<Value>>();
-        std::string_view(json, size) >> jsonImporter(result->data);
-        reply = std::move(result);
+        bool ok = (std::string_view(json, size) >> jsonImporter(result->data, ParserConfig{}.setValidateNoTrailingData()));
+        if (ok) {
+            reply = std::move(result);
+        }
         return true;
     }
     virtual bool Stringify(ParseResultBase const& value, std::unique_ptr<StringResultBase>& reply) const override
     {
         std::unique_ptr<StringResultUsingString> result = std::make_unique<StringResultUsingString>();
         GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
-        result->result << jsonExporter(inputValue.data, OutputType::Stream);
-        reply = std::move(result);
+        bool ok = result->result << jsonExporter(inputValue.data, OutputType::Stream);
+        if (ok) {
+            reply = std::move(result);
+        }
         return true;
     }
     virtual bool Prettify(const ParseResultBase& value, std::unique_ptr<StringResultBase>& reply) const override
     {
         GetValueResult<Value> const& inputValue = dynamic_cast<GetValueResult<Value> const&>(value);
         std::unique_ptr<StringResultUsingString> result = std::make_unique<StringResultUsingString>();
-        result->result << jsonExporter(inputValue.data, OutputType::Config);
-        reply = std::move(result);
+        bool ok = result->result << jsonExporter(inputValue.data, OutputType::Config);
+        if (ok) {
+            reply = std::move(result);
+        }
         return true;
     }
 };

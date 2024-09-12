@@ -25,11 +25,10 @@ State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Te
     }
     if (options.validate)
     {
-        std::cerr << std::setprecision(17);
+        std::cout << std::setprecision(17);
         executeStringify(parser, test);
-        return Pass;
     }
-    if (test.path.str().find("size.json") == std::string::npos)
+    else if (test.path.str().find("size.json") == std::string::npos)
     {
         executeParse(parser, test);
         executeStringify(parser, test);

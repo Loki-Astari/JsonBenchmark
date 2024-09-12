@@ -37,9 +37,9 @@ class ThorsSerializerTest: public TypeSafeTest<ThorsSerializer::VectorDouble,
                                                ThorsSerializer::GetValue>
 {
     ThorsSerializer::GetValue<std::vector<ThorsSerializer::StringNumber>>          testGetValueVec2StringNumber;
-    ThorsSerializer::GetValuePerformance<Country>                                  testGetValueCountry;
-    ThorsSerializer::GetValuePerformance<Twitter>                                  testGetValueTwitter;
-    ThorsSerializer::GetValuePerformance<Perform>                                  testGetValueCatalog;
+    ThorsSerializer::GetValue<Country>                                             testGetValueCountry;
+    ThorsSerializer::GetValue<Twitter>                                             testGetValueTwitter;
+    ThorsSerializer::GetValue<Perform>                                             testGetValueCatalog;
 
     public:
         ThorsSerializerTest()
