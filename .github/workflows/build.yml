@@ -1,9 +1,11 @@
 name:       Build
 run-name:   ${{ github.actor }} Building
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
+            - NewGlaze
 jobs:
         #  windows-latest
         #  windows-2022
