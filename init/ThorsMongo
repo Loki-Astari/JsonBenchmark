@@ -14,7 +14,7 @@ cat - <<'MAKE' > src/Makefile
 
 THORSANVIL_ROOT				= $(realpath ../)
 
-TARGET						= ThorsLogging ThorsIOUtil Serialize
+TARGET						= ThorsLogging ThorsIOUtil Serialize fast_float
 
 include $(THORSANVIL_ROOT)/build/tools/Project.Makefile
 
