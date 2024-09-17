@@ -1,4 +1,3 @@
-#ifndef __linux__
 
 #include "test.h"
 #include "Glaze_Common.h"
@@ -8,9 +7,9 @@ class GlazeTest: public TypeSafeTest<Glaze::VectorDouble,
                                      Glaze::VectorString,
                                      Glaze::GetValue>
 {
-    Glaze::GetValue<Perform>                                             testGetValueCatalog;
-    Glaze::GetValue<Country>                                             testGetValueCountry;
-    Glaze::GetValue<Twitter>                                             testGetValueTwitter;
+    Glaze::GetValue<citm_catalog_message>                                             testGetValueCatalog;
+    Glaze::GetValue<canada_message>                                             testGetValueCountry;
+    Glaze::GetValue<twitter_message>                                             testGetValueTwitter;
     public:
         GlazeTest()
         {
@@ -26,4 +25,3 @@ class GlazeTest: public TypeSafeTest<Glaze::VectorDouble,
 
 REGISTER_TEST(GlazeTest);
 
-#endif
