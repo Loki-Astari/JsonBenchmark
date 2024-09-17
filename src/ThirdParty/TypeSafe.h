@@ -2,7 +2,7 @@
 #define JSONBENCHMARK_TYPE_SAFE_H
 
 #include "test.h"
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -67,17 +67,17 @@ class TestAction
 template<typename VectorDouble, typename VectorString, template<typename> typename GetValue>
 class TypeSafeTest: public TestBase
 {
-    using ActionMap = std::map<std::string, TestAction*>;
+    using ActionMap = std::unordered_map<std::string, TestAction*>;
 
     TestAction                                   testNotImplemented;
 
     VectorDouble                                 testVectorDouble;
     VectorString                                 testVectorString;
-    GetValue<std::map<std::string, std::string>> testGetValueMap2String;
-    GetValue<std::map<std::string, bool>>        testGetValueMap2Bool;
-    GetValue<std::map<std::string, int>>         testGetValueMap2Int;
-    GetValue<std::map<std::string, int*>>        testGetValueMap2IntPointer;
-    GetValue<std::map<std::string, M01>>         testGetValueMap2M01;
+    GetValue<std::unordered_map<std::string, std::string>> testGetValueMap2String;
+    GetValue<std::unordered_map<std::string, bool>>        testGetValueMap2Bool;
+    GetValue<std::unordered_map<std::string, int>>         testGetValueMap2Int;
+    GetValue<std::unordered_map<std::string, int*>>        testGetValueMap2IntPointer;
+    GetValue<std::unordered_map<std::string, M01>>         testGetValueMap2M01;
     GetValue<std::vector<std::string>>           testGetValueVec2String;
     GetValue<Pass01>                             testGetValuePass1;
     GetValue<VVVVVVVVVVVVVVVVVVVS>               testGetValueVec2L18;

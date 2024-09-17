@@ -1,6 +1,7 @@
 name:       Build
 run-name:   ${{ github.actor }} Building
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
@@ -44,14 +45,21 @@ jobs:
                   Stats.html
                   Conformance.Darwin.html
                   Performance.Darwin.html
+                  nano Performance.csv
     Build_on_Linux:
         runs-on:    ubuntu-latest
         steps:
-            - name: Checkout Project
-              uses: actions/checkout@master
+            - uses: actions/checkout@v4
               with:
                 submodules: recursive
                 token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Install the latest gcc compiler.
+              run:  |
+                     sudo apt-get install build-essential
+                     sudo apt-get install g++-14
+                     dir /usr/bin
+                     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
             - name: Install Dependencies
               run: |
                 sudo apt-get install libboost-all-dev
@@ -72,6 +80,7 @@ jobs:
                 path: |
                   Conformance.Linux.html
                   Performance.Linux.html
+                  nano Performance.csv
     Generate_Blog:
 #        needs:      [Build_on_Mac, Build_on_Linux, Build_on_Windows]
         needs:      [Build_on_Mac, Build_on_Linux]

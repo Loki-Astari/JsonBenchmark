@@ -1,11 +1,6 @@
 
 #include "test.h"
-#include "TypeSafe.h"
-#include "Jsonifier_Catalog.h"
-#include "Jsonifier_Country.h"
-#include "Jsonifier_Twitter.h"
-#include "Jsonifier_Common.h"
-
+#include "JsonifierTypes.h"
 
 // OK: The TypeSafeTest test is a template type that has a handler for each test case.
 //     There are three default handlers that you need to provide.
