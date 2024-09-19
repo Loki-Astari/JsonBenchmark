@@ -114,9 +114,13 @@ BM::Options getOptions(int argc, char* argv[])
         {
             result.debug = true;
         }
-        else if (strncmp(argv[loop], "--validate", 10) == 0)
+        else if (strncmp(argv[loop], "--validateS", 11) == 0)
         {
-            result.validate = true;
+            result.validateS = true;
+        }
+        else if (strncmp(argv[loop], "--validateP", 11) == 0)
+        {
+            result.validateP = true;
         }
         else if (strncmp(argv[loop], "--filter=", 9) == 0)
         {
