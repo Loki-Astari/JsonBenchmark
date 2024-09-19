@@ -23,10 +23,15 @@ State PerformanceChecker::executeTest(TestBase const& parser, Options const&, Te
     if (options.markFailed) {
         return Fail;
     }
-    if (options.validate)
+    if (options.validateS)
     {
         std::cout << std::setprecision(17);
         executeStringify(parser, test);
+    }
+    else if (options.validateP)
+    {
+        std::cout << std::setprecision(17);
+        executePrettify(parser, test);
     }
     else if (test.path.str().find("size.json") == std::string::npos)
     {
@@ -124,8 +129,8 @@ void PerformanceChecker::executeStringify(TestBase const& parser, Test const& te
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
         }
-        if (options.validate) {
-            std::cerr << result->c_str();
+        if (options.validateS) {
+            std::cout << result->c_str();
             break;
         }
     }
@@ -155,6 +160,10 @@ void PerformanceChecker::executePrettify(TestBase const& parser, Test const& tes
         minDuration += duration;
         if (options.debug) {
             std::cerr << "Got >" << result->c_str() << "<\n";
+        }
+        if (options.validateP) {
+            std::cout << result->c_str();
+            break;
         }
     }
     minDuration /= loopCount;
@@ -197,19 +206,19 @@ PerformanceChecker::Output::Output(Options& options, TestBase const& parser_, Te
     , minDuration(minDuration_)
     , fail(true)
 {
-    if (options.validate) {
+    if (options.validateS || options.validateP) {
         return;
     }
     ((void)parser);
     std::string fileName = test.path.str().substr(test.path.str().rfind('/') + 1);
-    std::cerr << "\t\t" << std::setw(15) << std::left << name
+    std::cout << "\t\t" << std::setw(15) << std::left << name
               << std::setw(20) << std::left << fileName << " ... "
               << std::right << std::flush;
 }
 
 PerformanceChecker::Output::~Output()
 {
-    if (options.validate) {
+    if (options.validateS || options.validateP) {
         return;
     }
     if (!fail)
