@@ -33,14 +33,14 @@ double-conversion_CXXFLAGS	+= -Wno-strict-overflow
 # Extra Headers for makefiles
 cajun-jsonapiTest_CXXFLAGS	+= -I../../thirdparty/cajun-jsonapi/include/cajun/ -Wno-unused-parameter -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor
 ccanTest_CXXFLAGS			+= -I../../thirdparty/ccan -Wno-nested-anon-types
-jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces
+jsonconsTest_CXXFLAGS		+= -I../../thirdparty/jsoncons/include/ -Wno-unused-parameter -Wno-missing-braces -Wno-deprecated-literal-operator
 jsonxxTest_CXXFLAGS			+= -I../../thirdparty/jsonxx -Wno-dollar-in-identifier-extension
 nlohmannTest_CXXFLAGS		+= -I../../thirdparty/nlohmann/include/ -Wno-unused-local-typedef
 ArduinoJsonTest_CXXFLAGS	+= -I../../thirdparty/ArduinoJson/src -Wno-deprecated-dynamic-exception-spec
 ThorsSerializerTest_CXXFLAGS+= -Wno-return-stack-address -Wno-range-loop-analysis -Wno-deprecated-declarations -Wno-array-bounds
 ThorsSerializerTest_CXXFLAGS+= -I../../thirdparty/ThorsMongo/magic_enum/include/magic_enum
 jsmnTest_CXXFLAGS			+= -I../../thirdparty/
-json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/ -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor
+json-voorheesTest_CXXFLAGS	+= -I../../thirdparty/json-voorhees/include/ -Wno-deprecated-declarations -Wno-deprecated-copy-with-user-provided-dtor -Wno-deprecated-literal-operator
 jsoncppTest_CXXFLAGS		+= -I../../thirdparty/jsoncpp/include/
 JsonifierTest_CXXFLAGS		+= $(AVX_FLAGS)
 JsonifierTest_CXXFLAGS		+= -O2 -Wno-unused-parameter -Wno-unused-local-typedefs -Wno-deprecated -Wno-unused-variable -Wno-pedantic -Wno-ignored-qualifiers -Wno-missing-braces -Wno-error -Wno-class-memaccess -I../../thirdparty/Jsonifier/Include/
@@ -49,11 +49,11 @@ rapidjson-FullPrecTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-InsituTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
 rapidjson-IterativeTest_CXXFLAGS	+= -I../../thirdparty/rapidjson/include/
 rapidjsonTest_CXXFLAGS		+= -I../../thirdparty/rapidjson/include/
-simdjsonDomTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
-simdjsonOndemandTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include
+simdjsonDomTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include -Wno-deprecated-literal-operator
+simdjsonOndemandTest_CXXFLAGS	+= -I../../thirdparty/simdjson/include -Wno-deprecated-literal-operator
 BoostJsonTest_CXXFLAGS		+= -Wno-deprecated
 GlazeTest_CXXFLAGS			+= -I../../thirdparty/glaze/include/ -Wno-missing-braces -Wno-deprecated
-ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-unknown-warning-option -Wno-maybe-uninitialized -Wno-uninitialized 
+ConfiguruTest_CXXFLAGS		+= -I../../thirdparty/ -Wno-maybe-uninitialized -Wno-uninitialized 
 picojsonTest_CXXFLAGS		+= -I../../thirdparty/picojson/
 
 EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_catalog.h  ThorsSerializer_Common.h    \
@@ -66,6 +66,6 @@ EXCLUDE_HEADERS             += ThorsSerializer_Canada.h  ThorsSerializer_citm_ca
 
 
 
-FILE_WARNING_FLAGS          += -Wno-unknown-pragmas
+FILE_WARNING_FLAGS          += -Wno-unknown-pragmas -Wno-unknown-warning-option
 
 include $(THORSANVIL_ROOT)/build/tools/Makefile
