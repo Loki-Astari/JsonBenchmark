@@ -290,7 +290,7 @@ template<map_t value_type>
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const value_type& msg) {
     writer.StartObject();
     for (auto& outerPair : msg) {
-        writer.Key(outerPair.first.c_str());
+        putValue(writer, outerPair.first);
         putValue(writer, outerPair.second);
     }
     writer.EndObject();
