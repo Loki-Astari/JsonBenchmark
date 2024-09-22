@@ -196,8 +196,7 @@ template<> struct jsonifier::core<Empty> {
 	static constexpr auto parseValue = createValue();
 };
 
-namespace JsonifierTypes
-{
+namespace JsonifierTypes {
 	jsonifier::jsonifier_core<true> parser{};
 	class VectorDouble : public TestAction
 	{
@@ -252,7 +251,7 @@ namespace JsonifierTypes {
 		virtual JSONIFIER_ALWAYS_INLINE bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const
 		{
 			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-			if (parser.parseJson(parsedData->data, jsonifier::string_view{ json, length })) {
+			if (parser.parseJson(parsedData->data, std::string_view{ json, length })) {
 				reply = std::move(parsedData);
 			}
 			return true;

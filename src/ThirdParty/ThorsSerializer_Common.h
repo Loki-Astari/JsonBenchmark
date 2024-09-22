@@ -84,7 +84,7 @@ class GetValue: public TestAction
     virtual bool Parse(const char* json, size_t size, std::unique_ptr<ParseResultBase>& reply) const override
     {
         std::unique_ptr<GetValueResult<Value>> result = std::make_unique<GetValueResult<Value>>();
-        bool ok = (std::string_view(json, size) >> jsonImporter(result->data, ParserConfig{}.setValidateNoTrailingData().setNoBackslashConversion()));
+        bool ok = (std::string_view(json, size) >> jsonImporter(result->data, ParserConfig{}.setValidateNoTrailingData()));
         if (ok) {
             reply = std::move(result);
         }
