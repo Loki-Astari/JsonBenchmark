@@ -134,9 +134,9 @@ template<typename value_type> inline void getValue(rapidjson::Value jsonValue, s
     data.emplace(newValue);
 }
 
-inline void getValue(rapidjson::Value& jsonCoordinates, std::string& coordinates) {
+inline void getValue(rapidjson::Value& jsonCoordinates, std::string& data) {
     if (jsonCoordinates.IsString()) {
-        coordinates = jsonCoordinates.GetString();
+        data = jsonCoordinates.GetString();
     }
 }
 
@@ -145,93 +145,93 @@ inline void getValue(rapidjson::Value& jsonCoordinates, std::nullptr_t&) {
     }
 }
 
-template<floating_type value_type> inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates) {
+template<floating_type value_type> inline void getValue(rapidjson::Value& jsonCoordinates, value_type& data) {
     if (jsonCoordinates.IsDouble()) {
-        coordinates = jsonCoordinates.GetDouble();
+        data = jsonCoordinates.GetDouble();
     }
 }
 
-template<signed_type value_type> inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates) {
+template<signed_type value_type> inline void getValue(rapidjson::Value& jsonCoordinates, value_type& data) {
     if constexpr (sizeof(value_type) == 8) {
         if (jsonCoordinates.IsInt64()) {
-            coordinates = jsonCoordinates.GetInt64();
+            data = jsonCoordinates.GetInt64();
         }
     }
     else {
         if (jsonCoordinates.IsInt()) {
-            coordinates = jsonCoordinates.GetInt();
+            data = jsonCoordinates.GetInt();
         }
     }
 }
 
-template<unsigned_type value_type> inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates) {
+template<unsigned_type value_type> inline void getValue(rapidjson::Value& jsonCoordinates, value_type& data) {
     if constexpr (sizeof(value_type) == 8) {
         if (jsonCoordinates.IsUint64()) {
-            coordinates = jsonCoordinates.GetUint64();
+            data = jsonCoordinates.GetUint64();
         }
     }
     else {
         if (jsonCoordinates.IsUint()) {
-            coordinates = jsonCoordinates.GetUint();
+            data = jsonCoordinates.GetUint();
         }
     }
 }
 
-inline void getValue(rapidjson::Value& jsonCoordinates, int*& coordinates) {
-    if (coordinates) {
-        getValue(jsonCoordinates, *coordinates);
+inline void getValue(rapidjson::Value& jsonCoordinates, int*& data) {
+    if (data) {
+        getValue(jsonCoordinates, *data);
     }
 }
 
 template<bool_t value_type>
-inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates) {
+inline void getValue(rapidjson::Value& jsonCoordinates, value_type& data) {
     if (jsonCoordinates.IsBool()) {
-        coordinates = jsonCoordinates.GetBool();
+        data = jsonCoordinates.GetBool();
     }
 }
 
 template<typename value_type>
-inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<value_type>& coordinates) {
+inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<value_type>& data) {
     if (jsonCoordinates.IsArray()) {
         for (auto& val : jsonCoordinates.GetArray()) {
-            getValue(val, coordinates.emplace_back());
+            getValue(val, data.emplace_back());
         }
     }
 }
 
-inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<int*>& coordinates) {
+inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<int*>& data) {
     if (jsonCoordinates.IsArray()) {
         for (auto& val : jsonCoordinates.GetArray()) {
-            getValue(val, *coordinates.emplace_back(new int{}));
+            getValue(val, *data.emplace_back(new int{}));
         }
     }
 }
 
 template<map_t value_type>
-inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates) {
+inline void getValue(rapidjson::Value& jsonCoordinates, value_type& data) {
     for (auto& m : jsonCoordinates.GetObject()) {
         typename std::remove_cvref_t<value_type>::key_type key{};
         getValue(m.name, key);
         typename std::remove_cvref_t<value_type>::mapped_type value{};
         getValue(m.value, value);
-        coordinates[key] = std::move(value);
+        data[key] = std::move(value);
     }
 }
 
-template<bool_t value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& coordinates) {
-    writer.Bool(coordinates);
+template<bool_t value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& data) {
+    writer.Bool(data);
 }
 
-template<floating_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& coordinates) {
-    writer.Double(coordinates);
+template<floating_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& data) {
+    writer.Double(data);
 }
 
-template<signed_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& coordinates) {
-    writer.Int64(coordinates);
+template<signed_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& data) {
+    writer.Int64(data);
 }
 
-template<unsigned_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& coordinates) {
-    writer.Uint64(coordinates);
+template<unsigned_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& data) {
+    writer.Uint64(data);
 }
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::string& data) {
