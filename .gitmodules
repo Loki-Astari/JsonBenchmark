@@ -1,68 +1,12 @@
-[submodule "build"]
-	path = build
-	url = ../../Loki-Astari/ThorMaker.git
-[submodule "thirdparty/ArduinoJson"]
-	path = thirdparty/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson.git
-[submodule "thirdparty/Configuru"]
-	path = thirdparty/Configuru
-	url = https://github.com/emilk/Configuru.git
-[submodule "thirdparty/Jzon"]
-	path = thirdparty/Jzon
-	url = https://github.com/Zguy/Jzon.git
-[submodule "thirdparty/cJSON"]
-	path = thirdparty/cJSON
-	url = https://github.com/DaveGamble/cJSON.git
-[submodule "thirdparty/ccan"]
-	path = thirdparty/ccan
-	url = https://github.com/rustyrussell/ccan.git
-[submodule "thirdparty/jsmn"]
-	path = thirdparty/jsmn
-	url = https://github.com/zserge/jsmn.git
-[submodule "thirdparty/json-c"]
-	path = thirdparty/json-c
-	url = https://github.com/json-c/json-c.git
-[submodule "thirdparty/json-voorhees"]
-	path = thirdparty/json-voorhees
-	url = https://github.com/tgockel/json-voorhees.git
-[submodule "thirdparty/jsoncons"]
-	path = thirdparty/jsoncons
-	url = https://github.com/danielaparker/jsoncons.git
-[submodule "thirdparty/jsoncpp"]
-	path = thirdparty/jsoncpp
-	url = https://github.com/open-source-parsers/jsoncpp.git
-[submodule "thirdparty/jsonxx"]
-	path = thirdparty/jsonxx
-	url = https://github.com/hjiang/jsonxx.git
-[submodule "thirdparty/nlohmann"]
-	path = thirdparty/nlohmann
-	url = https://github.com/nlohmann/json.git
-[submodule "thirdparty/picojson"]
-	path = thirdparty/picojson
-	url = https://github.com/kazuho/picojson.git
-[submodule "thirdparty/rapidjson"]
-	path = thirdparty/rapidjson
-	url = https://github.com/miloyip/rapidjson.git
-[submodule "thirdparty/sajson"]
-	path = thirdparty/sajson
-	url = https://github.com/chadaustin/sajson.git
-[submodule "thirdparty/udb-jsason-parser"]
-	path = thirdparty/udb-jsason-parser
-	url = https://github.com/udp/json-parser.git
-[submodule "thirdparty/udb-json-builder"]
-	path = thirdparty/udb-json-builder
-	url = https://github.com/udp/json-builder.git
-[submodule "thirdparty/ThorsMongo"]
-	path = thirdparty/ThorsMongo
-	url = ../../Loki-Astari/ThorsMongo.git
-[submodule "thirdparty/simdjson"]
-	path = thirdparty/simdjson
-	url = https://github.com/simdjson/simdjson
-[submodule "thirdparty/glaze"]
-	path = thirdparty/glaze
-	url = https://github.com/stephenberry/glaze
-	branch = main
+[submodule "build"]	path = build	url = ../../Loki-Astari/ThorMaker.git[submodule "thirdparty/ArduinoJson"]	path = thirdparty/ArduinoJson	url = https://github.com/bblanchon/ArduinoJson.git[submodule "thirdparty/Configuru"]	path = thirdparty/Configuru	url = https://github.com/emilk/Configuru.git[submodule "thirdparty/Jzon"]	path = thirdparty/Jzon	url = https://github.com/Zguy/Jzon.git[submodule "thirdparty/cJSON"]	path = thirdparty/cJSON	url = https://github.com/DaveGamble/cJSON.git[submodule "thirdparty/ccan"]	path = thirdparty/ccan	url = https://github.com/rustyrussell/ccan.git[submodule "thirdparty/jsmn"]	path = thirdparty/jsmn	url = https://github.com/zserge/jsmn.git[submodule "thirdparty/json-c"]	path = thirdparty/json-c	url = https://github.com/json-c/json-c.git[submodule "thirdparty/json-voorhees"]	path = thirdparty/json-voorhees	url = https://github.com/tgockel/json-voorhees.git[submodule "thirdparty/jsoncons"]	path = thirdparty/jsoncons	url = https://github.com/danielaparker/jsoncons.git[submodule "thirdparty/jsoncpp"]	path = thirdparty/jsoncpp	url = https://github.com/open-source-parsers/jsoncpp.git[submodule "thirdparty/jsonxx"]	path = thirdparty/jsonxx	url = https://github.com/hjiang/jsonxx.git[submodule "thirdparty/nlohmann"]	path = thirdparty/nlohmann	url = https://github.com/nlohmann/json.git[submodule "thirdparty/picojson"]	path = thirdparty/picojson	url = https://github.com/kazuho/picojson.git[submodule "thirdparty/rapidjson"]	path = thirdparty/rapidjson	url = https://github.com/miloyip/rapidjson.git[submodule "thirdparty/sajson"]	path = thirdparty/sajson	url = https://github.com/chadaustin/sajson.git[submodule "thirdparty/udb-jsason-parser"]	path = thirdparty/udb-jsason-parser	url = https://github.com/udp/json-parser.git[submodule "thirdparty/udb-json-builder"]	path = thirdparty/udb-json-builder	url = https://github.com/udp/json-builder.git[submodule "thirdparty/ThorsMongo"]	path = thirdparty/ThorsMongo	url = ../../Loki-Astari/ThorsMongo.git[submodule "thirdparty/simdjson"]	path = thirdparty/simdjson	url = https://github.com/simdjson/simdjson	branch = master[submodule "thirdparty/glaze"]	path = thirdparty/glaze	url = https://github.com/stephenberry/glaze	branch = main[submodule "thirdparty/Jsonifier"]	path = thirdparty/Jsonifier	url = https://github.com/realtimechris/Jsonifier	branch = dev
 [submodule "thirdparty/Jsonifier"]
 	path = thirdparty/Jsonifier
 	url = https://github.com/realtimechris/Jsonifier
 	branch = dev
+[submodule "thirdparty/simdjson"]
+	path = thirdparty/simdjson
+	url = https://github.com/simdjson/simdjson
+	branch = master
+[submodule "thirdparty/glaze"]
+	path = thirdparty/glaze
+	url = https://github.com/stephenberry/glaze
