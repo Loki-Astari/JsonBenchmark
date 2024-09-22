@@ -200,15 +200,6 @@ inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<value_type>&
     }
 }
 
-inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<bool>& coordinates) {
-    if (jsonCoordinates.IsArray()) {
-        for (auto& val : jsonCoordinates.GetArray()) {
-            coordinates.emplace_back(val.GetBool());
-        }
-    }
-}
-
-
 inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<int*>& coordinates) {
     if (jsonCoordinates.IsArray()) {
         for (auto& val : jsonCoordinates.GetArray()) {
@@ -225,12 +216,6 @@ inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates)
         typename std::remove_cvref_t<value_type>::mapped_type value{};
         getValue(m.value, value);
         coordinates[key] = std::move(value);
-    }
-}
-
-inline void getValue(rapidjson::Value& jsonCoordinates, std::vector<std::string>& coordinates) {
-    for (auto& m : jsonCoordinates.GetArray()) {
-        getValue(m, coordinates.emplace_back());
     }
 }
 
