@@ -197,10 +197,9 @@ namespace Glaze
 	public:
 		virtual bool ParseDouble(const char* json, long double& reply) const
 		{
-			auto result = glz::read_json<std::vector<double>>(json);
-			if (result) {
-				std::vector<double> data;
-				data = std::move(result.value());
+			std::vector<double> data;
+			auto error_code = glz::read_json(data, json);
+			if (!error_code) {
 				if (data.size() == 1) {
 					reply = data[0];
 				}
@@ -214,10 +213,9 @@ namespace Glaze
 	public:
 		virtual bool ParseString(const char* json, std::string& reply) const
 		{
-			auto result = glz::read_json<std::vector<std::string>>(json);
-			if (result) {
-				std::vector<std::string> data;
-				data = std::move(result.value());
+			std::vector<std::string> data;
+			auto error_code = glz::read_json(data, json);
+			if (!error_code) {
 				if (data.size() == 1) {
 					reply = data[0];
 				}
