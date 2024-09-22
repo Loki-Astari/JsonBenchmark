@@ -183,7 +183,8 @@ inline void getValue(rapidjson::Value& jsonCoordinates, int*& coordinates) {
     }
 }
 
-inline void getValue(rapidjson::Value& jsonCoordinates, bool& coordinates) {
+template<bool_t value_type>
+inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates) {
     if (jsonCoordinates.IsBool()) {
         coordinates = jsonCoordinates.GetBool();
     }
@@ -215,6 +216,10 @@ inline void getValue(rapidjson::Value& jsonCoordinates, value_type& coordinates)
         getValue(m.value, value);
         coordinates[key] = std::move(value);
     }
+}
+
+template<bool_t value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& coordinates) {
+    writer.Bool(coordinates);
 }
 
 template<floating_type value_type> inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, value_type& coordinates) {
