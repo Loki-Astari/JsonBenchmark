@@ -177,13 +177,11 @@ template<unsigned_type value_type> inline void getValue(rapidjson::Value& jsonCo
     }
 }
 
-
 inline void getValue(rapidjson::Value& jsonCoordinates, int*& coordinates) {
     if (coordinates) {
         getValue(jsonCoordinates, *coordinates);
     }
 }
-
 
 inline void getValue(rapidjson::Value& jsonCoordinates, bool& coordinates) {
     if (jsonCoordinates.IsBool()) {
@@ -274,24 +272,20 @@ inline void getValue(rapidjson::Value& jsonValue, std::vector<std::vector<std::v
     }
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, geometry_data& data) {
     getValue(jsonValue["type"], data.type);
     getValue(jsonValue["coordinates"], data.coordinates);
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, properties_data& data) {
     getValue(jsonValue["name"], data.name);
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, feature& data) {
     getValue(jsonValue["type"], data.type);
     getValue(jsonValue["properties"], data.properties);
     getValue(jsonValue["geometry"], data.geometry);
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, canada_message& data) {
     getValue(jsonValue["type"], data.type);
@@ -303,7 +297,6 @@ inline void getValue(rapidjson::Value& jsonValue, canada_message& data) {
         }
     }
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::vector<std::vector<std::vector<double>>>& data) {
     writer.StartArray();
@@ -321,7 +314,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     writer.EndArray();
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const geometry_data& data) {
     writer.StartObject();
     writer.Key("type");
@@ -331,14 +323,12 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const g
     writer.EndObject();
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const properties_data& data) {
     writer.StartObject();
     writer.Key("name");
     putValue(writer, data.name);
     writer.EndObject();
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const feature& data) {
     writer.StartObject();
@@ -350,7 +340,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const f
     putValue(writer, data.geometry);
     writer.EndObject();
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const canada_message& data) {
     writer.StartObject();
@@ -365,7 +354,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const c
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, search_metadata_data& data) {
     getValue(jsonValue["completed_in"], data.completed_in);
     getValue(jsonValue["max_id"], data.max_id);
@@ -377,7 +365,6 @@ inline void getValue(rapidjson::Value& jsonValue, search_metadata_data& data) {
     getValue(jsonValue["since_id"], data.since_id);
     getValue(jsonValue["since_id_str"], data.since_id_str);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const search_metadata_data& data) {
     writer.StartObject();
@@ -393,12 +380,10 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, hashtag_data& data) {
     getValue(jsonValue["text"], data.text);
     getValue(jsonValue["indices"], data.indices);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const hashtag_data& data) {
     writer.StartObject();
@@ -407,13 +392,11 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const h
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, large_data& data) {
     getValue(jsonValue["w"], data.w);
     getValue(jsonValue["h"], data.h);
     getValue(jsonValue["resize"], data.resize);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const large_data& data) {
     writer.StartObject();
@@ -423,14 +406,12 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const l
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, sizes_data& data) {
     getValue(jsonValue["medium"], data.medium);
     getValue(jsonValue["small"], data.small);
     getValue(jsonValue["thumb"], data.thumb);
     getValue(jsonValue["large"], data.large);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const sizes_data& data) {
     writer.StartObject();
@@ -440,7 +421,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     putValue(writer, data.large);
     writer.EndObject();
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, media_data& data) {
     getValue(jsonValue["id"], data.id);
@@ -458,7 +438,6 @@ inline void getValue(rapidjson::Value& jsonValue, media_data& data) {
     if (jsonValue.HasMember("source_status_id_str"))
         getValue(jsonValue["source_status_id_str"], data.source_status_id_str.emplace());
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const media_data& data) {
     writer.StartObject();
@@ -479,14 +458,12 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const m
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, url_data& data) {
     getValue(jsonValue["url"], data.url);
     getValue(jsonValue["expanded_url"], data.expanded_url);
     getValue(jsonValue["display_url"], data.display_url);
     getValue(jsonValue["indices"], data.indices);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const url_data& data) {
     writer.StartObject();
@@ -497,7 +474,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const u
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, user_mention& data) {
     getValue(jsonValue["screen_name"], data.screen_name);
     getValue(jsonValue["name"], data.name);
@@ -505,7 +481,6 @@ inline void getValue(rapidjson::Value& jsonValue, user_mention& data) {
     getValue(jsonValue["id_str"], data.id_str);
     getValue(jsonValue["indices"], data.indices);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const user_mention& data) {
     writer.StartObject();
@@ -517,7 +492,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const u
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, status_entities& data) {
     getValue(jsonValue["hashtags"], data.hashtags);
     getValue(jsonValue["symbols"], data.symbols);
@@ -527,7 +501,6 @@ inline void getValue(rapidjson::Value& jsonValue, status_entities& data) {
         getValue(jsonValue["media"], data.media.emplace());
     }
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const status_entities& data) {
     writer.StartObject();
@@ -540,12 +513,10 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, metadata_data& data) {
     getValue(jsonValue["result_type"], data.result_type);
     getValue(jsonValue["iso_language_code"], data.iso_language_code);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const metadata_data& data) {
     writer.StartObject();
@@ -554,11 +525,9 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const m
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, description_data& data) {
     getValue(jsonValue["urls"], data.urls);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const description_data& data) {
     writer.StartObject();
@@ -566,13 +535,11 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const d
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, user_entities& data) {
     getValue(jsonValue["description"], data.description);
     if (jsonValue.HasMember("url"))
         getValue(jsonValue["url"], data.url.emplace());
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const user_entities& data) {
     writer.StartObject();
@@ -581,7 +548,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const u
         putValue(writer, *data.url);
     writer.EndObject();
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, twitter_user_data& data) {
     getValue(jsonValue["id"], data.id);
@@ -629,7 +595,6 @@ inline void getValue(rapidjson::Value& jsonValue, twitter_user_data& data) {
     getValue(jsonValue["follow_request_sent"], data.follow_request_sent);
     getValue(jsonValue["notifications"], data.notifications);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const twitter_user_data& data) {
     writer.StartObject();
@@ -755,12 +720,10 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, twitter_message& data) {
     getValue(jsonValue["statuses"], data.statuses);
     getValue(jsonValue["search_metadata"], data.search_metadata);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const twitter_message& data) {
     writer.StartObject();
@@ -769,11 +732,9 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const t
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, audience_sub_category_names& data) {
     getValue(jsonValue["337100890"], data.the337100890);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const audience_sub_category_names& data) {
     writer.StartObject();
@@ -781,18 +742,15 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const a
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value&, names&) {
     // Implementation for names struct if any fields are added
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const names&) {
     writer.StartObject();
     // Implementation for names struct if any fields are added
     writer.EndObject();
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, event& data) {
     getValue(jsonValue["description"], data.description);
@@ -805,7 +763,6 @@ inline void getValue(rapidjson::Value& jsonValue, event& data) {
     getValue(jsonValue["subtitle"], data.subtitle);
     getValue(jsonValue["topicIds"], data.topicIds);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const event& data) {
     writer.StartObject();
@@ -821,13 +778,11 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const e
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, price& data) {
     getValue(jsonValue["amount"], data.amount);
     getValue(jsonValue["audienceSubCategoryId"], data.audienceSubCategoryId);
     getValue(jsonValue["seatCategoryId"], data.seatCategoryId);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const price& data) {
     writer.StartObject();
@@ -837,12 +792,10 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const p
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, area& data) {
     getValue(jsonValue["areaId"], data.areaId);
     getValue(jsonValue["blockIds"], data.blockIds);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const area& data) {
     writer.StartObject();
@@ -851,12 +804,10 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const a
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, seat_category& data) {
     getValue(jsonValue["areas"], data.areas);
     getValue(jsonValue["seatCategoryId"], data.seatCategoryId);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const seat_category& data) {
     writer.StartObject();
@@ -864,7 +815,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     putValue(writer, data.seatCategoryId);
     writer.EndObject();
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, performance& data) {
     getValue(jsonValue["eventId"], data.eventId);
@@ -878,7 +828,6 @@ inline void getValue(rapidjson::Value& jsonValue, performance& data) {
     getValue(jsonValue["start"], data.start);
     getValue(jsonValue["venueCode"], data.venueCode);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const performance& data) {
     writer.StartObject();
@@ -895,18 +844,15 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const p
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& jsonValue, venue_names& data) {
     getValue(jsonValue["PLEYEL_PLEYEL"], data.PLEYEL_PLEYEL);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const venue_names& data) {
     writer.StartObject();
     putValue(writer, data.PLEYEL_PLEYEL);
     writer.EndObject();
 }
-
 
 inline void getValue(rapidjson::Value& jsonValue, citm_catalog_message& data) {
     getValue(jsonValue["areaNames"], data.areaNames);
@@ -921,7 +867,6 @@ inline void getValue(rapidjson::Value& jsonValue, citm_catalog_message& data) {
     getValue(jsonValue["topicSubTopics"], data.topicSubTopics);
     getValue(jsonValue["venueNames"], data.venueNames);
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const citm_catalog_message& data) {
     writer.StartObject();
@@ -939,7 +884,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const c
     writer.EndObject();
 }
 
-
 inline void getValue(rapidjson::Value& json, Obj3& geometry) {
     geometry.a = std::make_unique<int>(json["a"].GetInt());
     if (geometry.foo) {
@@ -947,15 +891,12 @@ inline void getValue(rapidjson::Value& json, Obj3& geometry) {
     }
 }
 
-
 inline void getValue(rapidjson::Value& json, Obj2& value) {
     getValue(json["foo"], value.foo);
 }
 
-
 inline void getValue(rapidjson::Value&, Special&) {
 }
-
 
 inline void getValue(rapidjson::Value&, Empty&) {
 }
@@ -992,13 +933,11 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     }
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::string*& data) {
     if (data) {
         putValue(writer, *data);
     }
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const Obj3& obj) {
     writer.StartObject();
@@ -1009,7 +948,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const O
     writer.EndObject();
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const Obj2& obj) {
 
     writer.StartObject();
@@ -1018,7 +956,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const O
     writer.EndObject();
 
 }
-
 
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::vector<double>& values) {
 
@@ -1030,7 +967,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
 
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::vector<int>& values) {
 
     writer.StartArray();
@@ -1041,7 +977,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
 
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::vector<bool>& values) {
 
     writer.StartArray();
@@ -1051,7 +986,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     writer.EndArray();
 }
 
-
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::vector<int*>& values) {
 
     writer.StartArray();
@@ -1060,7 +994,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     }
     writer.EndArray();
 }
-
 
 template <size_t currentIndex = 0> bool putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const tuple_type& out_value) {
     if constexpr (currentIndex < tupleSize) {
