@@ -1,7 +1,5 @@
-THORSANVIL_ROOT             = $(realpath ./)
+THORSANVIL_ROOT             = $(realpath ../)
 
-TARGET                      = src
-
-run:	release-only
+TARGET                      = Memory ThirdParty benchmark
 
 include $(THORSANVIL_ROOT)/build/tools/Project.Makefile

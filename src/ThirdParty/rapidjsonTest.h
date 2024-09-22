@@ -140,21 +140,9 @@ inline void getValue(rapidjson::Value& jsonCoordinates, std::string& coordinates
     }
 }
 
-template<floating_type value_type> void getValue(rapidjson::Value& jsonCoordinates, value_type& value) {
+inline void getValue(rapidjson::Value& jsonCoordinates, double& coordinates) {
     if (jsonCoordinates.IsDouble()) {
-        value = jsonCoordinates.GetDouble();
-    }
-}
-
-template<unsigned_type value_type> void getValue(rapidjson::Value& jsonCoordinates, value_type& value) {
-    if (jsonCoordinates.IsUint()) {
-        value = jsonCoordinates.GetUint64();
-    }
-}
-
-template<signed_type value_type> void getValue(rapidjson::Value& jsonCoordinates, value_type& value) {
-    if (jsonCoordinates.IsInt()) {
-        value = jsonCoordinates.GetUint64();
+        coordinates = jsonCoordinates.GetDouble();
     }
 }
 
@@ -162,6 +150,21 @@ inline void getValue(rapidjson::Value& jsonCoordinates, std::nullptr_t& ) {
     if (jsonCoordinates.IsNull()) {
     }
 }
+
+
+inline void getValue(rapidjson::Value& jsonCoordinates, int& coordinates) {
+    if (jsonCoordinates.IsInt()) {
+        coordinates = jsonCoordinates.GetInt();
+    }
+}
+
+
+inline void getValue(rapidjson::Value& jsonCoordinates, long int& coordinates) {
+    if (jsonCoordinates.IsInt()) {
+        coordinates = jsonCoordinates.GetInt();
+    }
+}
+
 
 inline void getValue(rapidjson::Value& jsonCoordinates, int*& coordinates) {
     if (coordinates) {
@@ -1141,7 +1144,7 @@ public:
     T       data;
 };
 
-namespace RapidjsonTypes {
+namespace rapidjsonTypes {
 
     class RapidjsonStringResult : public StringResultBase {
     public:
@@ -1288,14 +1291,14 @@ namespace RapidjsonTypes {
 // If you need to do some special handling of types you can override the default actions.
 // See comments blow:
 
-class TEST_CLASS : public TypeSafeTest<RapidjsonTypes::VectorDouble,      // Type for parsing array of single double.
-    RapidjsonTypes::VectorString,      // Type ofr parsing array of single string
-    RapidjsonTypes::GetValue>          // Template template class. This is templatezed with the type
+class TEST_CLASS : public TypeSafeTest<rapidjsonTypes::VectorDouble,      // Type for parsing array of single double.
+    rapidjsonTypes::VectorString,      // Type ofr parsing array of single string
+    rapidjsonTypes::GetValue>          // Template template class. This is templatezed with the type
     // That needs to be read from the json string.
 {
-    RapidjsonTypes::GetValue<canada_message>                    testGetValueCountry;
-    RapidjsonTypes::GetValue<twitter_message>                   testGetValueTwitter;
-    RapidjsonTypes::GetValue<citm_catalog_message>              testGetValueCatalog;
+    rapidjsonTypes::GetValue<canada_message>                    testGetValueCountry;
+    rapidjsonTypes::GetValue<twitter_message>                   testGetValueTwitter;
+    rapidjsonTypes::GetValue<citm_catalog_message>              testGetValueCatalog;
 public:
     TEST_CLASS()
     {
