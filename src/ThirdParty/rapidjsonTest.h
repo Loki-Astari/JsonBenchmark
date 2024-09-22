@@ -263,14 +263,6 @@ inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const s
     writer.EndArray();
 }
 
-inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const std::vector<std::string>& msg) {
-    writer.StartArray();
-    for (auto& str : msg) {
-        writer.String(str.c_str());
-    }
-    writer.EndArray();
-}
-
 template<map_t value_type>
 inline void putValue(rapidjson::Writer<rapidjson::StringBuffer>& writer, const value_type& msg) {
     writer.StartObject();
