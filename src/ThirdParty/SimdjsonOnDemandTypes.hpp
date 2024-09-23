@@ -768,7 +768,7 @@ namespace SimdjsonOnDemandTypes {
 				getValue(value, valueDoc);
 				reply = std::move(result);
 			}
-
+			return true;
 		}
 
 		virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
@@ -786,6 +786,7 @@ namespace SimdjsonOnDemandTypes {
 				streamDoc(val, result->stream);
 				reply = std::move(result);
 			}
+			return true;
 
 		}
 		// virtual bool SaxRoundtrip(const char* json, size_t length, std::unique_ptr<StringResultBase>& reply) const override
