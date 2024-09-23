@@ -47,9 +47,8 @@ class VectorDouble: public TestAction
         stream >> jsonImporter(result);
         if (stream && result.size() == 1) {
             d = result[0];
-            return true;
         }
-        return false;
+        return true;
     }
 };
 class VectorString: public TestAction
@@ -61,9 +60,8 @@ class VectorString: public TestAction
         stream >> jsonImporter(result);
         if (stream && result.size() == 1) {
             output = result[0];
-            return true;
         }
-        return false;
+        return true;
     }
 };
 
@@ -80,11 +78,15 @@ struct GetValueResult: public ParseResultBase
 template<typename Value>
 class GetValue: public TestAction
 {
+    ParserConfig    config;
+
     public:
+    GetValue(ParserConfig config = ParserConfig{}.setValidateNoTrailingData()): config(config) {}
     virtual bool Parse(const char* json, size_t size, std::unique_ptr<ParseResultBase>& reply) const override
     {
+        //std::cerr << "GetValue::Parse\n\n\n";
         std::unique_ptr<GetValueResult<Value>> result = std::make_unique<GetValueResult<Value>>();
-        bool ok = (std::string_view(json, size) >> jsonImporter(result->data, ParserConfig{}.setValidateNoTrailingData().setNoBackslashConversion()));
+        bool ok = (std::string_view(json, size) >> jsonImporter(result->data, config));
         if (ok) {
             reply = std::move(result);
         }
@@ -111,6 +113,16 @@ class GetValue: public TestAction
         return true;
     }
 };
+
+template<typename Value>
+class GetValuePerf: public GetValue<Value>
+{
+    public:
+    GetValuePerf()
+        : GetValue<Value>(ParserConfig{}.setValidateNoTrailingData().setNoBackslashConversion())
+    {}
+};
+
 }
 
 ThorsAnvil_MakeTraitCustom(ThorsSerializer::StringNumber);
