@@ -643,12 +643,13 @@ namespace SimdjsonOnDemandTypes
 			simdjson::ondemand::document      doc;
 			simdjson::padded_string jsonStr(json, strlen(json));
 			if (parser.iterate(jsonStr).get(doc) != simdjson::SUCCESS) {
-
+				return false;
 			}
 			std::vector<double> data;
 			getValue(data, doc);
 			if (data.size() == 1) {
 				reply = data[0];
+				return true;
 			}
 			else {
 				return false;
@@ -664,12 +665,13 @@ namespace SimdjsonOnDemandTypes
 			simdjson::ondemand::document      doc;
 			simdjson::padded_string jsonStr(json, strlen(json));
 			if (parser.iterate(jsonStr).get(doc) != simdjson::SUCCESS) {
-
+				return false;
 			}
 			std::vector<std::string> data;
 			getValue(data, doc);
 			if (data.size() == 1) {
 				reply = data[0];
+				return true;
 			}
 			else {
 				return false;
