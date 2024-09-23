@@ -771,35 +771,6 @@ namespace SimdjsonOnDemandTypes {
 
 		}
 
-		virtual bool ParseDouble(const char* json, long double& d) const override
-		{
-			ondemand::document      doc;
-			simdjson::padded_string jsonStr(json, strlen(json));
-			if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-
-			}
-			auto array = doc.get_array();
-			for (auto val : array) {
-				d = val.get_double();
-			}
-
-		}
-
-		virtual bool ParseString(const char* json, std::string& s) const override
-		{
-			ondemand::document      doc;
-			simdjson::padded_string jsonStr(json, strlen(json));
-			if (parser.iterate(jsonStr).get(doc) != SUCCESS) {
-
-			}
-			auto array = doc.get_array();
-			for (auto val : array) {
-				std::string_view view = val.get_string();
-				s = std::string(std::begin(view), std::end(view));
-			}
-
-		}
-
 		virtual bool Stringify(const ParseResultBase& parseResult, std::unique_ptr<StringResultBase>& reply) const override
 		{
 			return Prettify(parseResult, reply);
