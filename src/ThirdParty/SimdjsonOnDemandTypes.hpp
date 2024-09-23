@@ -578,7 +578,7 @@ static constexpr auto tupleSize = std::tuple_size_v<tuple_type>;
 
 template <size_t currentIndex = 0> void getValue(tuple_type& out_value, simdjson::ondemand::value json_value) {
 	if constexpr (currentIndex < tupleSize) {
-		getValue(std::get<currentIndex>(out_value);
+		getValue(std::get<currentIndex>(out_value));
 		return getValue<currentIndex + 1>(out_value, json_value);
 	}
 }
