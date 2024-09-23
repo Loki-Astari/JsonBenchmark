@@ -55,33 +55,32 @@ class TestRunner: public TestBase
 
 #define REGISTER_TEST_OBJECT(cls)       std::unique_ptr<TestBase> get ## cls();TestRunner gRegister ## cls(get ## cls())
 
-REGISTER_TEST_OBJECT(ThorsSerializerTest);
-REGISTER_TEST_OBJECT(SimdJsonDomTest);
-REGISTER_TEST_OBJECT(SimdJsonOndemandTest);
-REGISTER_TEST_OBJECT(JsonifierTest);
+REGISTER_TEST_OBJECT(ArduinojsonTest);
 #ifndef __linux__
 // Github Ubuntu latest only has boost 1.74 this does not include Boost JSON
 REGISTER_TEST_OBJECT(BoostJsonTest);
 #endif
-REGISTER_TEST_OBJECT(GlazeTest);
-REGISTER_TEST_OBJECT(ArduinojsonTest);
+REGISTER_TEST_OBJECT(CcanTest);
+REGISTER_TEST_OBJECT(CjsonTest);
 REGISTER_TEST_OBJECT(ConfiguruTest);
+REGISTER_TEST_OBJECT(GlazeTest);
+REGISTER_TEST_OBJECT(JsmnTest);
+REGISTER_TEST_OBJECT(JsoncTest);
 REGISTER_TEST_OBJECT(JsonconsTest);
 REGISTER_TEST_OBJECT(JsoncppTest);
-REGISTER_TEST_OBJECT(VoorheesTest);
+REGISTER_TEST_OBJECT(JsonifierTest);
 REGISTER_TEST_OBJECT(JsonxxTest);
 REGISTER_TEST_OBJECT(JzonTest);
 REGISTER_TEST_OBJECT(NlohmannTest);
 REGISTER_TEST_OBJECT(PicojsonTest);
-REGISTER_TEST_OBJECT(RapidjsonTest);
+REGISTER_TEST_OBJECT(RapidjsonAutoUTFTest);
 REGISTER_TEST_OBJECT(RapidjsonFullPrecTest);
 REGISTER_TEST_OBJECT(RapidjsonInsituTest);
 REGISTER_TEST_OBJECT(RapidjsonIterativeTest);
-REGISTER_TEST_OBJECT(RapidjsonAutoUTFTest);
+REGISTER_TEST_OBJECT(RapidjsonTest);
 REGISTER_TEST_OBJECT(SajsonTest);
+REGISTER_TEST_OBJECT(SimdjsonDomTest);
+REGISTER_TEST_OBJECT(SimdjsonOnDemandTest);
+REGISTER_TEST_OBJECT(ThorsSerializerTest);
 REGISTER_TEST_OBJECT(UdbTest);
-REGISTER_TEST_OBJECT(CcanTest);
-REGISTER_TEST_OBJECT(CjsonTest);
-REGISTER_TEST_OBJECT(JsoncTest);
-REGISTER_TEST_OBJECT(JsmnTest);
-
+REGISTER_TEST_OBJECT(VoorheesTest);

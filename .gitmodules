@@ -55,14 +55,15 @@
 [submodule "thirdparty/ThorsMongo"]
 	path = thirdparty/ThorsMongo
 	url = ../../Loki-Astari/ThorsMongo.git
+[submodule "thirdparty/Jsonifier"]
+	path = thirdparty/Jsonifier
+	url = https://github.com/RealTimeChris/Jsonifier
+	branch = dev
+[submodule "thirdparty/glaze"]
+	path = thirdparty/glaze
+	url = https://github.com/StephenBerry/glaze
+	branch = main
 [submodule "thirdparty/simdjson"]
 	path = thirdparty/simdjson
 	url = https://github.com/simdjson/simdjson
-[submodule "thirdparty/glaze"]
-	path = thirdparty/glaze
-	url = https://github.com/stephenberry/glaze
-	branch = main
-[submodule "thirdparty/Jsonifier"]
-	path = thirdparty/Jsonifier
-	url = https://github.com/realtimechris/Jsonifier
-	branch = dev
+	branch = master
