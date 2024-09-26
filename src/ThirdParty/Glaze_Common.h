@@ -253,7 +253,7 @@ namespace Glaze
 		virtual bool Parse(const char* json, size_t, std::unique_ptr<ParseResultBase>& reply) const
 		{
 			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-			auto error = glz::read < glz::opts{ .format = glz::json, .validate_trailing_whitespace = true } > (parsedData->data, json);
+			auto error = glz::read < glz::opts{ .validate_trailing_whitespace = true } > (parsedData->data, json);
 			if (!error) {
 				reply = std::move(parsedData);
 			}

@@ -244,7 +244,7 @@ template<typename T> struct jsonifier::core<GetValueResult<T>> {
 
 namespace JsonifierTypes {
 
-	template<typename T>
+template<typename T>
 	class GetValue : public TestAction
 	{
 
@@ -252,7 +252,7 @@ namespace JsonifierTypes {
 		virtual JSONIFIER_ALWAYS_INLINE bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const
 		{
 			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
-			if (parser.parseJson(parsedData->data, jsonifier::string_view{ json, length })) {
+			if (parser.parseJson < jsonifier::parse_options{ .knownOrder = true } > (parsedData->data, jsonifier::string_view{ json, length })) {
 				reply = std::move(parsedData);
 			}
 			return true;
@@ -260,17 +260,15 @@ namespace JsonifierTypes {
 		virtual JSONIFIER_ALWAYS_INLINE bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
 		{
 			GetValueResult<T>const& parsedDataInput = static_cast<GetValueResult<T> const&>(parsedData);
-			std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
-			parser.serializeJson < jsonifier::serialize_options{ .prettify = false } > (parsedDataInput.data, output->result);
-			reply = std::move(output);
+			reply.reset(new StringResultUsingString{});
+			parser.serializeJson (parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
 			return true;
 		}
 		virtual JSONIFIER_ALWAYS_INLINE bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
 		{
 			GetValueResult<T>const& parsedDataInput = static_cast<GetValueResult<T> const&>(parsedData);
-			std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
-			parser.serializeJson < jsonifier::serialize_options{ .prettify = false } > (parsedDataInput.data, output->result);
-			reply = std::move(output);
+			reply.reset(new StringResultUsingString{});
+			parser.serializeJson (parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
 			return true;
 		}
 	};
