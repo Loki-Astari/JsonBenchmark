@@ -257,9 +257,8 @@ namespace JsonifierTypes {
 			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
 			if (parser.parseJson < jsonifier::parse_options{ .knownOrder = true } > (parsedData->data, jsonifier::string_view{ json, length })) {
 				reply = std::move(parsedData);
-				return true;
 			}
-			return false;
+			return true;
 		}
 		virtual JSONIFIER_ALWAYS_INLINE bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
 		{
