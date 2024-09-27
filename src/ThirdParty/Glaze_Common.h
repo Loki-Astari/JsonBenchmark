@@ -261,14 +261,19 @@ namespace Glaze
 		}
 		virtual bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
 		{
-			return Prettify(parsedData, reply);
+			GetValueResult<T> const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
+			std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
+
+			output->result = glz::write_json(parsedDataInput.data).value_or("error");
+			reply = std::move(output);
+			return true;
 		}
 		virtual bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
 		{
 			GetValueResult<T> const& parsedDataInput = dynamic_cast<GetValueResult<T> const&>(parsedData);
 			std::unique_ptr<StringResultUsingString>    output = std::make_unique<StringResultUsingString>();
 
-			output->result = glz::write_json(parsedDataInput.data).value_or("error");
+			output->result = glz::write < glz::opts{ .prettify = true } > (parsedDataInput.data).value_or("error");
 			reply = std::move(output);
 			return true;
 		}

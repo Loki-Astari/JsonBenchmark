@@ -9,6 +9,10 @@
 #include "JsonifierCountry.h"
 #include "JsonifierTwitter.h"
 
+template<typename value_type> concept performance_data = std::same_as<std::remove_cvref_t<value_type>, twitter_message> 
+|| std::same_as<std::remove_cvref_t<value_type>, citm_catalog_message> 
+|| std::same_as<std::remove_cvref_t<value_type>, canada_message>;
+
 template<> struct jsonifier::core<geometry_data> {
 	using value_type = geometry_data;
 	static constexpr auto parseValue = createValue<&value_type::type, &value_type::coordinates>();
@@ -118,7 +122,6 @@ template<> struct jsonifier::core<twitter_message> {
 	static constexpr auto parseValue = createValue<&value_type::statuses, &value_type::search_metadata>();
 };
 
-
 template<> struct jsonifier::core<audience_sub_category_names> {
 	using value_type = audience_sub_category_names;
 	static constexpr auto parseValue = createValue("337100890", &value_type::the337100890);
@@ -205,7 +208,7 @@ namespace JsonifierTypes
 		virtual bool ParseDouble(const char* json, long double& reply) const
 		{
 			std::vector<double> data;
-			if (parser.parseJson < jsonifier::parse_options{} > (data, jsonifier::string_view{ json })) {
+			if (parser.parseJson(data, jsonifier::string_view{ json })) {
 				if (data.size() == 1) {
 					reply = data[0];
 				}
@@ -220,7 +223,7 @@ namespace JsonifierTypes
 		virtual bool ParseString(const char* json, std::string& reply) const
 		{
 			std::vector<std::string> data;
-			if (parser.parseJson < jsonifier::parse_options{} > (data, jsonifier::string_view{ json })) {
+			if (parser.parseJson(data, jsonifier::string_view{ json })) {
 				if (data.size() == 1) {
 					reply = data[0];
 				}
@@ -244,7 +247,7 @@ template<typename T> struct jsonifier::core<GetValueResult<T>> {
 
 namespace JsonifierTypes {
 
-template<typename T>
+	template<typename T>
 	class GetValue : public TestAction
 	{
 
@@ -254,21 +257,22 @@ template<typename T>
 			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
 			if (parser.parseJson < jsonifier::parse_options{ .knownOrder = true } > (parsedData->data, jsonifier::string_view{ json, length })) {
 				reply = std::move(parsedData);
+				return true;
 			}
-			return true;
+			return false;
 		}
 		virtual JSONIFIER_ALWAYS_INLINE bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
 		{
 			GetValueResult<T>const& parsedDataInput = static_cast<GetValueResult<T> const&>(parsedData);
 			reply.reset(new StringResultUsingString{});
-			parser.serializeJson (parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
+			parser.serializeJson(parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
 			return true;
 		}
 		virtual JSONIFIER_ALWAYS_INLINE bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
 		{
 			GetValueResult<T>const& parsedDataInput = static_cast<GetValueResult<T> const&>(parsedData);
 			reply.reset(new StringResultUsingString{});
-			parser.serializeJson (parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
+			parser.serializeJson < jsonifier::serialize_options{ .prettify = true } > (parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
 			return true;
 		}
 	};
