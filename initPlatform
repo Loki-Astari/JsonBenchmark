@@ -19,5 +19,6 @@ if [[ "${OS}" == "Darwin" ]]; then
     brew install cmake
     brew install jq
     brew install curl
+    brew install libyaml
 fi
 
