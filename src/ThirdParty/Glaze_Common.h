@@ -227,8 +227,8 @@ template <typename T> struct GetValueResult : public ParseResultBase {
 } // namespace Glaze
 
 template <typename T> struct glz::meta<Glaze::GetValueResult<T>> {
-  using T = Glaze::GetValueResult<T>;
-  static constexpr auto value = object(&T::data);
+  using R = Glaze::GetValueResult<T>;
+  static constexpr auto value = object(&R::data);
 };
 
 namespace Glaze {
