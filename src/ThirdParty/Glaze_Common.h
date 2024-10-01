@@ -267,7 +267,7 @@ public:
     std::unique_ptr<StringResultUsingString> output =
         std::make_unique<StringResultUsingString>();
 
-    auto ec = glz::write<glz::opts{.prettify = true}>(parsedDataInput.data, output->result)
+    auto ec = glz::write<glz::opts{.prettify = true}>(parsedDataInput.data, output->result);
     if (not ec) {
       reply = std::move(output);
     }
