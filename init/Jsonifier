@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cmake -S ./ -B ./Build -DCMAKE_BUILD_TYPE=Release
+cmake -S ./ -B ./Build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -DNDEBUG"
 
 AVX_FLAG=$(grep 'AVX_FLAG:STRING=' ../../thirdparty/Jsonifier/Build/CMakeCache.txt | cut -d '=' -f 2)
 
