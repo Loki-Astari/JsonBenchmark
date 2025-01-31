@@ -93,19 +93,15 @@ template<> struct jsonifier::core<user_entities> {
 
 template<> struct jsonifier::core<twitter_user_data> {
 	using value_type = twitter_user_data;
-	static constexpr auto parseValue = createValue("id", &value_type::id, "id_str", &value_type::id_str, "name", &value_type::name, "screen_name", &value_type::screen_name,
-		"location", &value_type::location, "description", &value_type::description, "url", &value_type::url, "entities", &value_type::entities, "protected",
-		&value_type::protectedVal, "followers_count", &value_type::followers_count, "friends_count", &value_type::friends_count, "listed_count", &value_type::listed_count,
-		"created_at", &value_type::created_at, "favourites_count", &value_type::favourites_count, "utc_offset", &value_type::utc_offset, "time_zone", &value_type::time_zone,
-		"geo_enabled", &value_type::geo_enabled, "verified", &value_type::verified, "statuses_count", &value_type::statuses_count, "lang", &value_type::lang,
-		"contributors_enabled", &value_type::contributors_enabled, "is_translator", &value_type::is_translator, "is_translation_enabled", &value_type::is_translation_enabled,
-		"profile_background_color", &value_type::profile_background_color, "profile_background_image_url", &value_type::profile_background_image_url,
-		"profile_background_image_url_https", &value_type::profile_background_image_url_https, "profile_background_tile", &value_type::profile_background_tile, "profile_image_url",
-		&value_type::profile_image_url, "profile_image_url_https", &value_type::profile_image_url_https, "profile_banner_url", &value_type::profile_banner_url,
-		"profile_link_color", &value_type::profile_link_color, "profile_sidebar_border_color", &value_type::profile_sidebar_border_color, "profile_sidebar_fill_color",
-		&value_type::profile_sidebar_fill_color, "profile_text_color", &value_type::profile_text_color, "profile_use_background_image", &value_type::profile_use_background_image,
-		"default_profile", &value_type::default_profile, "default_profile_image", &value_type::default_profile_image, "following", &value_type::following, "follow_request_sent",
-		&value_type::follow_request_sent, "notifications", &value_type::notifications);
+	static constexpr auto parseValue =
+		createValue<&value_type::id, &value_type::id_str, &value_type::name, &value_type::screen_name, &value_type::location, &value_type::description, &value_type::url,
+		&value_type::entities, makeJsonEntity<&value_type::protectedVal, "protected">(), &value_type::followers_count, &value_type::friends_count, &value_type::listed_count,
+		&value_type::created_at, &value_type::favourites_count, &value_type::utc_offset, &value_type::time_zone, &value_type::geo_enabled, &value_type::verified,
+		&value_type::statuses_count, &value_type::lang, &value_type::contributors_enabled, &value_type::is_translator, &value_type::is_translation_enabled,
+		&value_type::profile_background_color, &value_type::profile_background_image_url, &value_type::profile_background_image_url_https, &value_type::profile_background_tile,
+		&value_type::profile_image_url, &value_type::profile_image_url_https, &value_type::profile_banner_url, &value_type::profile_link_color,
+		&value_type::profile_sidebar_border_color, &value_type::profile_sidebar_fill_color, &value_type::profile_text_color, &value_type::profile_use_background_image,
+		&value_type::default_profile, &value_type::default_profile_image, &value_type::following, &value_type::follow_request_sent, &value_type::notifications>();
 };
 
 template<> struct jsonifier::core<status_data> {
@@ -124,7 +120,7 @@ template<> struct jsonifier::core<twitter_message> {
 
 template<> struct jsonifier::core<audience_sub_category_names> {
 	using value_type = audience_sub_category_names;
-	static constexpr auto parseValue = createValue("337100890", &value_type::the337100890);
+	static constexpr auto parseValue = createValue<makeJsonEntity<&value_type::the337100890, "337100890">()>();
 };
 
 template<> struct jsonifier::core<names> {
@@ -188,10 +184,10 @@ template<> struct jsonifier::core<Obj2> {
 
 template<> struct jsonifier::core<Special> {
 	using value_type = Special;
-	static constexpr auto parseValue = createValue("integer", &value_type::integer, "real", &value_type::real, "E", &value_type::E, "zero", &value_type::zero, "one",
-		&value_type::one, "space", &value_type::space, "quote", &value_type::quote, "backslash", &value_type::backslash, "controls", &value_type::controls, "slash",
-		&value_type::slash, "alpha", &value_type::alpha, "ALPHA", &value_type::ALPHA, "0123456789", &value_type::digit, "number", &value_type::number, "special",
-		&value_type::special, "hex", &value_type::hex, "null", &value_type::null, "array", &value_type::array);
+	static constexpr auto parseValue = createValue<&value_type::integer, &value_type::real, &value_type::E, &value_type::zero,
+		&value_type::one, &value_type::space, &value_type::quote, &value_type::backslash, &value_type::controls,
+		&value_type::slash, &value_type::alpha, &value_type::ALPHA, &value_type::digit, &value_type::number,
+		&value_type::special, &value_type::hex, &value_type::null, &value_type::array>();
 };
 
 template<> struct jsonifier::core<Empty> {
@@ -205,7 +201,7 @@ namespace JsonifierTypes
 	class VectorDouble : public TestAction
 	{
 	public:
-		virtual bool ParseDouble(const char* json, long double& reply) const
+		bool ParseDouble(const char* json, long double& reply) const
 		{
 			std::vector<double> data;
 			if (parser.parseJson(data, jsonifier::string_view{ json })) {
@@ -220,7 +216,7 @@ namespace JsonifierTypes
 	class VectorString : public TestAction
 	{
 	public:
-		virtual bool ParseString(const char* json, std::string& reply) const
+		bool ParseString(const char* json, std::string& reply) const
 		{
 			std::vector<std::string> data;
 			if (parser.parseJson(data, jsonifier::string_view{ json })) {
@@ -252,7 +248,7 @@ namespace JsonifierTypes {
 	{
 
 	public:
-		virtual JSONIFIER_ALWAYS_INLINE bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const
+		JSONIFIER_INLINE bool Parse(const char* json, size_t length, std::unique_ptr<ParseResultBase>& reply) const
 		{
 			std::unique_ptr<GetValueResult<T>>    parsedData = std::make_unique<GetValueResult<T>>();
 			if (parser.parseJson < jsonifier::parse_options{ .knownOrder = true } > (parsedData->data, jsonifier::string_view{ json, length })) {
@@ -260,14 +256,14 @@ namespace JsonifierTypes {
 			}
 			return true;
 		}
-		virtual JSONIFIER_ALWAYS_INLINE bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
+		JSONIFIER_INLINE bool Stringify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply)  const
 		{
 			GetValueResult<T>const& parsedDataInput = static_cast<GetValueResult<T> const&>(parsedData);
 			reply.reset(new StringResultUsingString{});
 			parser.serializeJson(parsedDataInput.data, static_cast<StringResultUsingString*>(reply.get())->result);
 			return true;
 		}
-		virtual JSONIFIER_ALWAYS_INLINE bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
+		JSONIFIER_INLINE bool Prettify(const ParseResultBase& parsedData, std::unique_ptr<StringResultBase>& reply) const
 		{
 			GetValueResult<T>const& parsedDataInput = static_cast<GetValueResult<T> const&>(parsedData);
 			reply.reset(new StringResultUsingString{});
