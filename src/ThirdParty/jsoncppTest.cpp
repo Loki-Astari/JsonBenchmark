@@ -81,7 +81,7 @@ public:
     {
         const JsoncppParseResult& pr = static_cast<const JsoncppParseResult&>(parseResult);
         Json::StreamWriterBuilder wbuilder;
-        wbuilder.settings_["indentation"] = "";
+        //wbuilder.settings_["indentation"] = "";
         std::unique_ptr<StringResultUsingString> sr = std::make_unique<StringResultUsingString>();
         sr->result = Json::writeString(wbuilder, pr.root);
         reply = std::move(sr);
